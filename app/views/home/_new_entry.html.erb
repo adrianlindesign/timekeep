@@ -47,7 +47,11 @@
 
     <input type="hidden" name="user_id" value="<%=session[:user_id]%>">
 
-    <input type="hidden" name="icon" value="default"> <!-- TODO -->
+    <select name="icon">
+      <option value="1">icon 1</option>
+      <option value="2">icon 2</option>
+      <option value="3">icon 3</option>
+    </select> <!-- TODO -->
     <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
     <!-- TODO -->
     <button>Submit</button>
