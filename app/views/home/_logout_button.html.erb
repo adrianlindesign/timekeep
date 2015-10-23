@@ -1,0 +1,5 @@
+<form id="logout-button" action="/session" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+  <button type="submit">Log out</button>
+</form>
