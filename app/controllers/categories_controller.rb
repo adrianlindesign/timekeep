@@ -9,11 +9,14 @@ class CategoriesController < ApplicationController
   end
 
   def create
+    # binding.pry
     c = Category.create(
       name: params['name'],
       user_id: params['user_id'],
       icon: params['icon']
     )
+
+    redirect_to '/'
   end
 
   def show

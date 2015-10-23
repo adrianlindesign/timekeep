@@ -10,8 +10,9 @@
 
 
 <nav>
-  <%if session[:user_id]%>
+  
 
+  <%if session[:user_id]%>
     <!-- log out button -->
     <%= render 'home/logout_button' %>
 
@@ -51,6 +52,9 @@
     $('#new-entry').show();
   });
 
-  
+  //hide new entry screen upon submission
+  var newEntryScreen = $('#new-entry');
+
+
 
 </script>

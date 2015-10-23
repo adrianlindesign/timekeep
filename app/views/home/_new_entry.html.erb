@@ -17,6 +17,9 @@
   }
 </style>
 
+
+
+
 <section id="new-entry">
 
   <div id="icon-selection">
@@ -29,13 +32,35 @@
 
   
   <img src="#">
-  <h3> {{ category name }} </h3>
+
+  <!-- choose, or make new category -->
+  <form action="/users/<%=session[:user_id]%>/categories" method="POST"> 
+
+
+    <input type="text" name="name" list="categories-list" />
+    <datalist id="categories-list">
+      <%@categories.each do |c|%>
+        <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
+      <%end%>
+    </datalist>
+    
+
+    <input type="hidden" name="user_id" value="<%=session[:user_id]%>">
+
+    <input type="hidden" name="icon" value="default"> <!-- TODO -->
+    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+    <!-- TODO -->
+    <button>Submit</button>
+  </form>
+
+  <!-- new entry -->
+  
   
   <div id="duration">
     <input type="time" name="starttime">
     <input type="time" name="endtime">
   </div>
 
-  <button>Submit</button>
+  
   
 </section>
