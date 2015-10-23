@@ -1,5 +1,28 @@
+
+
 <nav>
-  <a href="/users/new">Sign up</a>
+  <% if session[:user_id] %>
+
+    <!-- log out button -->
+    <form id="logout-button" action="/session" method="POST">
+      <input type="hidden" name="_method" value="DELETE">
+      <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+      <button type="submit">Log out</button>
+    </form>
+
+  <% else %>
+  
+    <!-- log in button/form -->
+    <form id="signup-button-form" action="/login" method="POST">
+      <input type="email" name="email" placeholder="Email">
+      <input type="password" name="password" placeholder="Password">
+      <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+      <button type="submit">Log in</button>
+    </form>
+   
+    <!-- sign up button -->
+    <a href="/users/new">Sign up</a>
+  <% end %>
 
 </nav>
 
