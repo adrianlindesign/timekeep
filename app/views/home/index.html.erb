@@ -1,4 +1,4 @@
-
+<!-- TODO -->
 <style>
   #timeline {
     height:70vh;
@@ -32,9 +32,25 @@
   <%if session[:user_id]%>
 
   <!-- timeline -->
-  <%= render "/home/timeline" %>
+  <%= render "home/timeline" %>
 
 
   <%end%>
 
 </main>
+
+<!-- hidden new entry screen -->
+<%= render "home/new_entry" %>
+
+
+<!-- TODO -->
+<script>
+
+  //show new entry screen
+  $('.hour').on('click', function(){
+    $('#new-entry').show();
+  });
+
+  
+
+</script>
