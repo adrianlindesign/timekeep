@@ -15,7 +15,6 @@ class CategoriesController < ApplicationController
 
     if same_category  # if category with same user_id and name exists, update icon
       same_category.update( {icon: params['icon']} )
-      puts "updated"
     else #if category with same user_id and name doesn't exist, create new
       c = Category.create(
         name: params['name'],
