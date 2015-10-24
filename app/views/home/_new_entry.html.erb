@@ -31,10 +31,10 @@
   </div>
 
   
-  <img src="#">
+  <img src="#"> <!-- TODO -->
 
   <!-- choose, or make new category -->
-  <form action="/users/<%=session[:user_id]%>/categories" method="POST"> 
+  <form action="/users/<%=session[:user_id]%>/categories" method="POST" id="form-category"> 
 
 
     <input type="text" name="name" list="categories-list" />
@@ -53,12 +53,11 @@
       <option value="3">icon 3</option>
     </select> <!-- TODO -->
     <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-    <!-- TODO -->
-    <button>Submit</button>
+
   </form>
 
   <!-- new entry -->
-  
+  <form action=""></form>
   
   <div id="duration">
     <input type="time" name="starttime">
