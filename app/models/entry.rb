@@ -1,4 +1,4 @@
 class Entry < ActiveRecord::Base 
-  validates(:name, :category_id, {presence: true} )
+  validates(:starttime, :endtime, :category_id, {presence: true} )
 
 end
