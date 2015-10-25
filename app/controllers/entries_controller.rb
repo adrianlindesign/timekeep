@@ -9,10 +9,9 @@ class EntriesController < ApplicationController
   end
 
   def create
-    binding.pry
+    # binding.pry
 
     e = Entry.create(
-      name: params['name'],
       category_id: params['category_id'],
       starttime: params['starttime'],
       endtime: params['endtime'],

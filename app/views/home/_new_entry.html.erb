@@ -29,24 +29,23 @@
   <!-- new entry -->
 
   
-  <form action="/users/<%=session[:user_id]%>/categories/~<{[]}>~/entries" method="POST" id="form-entry">
+  <form action="/users/<%=session[:user_id]%>/categories/~<{[]}>~/entries" /method="POST" id="form-entry">
 
     <label>Category
       <select name="category_id" required>
         <%@categories.each do |c|%>
-          <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
+          <option value="<%=c[:id]%>"> <%=c[:name]%> </option>
         <%end%>
       </select>
     </label>
 
-    <input type="time" name="starttime">
-    <input type="time" name="endtime">
+    <input type="time" name="starttime" required>
+    <input type="time" name="endtime" required>
 
-    <input type="hidden" name="category_name" value="~<{[]}>~">
     <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
 
-    <button>New Entry</button>
   </form>
+  <button id="new-entry-submit">New Entry</button>
 
   
   
@@ -56,25 +55,22 @@
 
 
 <script>
-  // var categoryForm = $('#form-category'),
-  //     entryForm = $('#form-entry'),
-  //     submitFormButton = $('#submit-form'),
-  //     categoryName = $('#form-category input[name="name"]').val(),
+  $(document).ready(function(){
+    var newEntryForm = $('#new-entry-screen form')
+
+    $('#new-entry-submit').on('click', function(){
+      var categoryId = $('select[name="category_id"]').val(),
+          formAction = $('#form-entry').attr('action'),
+          formAction = formAction.split('categories/')[0];
+          formAction += 'categories/' + categoryId + '/entries';
 
 
-  // submitFormButton.on('click', function(){
-  //   categoryName = $('#form-category input[name="name"]').val();
-  //   debugger
+      newEntryForm.attr('action', formAction);
 
-  //   if (categoryName !== '') {
-
-
-  //     categoryForm.submit();
-
-  //     entryForm.submit(); 
-  //   }
-
-  // });
+      newEntryForm.submit();
+    });
+  });
+    
 
 </script>
 
