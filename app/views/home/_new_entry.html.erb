@@ -1,6 +1,6 @@
 <!-- TODO -->
 <style>
-  #new-entry {
+  #new-entry-screen {
     width:100vw;
     height:100vh;
     background-color:pink;
@@ -12,58 +12,76 @@
     display:none;
   }
 
-  #icon-selection {
-    display:hidden;
-  }
 </style>
 
 
 
 
-<section id="new-entry">
+<section id="new-entry-screen">
 
-  <div id="icon-selection">
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-    </ul>
-  </div>
 
   
   <img src="#"> <!-- TODO -->
 
-  <!-- choose, or make new category -->
-  <form action="/users/<%=session[:user_id]%>/categories" method="POST" id="form-category"> 
 
 
-    <input type="text" name="name" list="categories-list" />
-    <datalist id="categories-list">
-      <%@categories.each do |c|%>
-        <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
-      <%end%>
-    </datalist>
-    
-
-    <input type="hidden" name="user_id" value="<%=session[:user_id]%>">
-
-    <select name="icon">
-      <option value="1">icon 1</option>
-      <option value="2">icon 2</option>
-      <option value="3">icon 3</option>
-    </select> <!-- TODO -->
-    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-
-  </form>
 
   <!-- new entry -->
-  <form action=""></form>
+
   
-  <div id="duration">
+  <form action="/users/<%=session[:user_id]%>/categories/~<{[]}>~/entries" method="POST" id="form-entry">
+
+    <label>Category
+      <select name="category_id" required>
+        <%@categories.each do |c|%>
+          <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
+        <%end%>
+      </select>
+    </label>
+
     <input type="time" name="starttime">
     <input type="time" name="endtime">
-  </div>
 
+    <input type="hidden" name="category_name" value="~<{[]}>~">
+    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+
+    <button>New Entry</button>
+  </form>
+
+  
+  
   
   
 </section>
+
+
+<script>
+  // var categoryForm = $('#form-category'),
+  //     entryForm = $('#form-entry'),
+  //     submitFormButton = $('#submit-form'),
+  //     categoryName = $('#form-category input[name="name"]').val(),
+
+
+  // submitFormButton.on('click', function(){
+  //   categoryName = $('#form-category input[name="name"]').val();
+  //   debugger
+
+  //   if (categoryName !== '') {
+
+
+  //     categoryForm.submit();
+
+  //     entryForm.submit(); 
+  //   }
+
+  // });
+
+</script>
+
+
+
+
+
+
+
+

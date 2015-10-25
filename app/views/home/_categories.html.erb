@@ -1,0 +1,42 @@
+  <!-- TODO -->
+<style>
+  #new-category-screen {
+    width:100vw;
+    height:100vh;
+    background-color:pink;
+
+    position:absolute;
+    top:0;
+    z-index:1;
+
+    display:none;
+  }
+
+</style>
+
+  <!-- choose, or make new category -->
+
+  <section id="new-category-screen">
+    <form action="/users/<%=session[:user_id]%>/categories" method="POST" id="form-category"> 
+
+      <input type="text" name="name" list="categories-list"/>
+      <datalist id="categories-list">
+        <%@categories.each do |c|%>
+          <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
+        <%end%>
+      </datalist> 
+      
+      <select name="icon">
+        <option value="1">icon 1</option>
+        <option value="2">icon 2</option>
+        <option value="3">icon 3</option>
+      </select> <!-- TODO -->
+
+      <input type="hidden" name="user_id" value="<%=session[:user_id]%>">
+      <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+      
+      <button>Submit Edit/New category</button>    
+    
+
+    </form>
+  </section>

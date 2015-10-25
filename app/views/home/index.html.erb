@@ -1,4 +1,4 @@
-<!-- TODO -->
+<!-- TODO move styles elsewhere-->
 <style>
   #timeline {
     height:70vh;
@@ -16,6 +16,10 @@
     <!-- log out button -->
     <%= render 'home/logout_button' %>
 
+    <br><br>
+
+    <p id="category-screen-link">Categories</p>
+
   <%else%>
 
     <!-- log in button/form -->
@@ -23,6 +27,8 @@
    
     <!-- sign up button -->
     <a href="/users/new">Sign up</a>
+
+    
   <%end%>
 
 </nav>
@@ -43,17 +49,29 @@
 <!-- hidden new entry screen -->
 <%= render "home/new_entry" %>
 
+<!-- hidden categories screen -->
+<%= render 'home/categories' %>
 
-<!-- TODO -->
+
+
+
+
+
+<!-- TODO move script elsewhere-->
 <script>
 
   //show new entry screen
   $('.hour').on('click', function(){
-    $('#new-entry').show();
+    $('#new-entry-screen').show();
+  });
+
+  //show categories screen
+  $('#category-screen-link').on('click', function(){
+    $('#new-category-screen').show();
   });
 
   //hide new entry screen upon submission
-  var newEntryScreen = $('#new-entry');
+  var newEntryScreen = $('#new-entry-screen');
 
 
 
