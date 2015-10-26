@@ -59,9 +59,101 @@
 
 <!-- TODO move script elsewhere-->
 <script>
+  var timeSlotStart,
+      timeSlotEnd; //used to set default time
+
+
+
+
+  /*this funciton takes inputs and then returns the start and endtime */
+  function getEntryDuration(startHour, startMinute, durationHHMM){
+
+    /* starttimeSlot */
+
+    var starttimeSlot = startHour + ":" + startMinute;
+
+
+    /* duration */
+
+    var duration = durationHHMM, // "1::30" = 1 hour 30 mins
+        durationHour = duration.split('::')[0],
+        durationMinute = duration.split('::')[1];
+
+
+    var endtimeHour,
+        endtimeMinute,
+        endtimeSlot;
+
+    endtimeHour = parseInt(startHour) + parseInt(durationHour);
+    
+    endtimeMinute = parseInt(startMinute) + parseInt(durationMinute);
+    if (parseInt(endtimeMinute) >= 60) {
+      endtimeHour += 1;
+      endtimeMinute -= 60;
+    }
+
+    
+
+    if (parseInt(endtimeHour) > 23) {
+      endtimeHour = "23";
+    } else if (endtimeHour.toString().length === 1) {
+      endtimeHour = "0" + endtimeHour;
+    }
+
+    if (endtimeMinute.toString().length === 1) {
+      endtimeMinute += "0";
+    }
+    endtimeSlot = endtimeHour + ":" + endtimeMinute;
+
+
+    return {
+      "starttime": starttimeSlot,
+      "endtime": endtimeSlot
+     }
+  }
+
+
+
+
+
+
 
   //show new entry screen
   $('.hour').on('click', function(){
+
+    var startHour = this.id.split('-')[1],
+        startMinute = "00", //TODO make this customisble later
+        duration = "1::30";
+
+    // Autopopulate start time
+    var durations = getEntryDuration(startHour, startMinute, duration);
+
+    $('input[name="starttime"]').val(durations['starttime']);
+    $('input[name="endtime"]').val(durations['endtime']);
+
+
+    // timeSlotStart = this.id.split('-')[1],
+    // timeSlotEnd = parseInt( timeSlotStart ) + 1;
+
+
+    // if (timeSlotStart.length === 1) {
+    //   timeSlotStart = "0" + timeSlotStart;
+    // }
+    // timeSlotStart += ":" + "00";
+    // $('input[name="starttime"]').val(timeSlotStart);
+
+
+    // // Autopopulate end time
+    // if ( timeSlotEnd.toString().length === 1) {
+    //   timeSlotEnd = "0" + timeSlotEnd;
+    // }
+    // timeSlotEnd += ":" + "00";
+    // $('input[name="endtime"]').val()
+
+
+
+
+
     $('#new-entry-screen').show();
   });
 
