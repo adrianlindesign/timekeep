@@ -9,12 +9,12 @@ class EntriesController < ApplicationController
   end
 
   def create
-
+    binding.pry
     e = Entry.create(
       category_id: params['category_id'],
       starttime: params['starttime'],
       endtime: params['endtime'],
-      created_at: Time.now.strftime("%d/%m/%Y")
+      entry_date: params['entry_date']
     )
     redirect_to '/'
   end

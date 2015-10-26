@@ -18,18 +18,13 @@
 
 
 <section id="new-entry-screen">
-
-
-  
-  <img src="#"> <!-- TODO -->
-
-
-
-
-  <!-- new entry -->
+  <h3 id="today-date"></h3>
 
   
-  <form action="/users/<%=session[:user_id]%>/categories/~<{[]}>~/entries" /method="POST" id="form-entry">
+  <img src="#"> <!-- TODO: will show the icon -->
+
+
+  <form action="/users/<%=session[:user_id]%>/categories/~<{[]}>~/entries" /method="POST" id="new-entry-form">
 
     <label>Category
       <select name="category_id" required>
@@ -39,6 +34,7 @@
       </select>
     </label>
 
+    <input type="hidden" name="entry_date" id="new-entry-date" required> <!-- TODO: eventually this may be selected by which date it says on the top o the screen, like dollarbird. OR maybe i'll keep it this way, which will force you to take it on the same day, being more mindful -->
     <input type="time" name="starttime" required>
     <input type="time" name="endtime" required>
 
@@ -56,11 +52,24 @@
 
 <script>
   $(document).ready(function(){
-    var newEntryForm = $('#new-entry-screen form')
+    var newEntryForm = $('#new-entry-form');
 
+
+    /* Set up today's date as default */
+    Date.prototype.toDateInputValue = (function() {
+      var local = new Date(this);
+      local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+      return local.toJSON().slice(0,10);
+    });
+
+    $('#new-entry-date').val( new Date().toDateInputValue() );
+    $('#today-date').html( new Date().toDateInputValue() );
+
+
+    /* Submit Check */
     $('#new-entry-submit').on('click', function(){
       var categoryId = $('select[name="category_id"]').val(),
-          formAction = $('#form-entry').attr('action'),
+          formAction = newEntryForm.attr('action'),
           formAction = formAction.split('categories/')[0];
           formAction += 'categories/' + categoryId + '/entries';
 
