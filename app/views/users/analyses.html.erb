@@ -1,3 +1,62 @@
-<h1>analyses</h1>
 
-<p><%=@data_hash%></p>
+
+<section id="data-analysis-screen">
+  <h1>analyses</h1>
+
+  <section id="raw-data">
+    <%@data_hash.each do |cat, cat_data|%>
+    	<div>
+        <h3><%=cat%></h3>
+        <ul>
+          <%cat_data[:entries].each do |entry|%>
+            <li>
+              <p>starttime: <%=entry[:starttime].to_s%></p>
+              <p>endtime: <%=entry[:endtime].to_s%></p>
+              <p>entry date: <%=entry[:entry_date].to_s%></p>
+            </li>
+          <%end%>
+        </ul>
+      </div>
+    <%end%>
+  </section>
+</section>
+
+
+
+<!--    {
+     "new-test-category"=>{
+       :id=>7, 
+       :icon=>"3", 
+       :entries=>[
+         { 
+           :starttime=>2000-01-01 13:00:00 UTC, 
+           :endtime=>2000-01-01 14:30:00 UTC, 
+           :entry_date=>nil, 
+           :entry_id=>4
+         }, 
+
+         {
+           :starttime=>2000-01-01 04:00:00 UTC, 
+           :endtime=>2000-01-01 05:30:00 UTC, 
+           :entry_date=>Mon, 26 Oct 2015, 
+           :entry_id=>7
+         }, 
+
+         {
+           :starttime=>2000-01-01 19:00:00 UTC, 
+           :endtime=>2000-01-01 20:30:00 UTC, 
+           :entry_date=>Mon, 26 Oct 2015, 
+           :entry_id=>9
+         }
+       ]
+     }, 
+     "test"=>{
+       :id=>1, 
+       :icon=>"2", 
+       :entries=>[
+
+       ]
+     }
+
+   }
+    -->
