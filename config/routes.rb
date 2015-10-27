@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   post '/login' => 'session#create'
   delete '/session' => 'session#destroy'
 
+  get '/users/:id/entries' => 'users#analyses'
+
 
 
 #                   Prefix Verb   URI Pattern                                                        Controller#Action

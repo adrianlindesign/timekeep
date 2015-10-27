@@ -16,9 +16,13 @@
     <!-- log out button -->
     <%= render 'home/logout_button' %>
 
-    <br><br>
+    
 
-    <p id="category-screen-link">Categories</p>
+    <br><br>
+    <button id="category-screen-link">Categories</button> <!-- TODO -->
+  
+    <a href="/users/<%=session[:user_id]%>/entries"><button id="analysis-screen-link">Analysis</button></a>
+    
 
   <%else%>
 
@@ -68,12 +72,9 @@
   /*this funciton takes inputs and then returns the start and endtime */
   function getEntryDuration(startHour, startMinute, durationHHMM){
 
-    /* starttimeSlot */
 
     var starttimeSlot = startHour + ":" + startMinute;
 
-
-    /* duration */
 
     var duration = durationHHMM, // "1::30" = 1 hour 30 mins
         durationHour = duration.split('::')[0],
@@ -118,7 +119,7 @@
 
 
 
-  //show new entry screen
+  /* show new entry screen */
   $('.hour').on('click', function(){
 
     var startHour = this.id.split('-')[1],
@@ -132,38 +133,16 @@
     $('input[name="endtime"]').val(durations['endtime']);
 
 
-    // timeSlotStart = this.id.split('-')[1],
-    // timeSlotEnd = parseInt( timeSlotStart ) + 1;
-
-
-    // if (timeSlotStart.length === 1) {
-    //   timeSlotStart = "0" + timeSlotStart;
-    // }
-    // timeSlotStart += ":" + "00";
-    // $('input[name="starttime"]').val(timeSlotStart);
-
-
-    // // Autopopulate end time
-    // if ( timeSlotEnd.toString().length === 1) {
-    //   timeSlotEnd = "0" + timeSlotEnd;
-    // }
-    // timeSlotEnd += ":" + "00";
-    // $('input[name="endtime"]').val()
-
-
-
-
-
     $('#new-entry-screen').show();
   });
 
-  //show categories screen
+
+
+  /* show categories screen */
   $('#category-screen-link').on('click', function(){
     $('#new-category-screen').show();
   });
 
-  //hide new entry screen upon submission
-  var newEntryScreen = $('#new-entry-screen');
 
 
 
