@@ -19,7 +19,10 @@
       </div>
     <%end%>
   </section>
-
+  
+  <!-- converts ruby object to JSON -->
+  <!-- IMPORTANT -->
+  <%= javascript_tag "var dataHash = #{@data_hash.to_json}" %> 
 
 
   <section id="data-piechart">

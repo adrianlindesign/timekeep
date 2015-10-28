@@ -26,9 +26,11 @@
 
 
   <script>
+    var dataHash = dataHash; 
 
     function getPieData(period){
-      var pieData;
+      var pieData = [];
+      debugger
 
       if (period == "week") {
 
@@ -94,7 +96,9 @@
         //when change of inputs
         var pieChartInputs = $('#data-piechart section input');
         pieChartInputs.change(function(){
-          alert('changed!');
+          var period = $(this).val();
+          //update pie chart here.
+          getPieData('week');
         });
       });
 
