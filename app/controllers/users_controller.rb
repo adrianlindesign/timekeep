@@ -56,8 +56,6 @@ class UsersController < ApplicationController
     end
 
 
-
-
     render :analyses
   end
 end

@@ -1,0 +1,145 @@
+<h1>Piechart</h1>
+
+  <section class="chart-week">
+    <h3>By Week</h3>
+    <input type="week">
+    <canvas width="300" height="300"></canvas>
+  </seciton>
+
+  <section class="chart-month">
+    <h3>By Month</h3>
+    <input type="month"> <!-- value == "2015-10" -->
+    <canvas width="300" height="300"/>
+  </section>
+  
+  <section class="chart-year">
+    <h3>By Year</h3>
+    <input type="date">
+    <canvas width="300" height="300"></canvas>
+  </section>
+
+
+
+<!--     <div id="canvas-holder">
+      <canvas id="chart-area" width="300" height="300"/>
+    </div> -->
+
+
+  <script>
+
+    function getPieData(period){
+      var pieData;
+
+      if (period == "week") {
+
+      } else if (period == "month") {
+
+      } else if (period == "year") {
+
+      }
+
+      return pieData;
+    }
+    /* return [ 
+          {value: 1, color: '#fdf', highlight: '#dsfk', label: 'color'},
+          {""}
+        ]
+
+    */
+
+    var pieData = [
+        {
+          value: 300,
+          color:"#F7464A",
+          highlight: "#FF5A5E",
+          label: "Red"
+        },
+        {
+          value: 50,
+          color: "#46BFBD",
+          highlight: "#5AD3D1",
+          label: "Green"
+        },
+        {
+          value: 100,
+          color: "#FDB45C",
+          highlight: "#FFC870",
+          label: "Yellow"
+        },
+        {
+          value: 40,
+          color: "#949FB1",
+          highlight: "#A8B3C5",
+          label: "Grey"
+        },
+        {
+          value: 120,
+          color: "#4D5360",
+          highlight: "#616774",
+          label: "Dark Grey"
+        }
+
+      ];
+
+      // window.onload = function(){
+        
+      // };
+
+      $(document).ready(function(){
+
+        //default graph
+        var ctx = $('#data-piechart .chart-month canvas').get(0).getContext("2d");
+        window.myPie = new Chart(ctx).Pie(pieData);
+
+        //when change of inputs
+        var pieChartInputs = $('#data-piechart section input');
+        pieChartInputs.change(function(){
+          alert('changed!');
+        });
+      });
+
+
+
+
+  </script>
+
+
+<!-- 
+//@data_hash ==>   
+    {
+     "new-test-category"=>{
+       :id=>7, 
+       :icon=>"3", 
+       :entries=>[
+         { 
+           :starttime=>2000-01-01 13:00:00 UTC, 
+           :endtime=>2000-01-01 14:30:00 UTC, 
+           :entry_date=>nil, 
+           :entry_id=>4
+         }, 
+
+         {
+           :starttime=>2000-01-01 04:00:00 UTC, 
+           :endtime=>2000-01-01 05:30:00 UTC, 
+           :entry_date=>2015-10-26, 
+           :entry_id=>7
+         }, 
+
+         {
+           :starttime=>2000-01-01 19:00:00 UTC, 
+           :endtime=>2000-01-01 20:30:00 UTC, 
+           :entry_date=>2015-10-26,
+           :entry_id=>9
+         }
+       ]
+     }, 
+     "test"=>{
+       :id=>1, 
+       :icon=>"2", 
+       :entries=>[
+
+       ]
+     }
+
+   }
+    -->
