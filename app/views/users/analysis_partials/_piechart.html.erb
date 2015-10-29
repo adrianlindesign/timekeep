@@ -26,70 +26,99 @@
 
 
   <script>
+    function hmsToSeconds(s) {
+      var b = s.split(':');
+      return b[0]*3600 + b[1]*60 + (+b[2] || 0);
+    }
+
+    function secondsToHMS(secs) {
+      function z(n){return (n<10?'0':'') + n;}
+      var sign = secs < 0? '-':'';
+      secs = Math.abs(secs);
+      return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
+    }
+
+
     var dataHash = dataHash; 
 
-    function getUsageData(period, dataHash){
-      var usageData = [];
+    function getTimeSpentOnCategory(){
 
+    }
 
+    function getUsageData(periodData, dataHash){
+      var usageData = [],
+          chosenPeriod = periodData['period'];
 
+      /* loop through categories */
       for (var cat in dataHash) {
         if (dataHash.hasOwnProperty(cat)) {
           console.log(cat + " -> " + dataHash[cat]);
         }
 
+        var usageDataObject = {},
+            categoryEntries = dataHash[cat]['entries'],
+            categoryEntriesLength = categoryEntries.length,
+            timeSpentOnCategory = 0;
 
-
-
-        var categoryEntries = dataHash[cat]['entries'];
-        categoryEntriesLength = categoryEntries.length;
-
-        debugger
+        /* loop through entries in category */
         for (var i = 0; i < categoryEntriesLength; i++) {
-          var starttime = categoryEntries[i]['starttime'],
-              endtime = 
+          var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
+              endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
+              entry_date = categoryEntries[i]['entry_date'];
+              
+
+
+          if (chosenPeriod === 'year') {
+            if (entry_date.split('-')[0] != periodData['year']) {
+              break; 
+            }
+
+          } else if ( chosenPeriod === 'month') {
+            if (entry_date.split('-')[1].split('-')[0] != periodData['month']) {
+              break;
+            }
+
+          } else if (chosenPeriod === 'week') {
+            //???? TODO
+            console.log('figure out week');
+          }
+          timeSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
+
         }
-        console.log( dataHash[cat]['entries'] );
 
 
 
 
         //insert category name
-        usageData['categoryName'] = cat;
+        usageDataObject['categoryName'] = cat;
+        usageDataObject['hmsPerPeriod'] = timeSpentOnCategory;
 
-
-
-        // find duration
-        // if (period == "week") {
-        //   //insert data for the duration
-        // } else if (period == "month") {
-        //   //find all that end on this month and year
-        // } else if (period == "year") {
-        //   // find all that end on this year
-
-        // }
-
-
+        usageData.push(usageDataObject);
 
 
       }
 
+    
+      debugger
       return usageData; //this usageData can be used for all charts (hopefully)
     }
 
     var testPeriodWeek = {
+      'period': 'week',
       'week': 41,
       'month': undefined,
       'year': 2015
     }
 
     var testPeriodMonth = {
+      'period': 'month',
       'week': undefined,
       'month': 10,
       'year': 2015
     }
 
     var testPeriodYear = {
+      'period': 'year',
       'week': undefined,
       'month': undefined,
       'year': 2015
@@ -100,11 +129,11 @@
       return [
         {
           'categoryName': 'work',
-          'hoursPerPeriod': 20
+          'hmsPerPeriod': 20
         },
         {
           'categoryName': 'play',
-          'hoursPerPeriod': 50
+          'hmsPerPeriod': 50
         }
       ]
     */
