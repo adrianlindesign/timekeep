@@ -38,6 +38,59 @@
       return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
     }
 
+    function getPeriod(inputValue) {
+      var isWeek = function(value) {
+        var re = /^\d{4}\-[W]\d{2}$/;
+        return re.test(value);
+      }
+
+      var isMonth = function(value) {
+        var re = /^\d{4}-\d{2}$/;
+        return re.test(value);
+      }
+
+      var isYear = function(value) {
+        var re = /^\d{4}$/;
+        return re.test(value);
+      }
+
+      if ( isWeek(inputValue) ) {
+        return 'week';
+      } else if ( isMonth(inputValue) ) {
+        return 'month';
+      } else if ( isYear(inputValue) ) {
+        return 'year';
+      } else {
+        console.log('Error! Neither week, month or year!');
+      }
+    }
+
+
+    function getPeriodData(inputValue) {
+      var period = getPeriod(inputValue);
+
+      if (period === "week") {
+        return {
+          'week': parseInt(inputValue.split('-')[1].split('W')[1]),
+          'month': undefined,
+          'year': parseInt(inputValue.split('-')[0])
+        }
+      } else if (period === "month") {
+        return {
+          'week': undefined,
+          'month': parseInt(inputValue.split('-')[1]),
+          'year': parseInt(inputValue.split('-')[0])
+        }
+
+      } else if (period === "year") {
+        return {
+          'week': undefined,
+          'month': undefined,
+          'year': parseInt(inputValue)
+        }
+      }
+    }
+
     function getUsageData(periodData, dataHash){
       var usageData = [],
           chosenPeriod = periodData['period'];
@@ -95,32 +148,7 @@
       return usageData; //this usageData can be used for all charts (hopefully)
     }
 
-    function getPeriod(inputValue) {
-      var isWeek = function(value) {
-        var re = /^\d{4}\-[W]\d{2}$/;
-        return re.test(value);
-      }
-
-      var isMonth = function(value) {
-        var re = /^\d{4}-\d{2}$/;
-        return re.test(value);
-      }
-
-      var isYear = function(value) {
-        var re = /^\d{4}$/;
-        return re.test(value);
-      }
-
-      if ( isWeek(inputValue) ) {
-        return 'week';
-      } else if ( isMonth(inputValue) ) {
-        return 'month';
-      } else if ( isYear(inputValue) ) {
-        return 'year';
-      } else {
-        console.log('Error! Neither week, month or year!');
-      }
-    }
+    
     
   </script>
 
