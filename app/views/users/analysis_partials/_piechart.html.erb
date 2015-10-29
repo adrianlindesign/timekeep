@@ -28,20 +28,84 @@
   <script>
     var dataHash = dataHash; 
 
-    function getPieData(period){
-      var pieData = [];
-      debugger
+    function getUsageData(period, dataHash){
+      var usageData = [];
 
-      if (period == "week") {
 
-      } else if (period == "month") {
 
-      } else if (period == "year") {
+      for (var cat in dataHash) {
+        if (dataHash.hasOwnProperty(cat)) {
+          console.log(cat + " -> " + dataHash[cat]);
+        }
+        var categoryEntries = dataHash[cat]['entries'];
+
+        categoryEntriesLength = categoryEntries.length;
+
+        debugger
+        for (var i = 0; i < categoryEntriesLength; i++) {
+          
+        }
+        console.log( dataHash[cat]['entries'] );
+
+
+
+
+        //insert category name
+        usageData['categoryName'] = cat;
+
+
+
+        // find duration
+        // if (period == "week") {
+        //   //insert data for the duration
+        // } else if (period == "month") {
+        //   //find all that end on this month and year
+        // } else if (period == "year") {
+        //   // find all that end on this year
+
+        // }
+
+
+
 
       }
 
-      return pieData;
+      return usageData; //this usageData can be used for all charts (hopefully)
     }
+
+    var testPeriodWeek = {
+      'week': 41,
+      'month': undefined,
+      'year': 2015
+    }
+
+    var testPeriodMonth = {
+      'week': undefined,
+      'month': 10,
+      'year': 2015
+    }
+
+    var testPeriodYear = {
+      'week': undefined,
+      'month': undefined,
+      'year': 2015
+    }
+
+    getUsageData(testPeriodYear, dataHash);
+    /*
+      return [
+        {
+          'categoryName': 'work',
+          'hoursPerPeriod': 20
+        },
+        {
+          'categoryName': 'play',
+          'hoursPerPeriod': 50
+        }
+      ]
+    */
+
+
     /* return [ 
           {value: 1, color: '#fdf', highlight: '#dsfk', label: 'color'},
           {""}
@@ -98,7 +162,7 @@
         pieChartInputs.change(function(){
           var period = $(this).val();
           //update pie chart here.
-          getPieData('week');
+          
         });
       });
 
