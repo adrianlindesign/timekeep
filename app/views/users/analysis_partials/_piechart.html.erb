@@ -2,19 +2,24 @@
 
   <section class="chart-week">
     <h3>By Week</h3>
-    <input type="week">
+    <input class="choose-period" type="week">
     <canvas width="300" height="300"></canvas>
   </seciton>
 
   <section class="chart-month">
     <h3>By Month</h3>
-    <input type="month"> <!-- value == "2015-10" -->
+    <input class="choose-period" type="month"> <!-- value == "2015-10" -->
     <canvas width="300" height="300"/>
   </section>
   
   <section class="chart-year">
     <h3>By Year</h3>
-    <input type="date">
+    <select class="choose-period" type="year">
+      <option value="#">Choose year</option>
+      <option value="2015">2015</option>
+      <option value="2014">2014</option>
+      <option value="2013">2013</option>
+    </select>
     <canvas width="300" height="300"></canvas>
   </section>
 
@@ -26,82 +31,7 @@
 
 
   <script>
-    function hmsToSeconds(s) {
-      var b = s.split(':');
-      return b[0]*3600 + b[1]*60 + (+b[2] || 0);
-    }
-
-    function secondsToHMS(secs) {
-      function z(n){return (n<10?'0':'') + n;}
-      var sign = secs < 0? '-':'';
-      secs = Math.abs(secs);
-      return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
-    }
-
-
-    var dataHash = dataHash; 
-
-    function getTimeSpentOnCategory(){
-
-    }
-
-    function getUsageData(periodData, dataHash){
-      var usageData = [],
-          chosenPeriod = periodData['period'];
-
-      /* loop through categories */
-      for (var cat in dataHash) {
-        if (dataHash.hasOwnProperty(cat)) {
-          console.log(cat + " -> " + dataHash[cat]);
-        }
-
-        var usageDataObject = {},
-            categoryEntries = dataHash[cat]['entries'],
-            categoryEntriesLength = categoryEntries.length,
-            timeSpentOnCategory = 0;
-
-        /* loop through entries in category */
-        for (var i = 0; i < categoryEntriesLength; i++) {
-          var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
-              endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
-              entry_date = categoryEntries[i]['entry_date'];
-              
-
-
-          if (chosenPeriod === 'year') {
-            if (entry_date.split('-')[0] != periodData['year']) {
-              break; 
-            }
-
-          } else if ( chosenPeriod === 'month') {
-            if (entry_date.split('-')[1].split('-')[0] != periodData['month']) {
-              break;
-            }
-
-          } else if (chosenPeriod === 'week') {
-            //???? TODO
-            console.log('figure out week');
-          }
-          timeSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
-
-        }
-
-
-
-
-        //insert category name
-        usageDataObject['categoryName'] = cat;
-        usageDataObject['hmsPerPeriod'] = timeSpentOnCategory;
-
-        usageData.push(usageDataObject);
-
-
-      }
-
     
-      debugger
-      return usageData; //this usageData can be used for all charts (hopefully)
-    }
 
     var testPeriodWeek = {
       'period': 'week',
@@ -180,9 +110,8 @@
 
       ];
 
-      // window.onload = function(){
-        
-      // };
+
+
 
       $(document).ready(function(){
 
@@ -191,8 +120,33 @@
         window.myPie = new Chart(ctx).Pie(pieData);
 
         //when change of inputs
-        var pieChartInputs = $('#data-piechart section input');
+        var pieChartInputs = $('#data-piechart section .choose-period');
         pieChartInputs.change(function(){
+          debugger
+          var period = getPeriod( $(this).val() ),
+              periodData;
+
+          if (period === "week") {
+            
+          } else if (period === "month") {
+            periodData = {
+              'week': undefined,
+              'month': parseInt( $(this).val().split('-')[1] ),
+            }
+
+          } else if (period === "year") {
+            periodData = {
+              'week': undefined,
+              'month': undefined,
+              'year': parseInt( $(this).val() )
+            }
+          }
+          // week = "2015-W42"
+          // month = "2015-10"
+          // year = "2014"
+
+
+          periodData = ""
           var period = $(this).val();
           //update pie chart here.
           

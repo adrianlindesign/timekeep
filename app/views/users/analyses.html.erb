@@ -25,12 +25,117 @@
   <%= javascript_tag "var dataHash = #{@data_hash.to_json}" %> 
 
 
+  <script>
+    function hmsToSeconds(s) {
+      var b = s.split(':');
+      return b[0]*3600 + b[1]*60 + (+b[2] || 0);
+    }
+
+    function secondsToHMS(secs) {
+      function z(n){return (n<10?'0':'') + n;}
+      var sign = secs < 0? '-':'';
+      secs = Math.abs(secs);
+      return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
+    }
+
+    function getUsageData(periodData, dataHash){
+      var usageData = [],
+          chosenPeriod = periodData['period'];
+
+      /* loop through categories */
+      for (var cat in dataHash) {
+        if (dataHash.hasOwnProperty(cat)) {
+          console.log(cat + " -> " + dataHash[cat]);
+        }
+
+        var usageDataObject = {},
+            categoryEntries = dataHash[cat]['entries'],
+            categoryEntriesLength = categoryEntries.length,
+            timeSpentOnCategory = 0;
+
+        /* loop through entries in category */
+        for (var i = 0; i < categoryEntriesLength; i++) {
+          var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
+              endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
+              entry_date = categoryEntries[i]['entry_date'];
+              
+
+
+          if (chosenPeriod === 'year') {
+            if (entry_date.split('-')[0] != periodData['year']) {
+              break; 
+            }
+
+          } else if ( chosenPeriod === 'month') {
+            if (entry_date.split('-')[1].split('-')[0] != periodData['month']) {
+              break;
+            }
+
+          } else if (chosenPeriod === 'week') {
+            //???? TODO
+            console.log('figure out week');
+          }
+          timeSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
+
+        }
+
+
+
+
+        //insert category name
+        usageDataObject['categoryName'] = cat;
+        usageDataObject['hmsPerPeriod'] = timeSpentOnCategory;
+
+        usageData.push(usageDataObject);
+
+
+      }
+
+  
+      return usageData; //this usageData can be used for all charts (hopefully)
+    }
+
+    function getPeriod(inputValue) {
+      var isWeek = function(value) {
+        var re = /^\d{4}\-[W]\d{2}$/;
+        return re.test(value);
+      }
+
+      var isMonth = function(value) {
+        var re = /^\d{4}-\d{2}$/;
+        return re.test(value);
+      }
+
+      var isYear = function(value) {
+        var re = /^\d{4}$/;
+        return re.test(value);
+      }
+
+      if ( isWeek(inputValue) ) {
+        return 'week';
+      } else if ( isMonth(inputValue) ) {
+        return 'month';
+      } else if ( isYear(inputValue) ) {
+        return 'year';
+      } else {
+        console.log('Error! Neither week, month or year!');
+      }
+    }
+    
+  </script>
+
+
+
+
+  <!-- script must come before this -->
+
   <section id="data-piechart">
     <%= render 'users/analysis_partials/piechart' %>
   </section>
 
 
 </section>
+
 
 
 
