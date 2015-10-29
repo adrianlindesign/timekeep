@@ -29,7 +29,9 @@
     <label>Category
       <select name="category_id" required>
         <%@categories.each do |c|%>
-          <option value="<%=c[:id]%>"> <%=c[:name]%> </option>
+          <%if c.user_id == session[:user_id]%>
+            <option value="<%=c[:id]%>"> <%=c[:name]%> </option>
+          <%end%>
         <%end%>
       </select>
     </label>

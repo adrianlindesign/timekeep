@@ -37,13 +37,17 @@
         if (dataHash.hasOwnProperty(cat)) {
           console.log(cat + " -> " + dataHash[cat]);
         }
-        var categoryEntries = dataHash[cat]['entries'];
 
+
+
+
+        var categoryEntries = dataHash[cat]['entries'];
         categoryEntriesLength = categoryEntries.length;
 
         debugger
         for (var i = 0; i < categoryEntriesLength; i++) {
-          
+          var starttime = categoryEntries[i]['starttime'],
+              endtime = 
         }
         console.log( dataHash[cat]['entries'] );
 

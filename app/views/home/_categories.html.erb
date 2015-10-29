@@ -22,7 +22,9 @@
       <input type="text" name="name" list="categories-list"/>
       <datalist id="categories-list">
         <%@categories.each do |c|%>
-          <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
+          <%if c.user_id == session[:user_id]%>
+            <option value="<%=c[:name]%>"> <%=c[:name]%> </option>
+          <%end%>
         <%end%>
       </datalist> 
       
