@@ -38,6 +38,13 @@
       return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
     }
 
+    //add a .getWeek() method to the Date() object
+    Date.prototype.getWeek = function() {
+        var onejan = new Date(this.getFullYear(), 0, 1);
+        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+    }
+
+
     function getPeriod(inputValue) {
       var isWeek = function(value) {
         var re = /^\d{4}\-[W]\d{2}$/;
@@ -112,7 +119,7 @@
         'year': 2015
       }
     */
-    
+
     function getUsageData(periodData, dataHash){
       var usageData = [],
           chosenPeriod = periodData['period'];
@@ -169,6 +176,18 @@
   
       return usageData; //this usageData can be used for all charts (hopefully)
     }
+    /*
+      return [
+        {
+          'categoryName': 'work',
+          'hmsPerPeriod': 20
+        },
+        {
+          'categoryName': 'play',
+          'hmsPerPeriod': 50
+        }
+      ]
+    */
 
 
     function getPieData(usageData) {
