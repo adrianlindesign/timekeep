@@ -90,7 +90,29 @@
         }
       }
     }
+    /*
+     var testPeriodWeek = {
+        'period': 'week',
+        'week': 41,
+        'month': undefined,
+        'year': 2015
+      }
 
+      var testPeriodMonth = {
+        'period': 'month',
+        'week': undefined,
+        'month': 10,
+        'year': 2015
+      }
+
+      var testPeriodYear = {
+        'period': 'year',
+        'week': undefined,
+        'month': undefined,
+        'year': 2015
+      }
+    */
+    
     function getUsageData(periodData, dataHash){
       var usageData = [],
           chosenPeriod = periodData['period'];
@@ -104,7 +126,7 @@
         var usageDataObject = {},
             categoryEntries = dataHash[cat]['entries'],
             categoryEntriesLength = categoryEntries.length,
-            timeSpentOnCategory = 0;
+            secondsSpentOnCategory = 0;
 
         /* loop through entries in category */
         for (var i = 0; i < categoryEntriesLength; i++) {
@@ -128,7 +150,7 @@
             //???? TODO
             console.log('figure out week');
           }
-          timeSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
+          secondsSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
 
         }
 
@@ -137,7 +159,7 @@
 
         //insert category name
         usageDataObject['categoryName'] = cat;
-        usageDataObject['hmsPerPeriod'] = timeSpentOnCategory;
+        usageDataObject['minutesPerPeriod'] = secondsSpentOnCategory / 60;
 
         usageData.push(usageDataObject);
 
@@ -148,6 +170,55 @@
       return usageData; //this usageData can be used for all charts (hopefully)
     }
 
+
+    function getPieData(usageData) {
+      var pieData = [],
+          pieColors = [
+            {
+              value: 300,
+              color:"#F7464A",
+              highlight: "#FF5A5E",
+              label: "Red"
+            },
+            {
+              value: 50,
+              color: "#46BFBD",
+              highlight: "#5AD3D1",
+              label: "Green"
+            },
+            {
+              value: 100,
+              color: "#FDB45C",
+              highlight: "#FFC870",
+              label: "Yellow"
+            },
+            {
+              value: 40,
+              color: "#949FB1",
+              highlight: "#A8B3C5",
+              label: "Grey"
+            },
+            {
+              value: 120,
+              color: "#4D5360",
+              highlight: "#616774",
+              label: "Dark Grey"
+            }
+          ],
+          usageDataLength = usageData.length;
+
+      for (var i = 0; i < usageDataLength; i++) {
+        var pieSlice = {
+          value: usageData[i]['minutesPerPeriod'],
+          label: usageData[i]['categoryName'],
+          color: pieColors[i]['color'],
+          highlight: pieColors[i]['highlight']
+        }
+        pieData.push(pieSlice);
+      }
+
+      return pieData;
+    }
     
     
   </script>
