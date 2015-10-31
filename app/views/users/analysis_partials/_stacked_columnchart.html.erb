@@ -1,4 +1,4 @@
-<h1>Stacked Columnchart</h1>
+<h1>Stacked ColumnChart</h1>
 
 <div id="example-chart"></div>
 
@@ -24,8 +24,7 @@
     //Example
     var exampleChart = $('#example-chart');
     var data = google.visualization.arrayToDataTable([
-        ['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General',
-         'Western', 'Literature', { role: 'annotation' } ],
+        ['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General','Western', 'Literature', { role: 'annotation' } ],
         ['2010', 10, 24, 20, 32, 18, 5, ''],
         ['2020', 16, 22, 23, 30, 16, 9, ''],
         ['2030', 28, 19, 29, 30, 12, 13, '']
@@ -45,11 +44,146 @@
 
 
       /*REAL STUFF HERE */
-      var dataHash = dataHash;
+      
+      function makeWeekChart(weekArray, chartEl) {
+        var data = google.visualization.arrayToDataTable(weekArray),
+            options = {
+              width: 600,
+              height: 400,
+              legend: { position: 'top', maxLines: 3 },
+              bar: { groupWidth: '75%' },
+              isStacked: true,
+            },
+            chart = new google.visualization.ColumnChart(chartEl[0]) ;
+
+        chart.draw(data, options);
+      }
+    
       /* Draw individual column chart for this week */
-      var thisWeekUsageChart = $('#individual-columnchart div');
+      var thisWeekUsageChart = $('#individual-columnchart div'),
+          weekArray = getWeekArray(dataHash);
+
+      makeWeekChart(weekArray, thisWeekUsageChart);
+
+
+      /*
+        google charts takes this type of array:
+        [ 
+          ['CATEGORY', 'cat1', 'cat2', {role: 'annotation'}],
+          ['Sunday', num1, num2, ''],
+          ['Monday', num1, num2, ''],
+
+        ]
+
+  
+      */
+      
+
+      
 
 
   });
+
+
+  function getWeekArray(dataHash){
+    var weekData = [
+      ['Category', {role:'annotation'}],
+      ['Sun', ''],
+      ['Mon', ''],
+      ['Tue', ''],
+      ['Wed', ''],
+      ['Thu', ''],
+      ['Fri', ''],
+      ['Sat', '']
+    ],
+      aSun = weekData[1],
+      aMon = weekData[2],
+      aTue = weekData[3],
+      aWed = weekData[4],
+      aThu = weekData[5],
+      aFri = weekData[6],
+      aSat = weekData[7];
+    
+    /* loop through categories */
+    for (var cat in dataHash){
+      if (dataHash.hasOwnProperty(cat)) {
+        console.log(cat + " -> " + dataHash[cat]);
+      }
+
+      var categoryHrsOnDays = {
+        name: cat,
+        Sunday: 0,
+        Monday: 0,
+        Tuesday: 0,
+        Wednesday: 0,
+        Thurday: 0,
+        Friday: 0,
+        Saturday: 0
+      },
+          categoryEntries = dataHash[cat]['entries'],
+          categoryEntriesLength = categoryEntries.length;
+      
+      
+      /* loop through entries in category */
+      for (var i = 0; i < categoryEntriesLength; i++) {
+
+        var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
+            endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
+            entry_date = categoryEntries[i]['entry_date'];
+
+        // with starttime and endtime find duration in Hrs
+        var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600,
+            entryDay = getDay(entry_date);
+
+        // here if you want to restrict insertion
+
+        //insert to categoryHrsOnDays according to the day it was
+        categoryHrsOnDays[entryDay] += entryDurInHrs;                 
+      }
+
+
+      //insert data from categoryHrsOnDays into weekData;
+      
+      var i = 0;
+      for (var item in categoryHrsOnDays) {
+        
+        var weekDataArray = weekData[i],
+            indexToInsertAt = weekDataArray.length - 1;
+
+        weekDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);
+        
+        i ++
+      }
+
+    
+    }
+
+    return weekData;
+  }
+
+
+  function getEntryDurInSec(start, end) {
+    return hmsToSeconds(end) - hmsToSeconds(start);
+  }
+
+  function getDay(date) {
+    var day = new Date(Date.parse(date)).getDay();
+    if (day === 0) {
+      day = 'Sunday';
+    } else if (day === 1) {
+      day = 'Monday';
+    } else if (day === 2) {
+      day = 'Tuesday';
+    } else if (day === 3) {
+      day = 'Wednesday';
+    } else if (day === 4) {
+      day = 'Thursday';
+    } else if (day === 5) {
+      day = 'Friday';
+    } else if (day === 6) {
+      day = 'Saturday';
+    }
+    return day;
+  }
 
 </script>
