@@ -1,0 +1,55 @@
+<h1>Stacked Columnchart</h1>
+
+<div id="example-chart"></div>
+
+<section id="individual-columnchart">
+  <div></div>
+</section>
+
+
+
+<section id="average-columnchart">
+  
+</section>
+
+
+<script>
+
+  
+
+  $(document).ready(function(){
+    
+    
+
+    //Example
+    var exampleChart = $('#example-chart');
+    var data = google.visualization.arrayToDataTable([
+        ['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General',
+         'Western', 'Literature', { role: 'annotation' } ],
+        ['2010', 10, 24, 20, 32, 18, 5, ''],
+        ['2020', 16, 22, 23, 30, 16, 9, ''],
+        ['2030', 28, 19, 29, 30, 12, 13, '']
+      ]);
+
+      var options = {
+        width: 600,
+        height: 400,
+        legend: { position: 'top', maxLines: 3 },
+        bar: { groupWidth: '75%' },
+        isStacked: true,
+      };
+      var chart = new google.visualization.ColumnChart(exampleChart[0]);
+      chart.draw(data, options);
+
+      //
+
+
+      /*REAL STUFF HERE */
+      var dataHash = dataHash;
+      /* Draw individual column chart for this week */
+      var thisWeekUsageChart = $('#individual-columnchart div');
+
+
+  });
+
+</script>

@@ -1,88 +1,88 @@
 <h1>Piechart</h1>
 
-  <section class="chart-week">
-    <h3>By Week</h3>
-    <input class="choose-period" type="week">
-    <br>
-    <canvas width="300" height="300"></canvas>
-  </seciton>
+<section class="chart-week">
+  <h3>By Week</h3>
+  <input class="choose-period" type="week">
+  <br>
+  <canvas width="300" height="300"></canvas>
+</seciton>
 
-  <section class="chart-month">
-    <h3>By Month</h3>
-    <input class="choose-period" type="month"> <!-- value == "2015-10" -->
-    <br>
-    <canvas width="300" height="300"/>
-  </section>
-  
-  <section class="chart-year">
-    <h3>By Year</h3>
-    <select class="choose-period" type="year">
-      <option value="2015">2015</option>
-      <option value="2014">2014</option>
-      <option value="2013">2013</option>
-    </select>
-    <br>
-    <canvas width="300" height="300"></canvas>
-  </section>
+<section class="chart-month">
+  <h3>By Month</h3>
+  <input class="choose-period" type="month"> <!-- value == "2015-10" -->
+  <br>
+  <canvas width="300" height="300"/>
+</section>
 
-
+<section class="chart-year">
+  <h3>By Year</h3>
+  <select class="choose-period" type="year">
+    <option value="2015">2015</option>
+    <option value="2014">2014</option>
+    <option value="2013">2013</option>
+  </select>
+  <br>
+  <canvas width="300" height="300"></canvas>
+</section>
 
 
-  <script>
-  
-
-      $(document).ready(function(){
-
-        
-        var pieChartInputs = $('#data-piechart section .choose-period');
-
-        /* when change of inputs */
-        pieChartInputs.change(function(){
-          var inputValue = $(this).val(),
-              periodData = getPeriodData(inputValue),
-              usageData = getUsageData(periodData, dataHash),
-              pieData = getPieData(usageData);
-          
-          var ctx = $(this).parent().find('canvas').get(0).getContext('2d');
-          window.myPie = new Chart(ctx).Pie(pieData);
-        });
 
 
-        /* default charts based on today */
-        var pieChartInputsLength = pieChartInputs.length;
-        for (var i = 0; i < pieChartInputsLength; i++) {
-          
-          var thisInput = $(pieChartInputs[i]),
-              thisInputType = thisInput.attr('type'),
-              todaysDate;
+<script>
 
 
-          if (thisInputType === "week") {
-            var weekNumber = new Date().getWeek().toString();
-            todaysDate = "2015-W" + weekNumber;
+    $(document).ready(function(){
 
-          } else if (thisInputType === "month") {
-            var monthNumber = new Date().getMonth().toString();
-            if (monthNumber.length !== 2) {
-              monthNumber = "0" + monthNumber;
-            }
-            todaysDate = "2015-" + monthNumber;
-          } else if (thisInputType === "year") {
-            todaysDate = new Date().getFullYear().toString();
-          }
-          thisInput.val(todaysDate);
-          thisInput.change();
-        }
-
-
-      });
       
+      var pieChartInputs = $('#data-piechart section .choose-period');
+
+      /* when change of inputs */
+      pieChartInputs.change(function(){
+        var inputValue = $(this).val(),
+            periodData = getPeriodData(inputValue),
+            usageData = getUsageData(periodData, dataHash),
+            pieData = getPieData(usageData);
+        
+        var ctx = $(this).parent().find('canvas').get(0).getContext('2d');
+        window.myPie = new Chart(ctx).Pie(pieData);
+      });
+
+
+      /* default charts load with values based on today */
+      var pieChartInputsLength = pieChartInputs.length;
+      for (var i = 0; i < pieChartInputsLength; i++) {
+        
+        var thisInput = $(pieChartInputs[i]),
+            thisInputType = thisInput.attr('type'),
+            todaysDate;
+
+
+        if (thisInputType === "week") {
+          var weekNumber = new Date().getWeek().toString();
+          todaysDate = "2015-W" + weekNumber;
+
+        } else if (thisInputType === "month") {
+          var monthNumber = new Date().getMonth().toString();
+          if (monthNumber.length !== 2) {
+            monthNumber = "0" + monthNumber;
+          }
+          todaysDate = "2015-" + monthNumber;
+        } else if (thisInputType === "year") {
+          todaysDate = new Date().getFullYear().toString();
+        }
+        thisInput.val(todaysDate);
+        thisInput.change();
+      }
+
+
+    });
+    
 
 
 
 
 
-  </script>
+</script>
 
 
 <!-- 
