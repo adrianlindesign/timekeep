@@ -16,12 +16,12 @@
  
 
     var averageDonutChart = $('#individual-donutchart div')[0],
-        averageDonutChartArray = getAverageDonutChartArray(dataHash);
+        averageDonutChartArray = getAverageDonutChartArray(dataHash, 'all time');
 
-    makeaverageDonutChart(averageDonutChartArray, averageDonutChart);     
+    makeAverageDonutChart(averageDonutChartArray, averageDonutChart);     
   });
 
-  function makeaverageDonutChart(weekArray, chartEl) {
+  function makeAverageDonutChart(weekArray, chartEl) {
     var data = google.visualization.arrayToDataTable(weekArray),
         options = {
           title: 'My Daily Activities',
@@ -32,7 +32,7 @@
     chart.draw(data, options);
   }
 
-  function getAverageDonutChartArray(dataHash){
+  function getAverageDonutChartArray(dataHash, sampledPeriod){
     var weekData = [
       ['Category', 'Recorded hours']
     ];
@@ -59,10 +59,18 @@
         // with starttime and endtime find duration in Hrs
         var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600;
 
-        // here if you want to restrict insertion
+        
 
-        //add up
-        categoryTimeInHrs += entryDurInHrs;
+        //add up either all within this week, or from all time
+        if (sampledPeriod === 'past week') {
+
+        } else if (sampledPeriod === 'past month') {
+
+        } else if (sampledPeriod === 'past year') {
+
+        } else if (sampledPeriod === 'all time') {
+          categoryTimeInHrs += entryDurInHrs;
+        }
       }
     
       categoryData.push(categoryTimeInHrs);
@@ -70,6 +78,9 @@
     }
     return weekData;
   }
+
+
+
 </script>
 
 
