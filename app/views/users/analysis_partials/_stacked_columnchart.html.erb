@@ -1,55 +1,51 @@
 <h1>Stacked ColumnChart</h1>
 
 
-<section id="individual-columnchart">
+<section id="week-columnchart">
   <div></div>
 </section>
 
 
 
-<section id="average-columnchart"> <!-- give week/month/year option-->
+<section id="total-columnchart"> <!-- give week/month/year option-->
+  <h3>All Time activity by days</h3>
   <div></div>
 </section>
 
 
 <script>
 
-  // function makeWeekGoogleChart(weekDataArray, options, chartEl, chartType) {
-  //   var data = google.visualization.arrayToDataTable(weekDataArray),
-  //       chartTypesHash = {
-  //         'donut':
-  //       }
 
-
-  // }
 
   $(document).ready(function(){
-    
-      /* Draw average column chart */
-      var averageColumnChart = $('#average-columnchart div')[0],
-          averageColumnChartArray = getAverageColumnChartArray(dataHash);
+      /* make week column chart */
 
-      makeAverageColumnChart(averageColumnChartArray, averageColumnChart);
+    
+      /* Draw total column chart */
+      var columnChart = $('#total-columnchart div')[0],
+          columnChartArray = getColumnChartArray(dataHash),
+          columnChartOptions = {
+            width: 600,
+            height: 400,
+            legend: { position: 'top', maxLines: 3 },
+            bar: { groupWidth: '75%' },
+            isStacked: true,
+          };
+
+      makeColumnChart(columnChartArray, columnChart, columnChartOptions);
 
   });
 
 
-  function makeAverageColumnChart(weekArray, chartEl) {
-    var data = google.visualization.arrayToDataTable(weekArray),
-        options = {
-          width: 600,
-          height: 400,
-          legend: { position: 'top', maxLines: 3 },
-          bar: { groupWidth: '75%' },
-          isStacked: true,
-        },
+  function makeColumnChart(dataArray, chartEl, options) {
+    var data = google.visualization.arrayToDataTable(dataArray),
         chart = new google.visualization.ColumnChart(chartEl) ;
 
     chart.draw(data, options);
   }
 
-  function getAverageColumnChartArray(dataHash){
-    var weekData = [
+  function getColumnChartArray(dataHash){
+    var dayOfWeekData = [
       ['Category', {role:'annotation'}],
       ['Sun', ''],
       ['Mon', ''],
@@ -59,13 +55,13 @@
       ['Fri', ''],
       ['Sat', '']
     ],
-      aSun = weekData[1],
-      aMon = weekData[2],
-      aTue = weekData[3],
-      aWed = weekData[4],
-      aThu = weekData[5],
-      aFri = weekData[6],
-      aSat = weekData[7];
+      aSun = dayOfWeekData[1],
+      aMon = dayOfWeekData[2],
+      aTue = dayOfWeekData[3],
+      aWed = dayOfWeekData[4],
+      aThu = dayOfWeekData[5],
+      aFri = dayOfWeekData[6],
+      aSat = dayOfWeekData[7];
     
     /* loop through categories */
     for (var cat in dataHash){
@@ -98,24 +94,25 @@
         var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600,
             entryDay = getDay(entry_date);
 
-        // here if you want to restrict insertion
+        // here if you want to restrict insertion TODO
+
 
         //insert to categoryHrsOnDays according to the day it was
         categoryHrsOnDays[entryDay] += entryDurInHrs;                 
       }
 
 
-      /* insert data from categoryHrsOnDays into weekData; */
+      /* insert data from categoryHrsOnDays into dayOfWeekData; */
       var i = 0;
       for (var item in categoryHrsOnDays) {
-        var weekDataArray = weekData[i],
-            indexToInsertAt = weekDataArray.length - 1;
+        var dayOfWeekDataArray = dayOfWeekData[i],
+            indexToInsertAt = dayOfWeekDataArray.length - 1;
 
-        weekDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);        
+        dayOfWeekDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);        
         i ++
       }   
     }
-    return weekData;
+    return dayOfWeekData;
   }
 
 

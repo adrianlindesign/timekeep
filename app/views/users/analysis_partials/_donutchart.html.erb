@@ -1,10 +1,12 @@
 <h1>Donut Chart</h1>
 
-<section id="individual-donutchart">
+<section id="week-donutchart">
+  <h3>Activity this week</h3>
   <div></div>
 </section>
 
-<section id="average-donutchart"> <!-- give option for week/month/year-->
+<section id="total-donutchart"> <!-- give option for week/month/year-->
+  <h3>All time activity</h3>
   <div></div>
 </section>
 
@@ -13,27 +15,36 @@
   
 
   $(document).ready(function(){
+    /* make week donut chart */
+    var weekDonutChart = $('#week-donutchart div')[0],
+        weekDonutChartArray = getDonutChartArray(dataHash, 'week'),
+        weekDonutChartOptions = {
+          title: 'Time spent',
+          pieHole: 0.4,
+        };
+    makeDonutChart(weekDonutChartArray, weekDonutChart, weekDonutChartOptions); 
+
  
+    /* make total donut chart */
+    var donutChart = $('#total-donutchart div')[0],
+        donutChartArray = getDonutChartArray(dataHash, 'eternity'),
+        donutChartOptions = {
+          title: 'Time spent',
+          pieHole: 0.4,
+        };
+    makeDonutChart(donutChartArray, donutChart, donutChartOptions); 
 
-    var averageDonutChart = $('#individual-donutchart div')[0],
-        averageDonutChartArray = getAverageDonutChartArray(dataHash, 'eternity');
-
-    makeAverageDonutChart(averageDonutChartArray, averageDonutChart);     
   });
 
-  function makeAverageDonutChart(weekArray, chartEl) {
-    var data = google.visualization.arrayToDataTable(weekArray),
-        options = {
-          title: 'My Daily Activities',
-          pieHole: 0.4,
-        },
+  function makeDonutChart(dataArray, chartEl, options) {
+    var data = google.visualization.arrayToDataTable(dataArray),
         chart = new google.visualization.PieChart(chartEl);
 
     chart.draw(data, options);
   }
 
-  function getAverageDonutChartArray(dataHash, sampledPeriod){
-    var weekData = [
+  function getDonutChartArray(dataHash, sampledPeriod){
+    var periodData = [
       ['Category', 'Recorded hours']
     ];
 
@@ -75,48 +86,12 @@
       }
     
       categoryData.push(categoryTimeInHrs);
-      weekData.push(categoryData);
+      periodData.push(categoryData);
     }
-    return weekData;
+    return periodData;
   }
 
-  function getAcceptablePeriodsArray(sampledPeriod) {
-    
-    var formatDate = function(date){  
-          var dd = date.getDate(),
-              mm = date.getMonth() + 1,
-              yyyy = date.getFullYear();
-          if(dd < 10) {
-            dd = '0' + dd
-          }
-          if(mm < 10) {
-            mm = '0' + mm
-          }
-          date = yyyy + '-' + mm + '-' + dd;
-          return date;
-        },
-        lastNDays = function(n){
-          var result = [];
-          for (var i=0; i<n; i++) {
-              var d = new Date();
-              d.setDate(d.getDate() - i);
-              result.push( formatDate(d) )
-          }
-
-          return result;
-        }
-        
-
-
-        sampledPeriodRouter = {
-          'week': lastNDays(7),
-          'month': lastNDays(30),
-          'year': lastNDays(365)
-        };
-
-      return sampledPeriodRouter[sampledPeriod];
-      
-  }
+  
 
 
 </script>
