@@ -29,53 +29,245 @@
 
 
 <script>
+  function getPeriod(inputValue) {
+    var isWeek = function(value) {
+      var re = /^\d{4}\-[W]\d{2}$/;
+      return re.test(value);
+    }
+
+    var isMonth = function(value) {
+      var re = /^\d{4}-\d{2}$/;
+      return re.test(value);
+    }
+
+    var isYear = function(value) {
+      var re = /^\d{4}$/;
+      return re.test(value);
+    }
+
+    if ( isWeek(inputValue) ) {
+      return 'week';
+    } else if ( isMonth(inputValue) ) {
+      return 'month';
+    } else if ( isYear(inputValue) ) {
+      return 'year';
+    } else {
+      console.log('Error! Neither week, month or year!');
+    }
+  }
 
 
-    $(document).ready(function(){
+  function getPeriodData(inputValue) {
+    var period = getPeriod(inputValue);
 
-      
-      var pieChartInputs = $('#data-piechart section .choose-period');
+    if (period === "week") {
+      return {
+        'week': parseInt(inputValue.split('-')[1].split('W')[1]),
+        'month': undefined,
+        'year': parseInt(inputValue.split('-')[0])
+      }
+    } else if (period === "month") {
+      return {
+        'week': undefined,
+        'month': parseInt(inputValue.split('-')[1]),
+        'year': parseInt(inputValue.split('-')[0])
+      }
 
-      /* when change of inputs */
-      pieChartInputs.change(function(){
-        var inputValue = $(this).val(),
-            periodData = getPeriodData(inputValue),
-            usageData = getUsageData(periodData, dataHash),
-            pieData = getPieData(usageData);
-        
-        var ctx = $(this).parent().find('canvas').get(0).getContext('2d');
-        window.myPie = new Chart(ctx).Pie(pieData);
-      });
+    } else if (period === "year") {
+      return {
+        'week': undefined,
+        'month': undefined,
+        'year': parseInt(inputValue)
+      }
+    }
+  }
+  /*
+   var testPeriodWeek = {
+      'period': 'week',
+      'week': 41,
+      'month': undefined,
+      'year': 2015
+    }
+
+    var testPeriodMonth = {
+      'period': 'month',
+      'week': undefined,
+      'month': 10,
+      'year': 2015
+    }
+
+    var testPeriodYear = {
+      'period': 'year',
+      'week': undefined,
+      'month': undefined,
+      'year': 2015
+    }
+  */
+
+  function getUsageData(periodData, dataHash){
+    var usageData = [],
+        chosenPeriod = periodData['period'];
+
+    /* loop through categories */
+    for (var cat in dataHash) {
+      if (dataHash.hasOwnProperty(cat)) {
+        console.log(cat + " -> " + dataHash[cat]);
+      }
+
+      var usageDataObject = {},
+          categoryEntries = dataHash[cat]['entries'],
+          categoryEntriesLength = categoryEntries.length,
+          secondsSpentOnCategory = 0;
+
+      /* loop through entries in category */
+      for (var i = 0; i < categoryEntriesLength; i++) {
+        var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
+            endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
+            entry_date = categoryEntries[i]['entry_date'];
+            
 
 
-      /* default charts load with values based on today */
-      var pieChartInputsLength = pieChartInputs.length;
-      for (var i = 0; i < pieChartInputsLength; i++) {
-        
-        var thisInput = $(pieChartInputs[i]),
-            thisInputType = thisInput.attr('type'),
-            todaysDate;
-
-
-        if (thisInputType === "week") {
-          var weekNumber = new Date().getWeek().toString();
-          todaysDate = "2015-W" + weekNumber;
-
-        } else if (thisInputType === "month") {
-          var monthNumber = new Date().getMonth().toString();
-          if (monthNumber.length !== 2) {
-            monthNumber = "0" + monthNumber;
+        if (chosenPeriod === 'year') {
+          if (entry_date.split('-')[0] != periodData['year']) {
+            break; 
           }
-          todaysDate = "2015-" + monthNumber;
-        } else if (thisInputType === "year") {
-          todaysDate = new Date().getFullYear().toString();
+
+        } else if ( chosenPeriod === 'month') {
+          if (entry_date.split('-')[1].split('-')[0] != periodData['month']) {
+            break;
+          }
+
+        } else if (chosenPeriod === 'week') {
+          //???? TODO
+          console.log('figure out week');
         }
-        thisInput.val(todaysDate);
-        thisInput.change();
+        secondsSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
+
       }
 
 
+
+
+      //insert category name
+      usageDataObject['categoryName'] = cat;
+      usageDataObject['minutesPerPeriod'] = secondsSpentOnCategory / 60;
+
+      usageData.push(usageDataObject);
+
+
+    }
+
+
+    return usageData; //this usageData can be used for all charts (hopefully)
+  }
+  /*
+    return [
+      {
+        'categoryName': 'work',
+        'hmsPerPeriod': 20
+      },
+      {
+        'categoryName': 'play',
+        'hmsPerPeriod': 50
+      }
+    ]
+  */
+
+
+  function getPieData(usageData) {
+    var pieData = [],
+        pieColors = [
+          {
+            value: 300,
+            color:"#F7464A",
+            highlight: "#FF5A5E",
+            label: "Red"
+          },
+          {
+            value: 50,
+            color: "#46BFBD",
+            highlight: "#5AD3D1",
+            label: "Green"
+          },
+          {
+            value: 100,
+            color: "#FDB45C",
+            highlight: "#FFC870",
+            label: "Yellow"
+          },
+          {
+            value: 40,
+            color: "#949FB1",
+            highlight: "#A8B3C5",
+            label: "Grey"
+          },
+          {
+            value: 120,
+            color: "#4D5360",
+            highlight: "#616774",
+            label: "Dark Grey"
+          }
+        ],
+        usageDataLength = usageData.length;
+
+    for (var i = 0; i < usageDataLength; i++) {
+      var pieSlice = {
+        value: usageData[i]['minutesPerPeriod'],
+        label: usageData[i]['categoryName'],
+        color: pieColors[i]['color'],
+        highlight: pieColors[i]['highlight']
+      }
+      pieData.push(pieSlice);
+    }
+
+    return pieData;
+  }
+
+  $(document).ready(function(){
+
+    
+    var pieChartInputs = $('#data-piechart section .choose-period');
+
+    /* when change of inputs */
+    pieChartInputs.change(function(){
+      var inputValue = $(this).val(),
+          periodData = getPeriodData(inputValue),
+          usageData = getUsageData(periodData, dataHash),
+          pieData = getPieData(usageData);
+      
+      var ctx = $(this).parent().find('canvas').get(0).getContext('2d');
+      window.myPie = new Chart(ctx).Pie(pieData);
     });
+
+
+    /* default charts load with values based on today */
+    var pieChartInputsLength = pieChartInputs.length;
+    for (var i = 0; i < pieChartInputsLength; i++) {
+      
+      var thisInput = $(pieChartInputs[i]),
+          thisInputType = thisInput.attr('type'),
+          todaysDate;
+
+
+      if (thisInputType === "week") {
+        var weekNumber = new Date().getWeek().toString();
+        todaysDate = "2015-W" + weekNumber;
+
+      } else if (thisInputType === "month") {
+        var monthNumber = new Date().getMonth().toString();
+        if (monthNumber.length !== 2) {
+          monthNumber = "0" + monthNumber;
+        }
+        todaysDate = "2015-" + monthNumber;
+      } else if (thisInputType === "year") {
+        todaysDate = new Date().getFullYear().toString();
+      }
+      thisInput.val(todaysDate);
+      thisInput.change();
+    }
+
+
+  });
     
 
 

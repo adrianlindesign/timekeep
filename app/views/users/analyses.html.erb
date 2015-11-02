@@ -46,14 +46,15 @@
     <%= render 'users/analysis_partials/stacked_columnchart' %>
   </section>
 
+  <section id="data-donutchart">
+    <%= render 'users/analysis_partials/donutchart' %>
+  </section>
 
-
-
+<!-- 
   <section id="data-piechart">
     <%= render 'users/analysis_partials/piechart' %>
   </section>
-
-
+ -->
   
 
 
@@ -83,199 +84,7 @@
     }
 
 
-    function getPeriod(inputValue) {
-      var isWeek = function(value) {
-        var re = /^\d{4}\-[W]\d{2}$/;
-        return re.test(value);
-      }
 
-      var isMonth = function(value) {
-        var re = /^\d{4}-\d{2}$/;
-        return re.test(value);
-      }
-
-      var isYear = function(value) {
-        var re = /^\d{4}$/;
-        return re.test(value);
-      }
-
-      if ( isWeek(inputValue) ) {
-        return 'week';
-      } else if ( isMonth(inputValue) ) {
-        return 'month';
-      } else if ( isYear(inputValue) ) {
-        return 'year';
-      } else {
-        console.log('Error! Neither week, month or year!');
-      }
-    }
-
-
-    function getPeriodData(inputValue) {
-      var period = getPeriod(inputValue);
-
-      if (period === "week") {
-        return {
-          'week': parseInt(inputValue.split('-')[1].split('W')[1]),
-          'month': undefined,
-          'year': parseInt(inputValue.split('-')[0])
-        }
-      } else if (period === "month") {
-        return {
-          'week': undefined,
-          'month': parseInt(inputValue.split('-')[1]),
-          'year': parseInt(inputValue.split('-')[0])
-        }
-
-      } else if (period === "year") {
-        return {
-          'week': undefined,
-          'month': undefined,
-          'year': parseInt(inputValue)
-        }
-      }
-    }
-    /*
-     var testPeriodWeek = {
-        'period': 'week',
-        'week': 41,
-        'month': undefined,
-        'year': 2015
-      }
-
-      var testPeriodMonth = {
-        'period': 'month',
-        'week': undefined,
-        'month': 10,
-        'year': 2015
-      }
-
-      var testPeriodYear = {
-        'period': 'year',
-        'week': undefined,
-        'month': undefined,
-        'year': 2015
-      }
-    */
-
-    function getUsageData(periodData, dataHash){
-      var usageData = [],
-          chosenPeriod = periodData['period'];
-
-      /* loop through categories */
-      for (var cat in dataHash) {
-        if (dataHash.hasOwnProperty(cat)) {
-          console.log(cat + " -> " + dataHash[cat]);
-        }
-
-        var usageDataObject = {},
-            categoryEntries = dataHash[cat]['entries'],
-            categoryEntriesLength = categoryEntries.length,
-            secondsSpentOnCategory = 0;
-
-        /* loop through entries in category */
-        for (var i = 0; i < categoryEntriesLength; i++) {
-          var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
-              endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
-              entry_date = categoryEntries[i]['entry_date'];
-              
-
-
-          if (chosenPeriod === 'year') {
-            if (entry_date.split('-')[0] != periodData['year']) {
-              break; 
-            }
-
-          } else if ( chosenPeriod === 'month') {
-            if (entry_date.split('-')[1].split('-')[0] != periodData['month']) {
-              break;
-            }
-
-          } else if (chosenPeriod === 'week') {
-            //???? TODO
-            console.log('figure out week');
-          }
-          secondsSpentOnCategory += hmsToSeconds(endtime) - hmsToSeconds(starttime);
-
-        }
-
-
-
-
-        //insert category name
-        usageDataObject['categoryName'] = cat;
-        usageDataObject['minutesPerPeriod'] = secondsSpentOnCategory / 60;
-
-        usageData.push(usageDataObject);
-
-
-      }
-
-  
-      return usageData; //this usageData can be used for all charts (hopefully)
-    }
-    /*
-      return [
-        {
-          'categoryName': 'work',
-          'hmsPerPeriod': 20
-        },
-        {
-          'categoryName': 'play',
-          'hmsPerPeriod': 50
-        }
-      ]
-    */
-
-
-    function getPieData(usageData) {
-      var pieData = [],
-          pieColors = [
-            {
-              value: 300,
-              color:"#F7464A",
-              highlight: "#FF5A5E",
-              label: "Red"
-            },
-            {
-              value: 50,
-              color: "#46BFBD",
-              highlight: "#5AD3D1",
-              label: "Green"
-            },
-            {
-              value: 100,
-              color: "#FDB45C",
-              highlight: "#FFC870",
-              label: "Yellow"
-            },
-            {
-              value: 40,
-              color: "#949FB1",
-              highlight: "#A8B3C5",
-              label: "Grey"
-            },
-            {
-              value: 120,
-              color: "#4D5360",
-              highlight: "#616774",
-              label: "Dark Grey"
-            }
-          ],
-          usageDataLength = usageData.length;
-
-      for (var i = 0; i < usageDataLength; i++) {
-        var pieSlice = {
-          value: usageData[i]['minutesPerPeriod'],
-          label: usageData[i]['categoryName'],
-          color: pieColors[i]['color'],
-          highlight: pieColors[i]['highlight']
-        }
-        pieData.push(pieSlice);
-      }
-
-      return pieData;
-    }
     
     
   </script>
