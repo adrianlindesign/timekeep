@@ -44,7 +44,7 @@
   }
 
   function getDonutChartArray(dataHash, sampledPeriod){
-    var periodData = [
+    var chartData = [
       ['Category', 'Recorded hours']
     ];
 
@@ -86,9 +86,9 @@
       }
     
       categoryData.push(categoryTimeInHrs);
-      periodData.push(categoryData);
+      chartData.push(categoryData);
     }
-    return periodData;
+    return chartData;
   }
 
   

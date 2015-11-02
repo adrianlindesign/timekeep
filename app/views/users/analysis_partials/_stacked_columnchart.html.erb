@@ -2,13 +2,14 @@
 
 
 <section id="week-columnchart">
+  <h3>Week activity by days</h3>
   <div></div>
 </section>
 
 
 
 <section id="total-columnchart"> <!-- give week/month/year option-->
-  <h3>All Time activity by days</h3>
+  <h3>All time activity by days</h3>
   <div></div>
 </section>
 
@@ -19,11 +20,22 @@
 
   $(document).ready(function(){
       /* make week column chart */
+      var weekColumnChart = $('#week-columnchart div')[0],
+          weekColumnChartArray = getColumnChartArray(dataHash, 'week'),
+          weekColumnChartOptions = {
+            width: 600,
+            height: 400,
+            legend: { position: 'top', maxLines: 3 },
+            bar: { groupWidth: '75%' },
+            isStacked: true,
+          };
+
+      makeColumnChart(weekColumnChartArray, weekColumnChart, weekColumnChartOptions);
 
     
       /* Draw total column chart */
       var columnChart = $('#total-columnchart div')[0],
-          columnChartArray = getColumnChartArray(dataHash),
+          columnChartArray = getColumnChartArray(dataHash, 'eternity'),
           columnChartOptions = {
             width: 600,
             height: 400,
@@ -44,8 +56,8 @@
     chart.draw(data, options);
   }
 
-  function getColumnChartArray(dataHash){
-    var dayOfWeekData = [
+  function getColumnChartArray(dataHash, sampledPeriod){
+    var chartData = [
       ['Category', {role:'annotation'}],
       ['Sun', ''],
       ['Mon', ''],
@@ -55,13 +67,13 @@
       ['Fri', ''],
       ['Sat', '']
     ],
-      aSun = dayOfWeekData[1],
-      aMon = dayOfWeekData[2],
-      aTue = dayOfWeekData[3],
-      aWed = dayOfWeekData[4],
-      aThu = dayOfWeekData[5],
-      aFri = dayOfWeekData[6],
-      aSat = dayOfWeekData[7];
+      aSun = chartData[1],
+      aMon = chartData[2],
+      aTue = chartData[3],
+      aWed = chartData[4],
+      aThu = chartData[5],
+      aFri = chartData[6],
+      aSat = chartData[7];
     
     /* loop through categories */
     for (var cat in dataHash){
@@ -98,21 +110,29 @@
 
 
         //insert to categoryHrsOnDays according to the day it was
-        categoryHrsOnDays[entryDay] += entryDurInHrs;                 
+        
+        if (sampledPeriod === "eternity") {
+          categoryHrsOnDays[entryDay] += entryDurInHrs;
+        } else {
+          var acceptablePeriods = getAcceptablePeriodsArray(sampledPeriod);
+          if (acceptablePeriods.indexOf(entry_date) !== -1) {
+            categoryHrsOnDays[entryDay] += entryDurInHrs;
+          }
+        }                 
       }
 
 
-      /* insert data from categoryHrsOnDays into dayOfWeekData; */
+      /* insert data from categoryHrsOnDays into chartData; */
       var i = 0;
       for (var item in categoryHrsOnDays) {
-        var dayOfWeekDataArray = dayOfWeekData[i],
-            indexToInsertAt = dayOfWeekDataArray.length - 1;
+        var chartDataArray = chartData[i],
+            indexToInsertAt = chartDataArray.length - 1;
 
-        dayOfWeekDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);        
+        chartDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);        
         i ++
       }   
     }
-    return dayOfWeekData;
+    return chartData;
   }
 
 
