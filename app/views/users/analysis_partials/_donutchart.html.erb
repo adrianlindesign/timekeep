@@ -7,3 +7,77 @@
 <section id="average-donutchart"> <!-- give option for week/month/year-->
   <div></div>
 </section>
+
+
+<script>
+  
+
+  $(document).ready(function(){
+ 
+
+    var averageDonutChart = $('#individual-donutchart div')[0],
+        averageDonutChartArray = getAverageDonutChartArray(dataHash);
+
+    makeaverageDonutChart(averageDonutChartArray, averageDonutChart);     
+  });
+
+  function makeaverageDonutChart(weekArray, chartEl) {
+    var data = google.visualization.arrayToDataTable(weekArray),
+        options = {
+          title: 'My Daily Activities',
+          pieHole: 0.4,
+        },
+        chart = new google.visualization.PieChart(chartEl);
+
+    chart.draw(data, options);
+  }
+
+  function getAverageDonutChartArray(dataHash){
+    var weekData = [
+      ['Category', 'Recorded hours']
+    ];
+
+
+    /* loop through categories */
+    for (var cat in dataHash){
+      if (dataHash.hasOwnProperty(cat)) {
+        console.log(cat + " -> " + dataHash[cat]);
+      }
+
+      var categoryEntries = dataHash[cat]['entries'],
+          categoryEntriesLength = categoryEntries.length,
+          categoryData = [cat],
+          categoryTimeInHrs = 0;    
+
+      /* loop through entries in category */
+      for (var i = 0; i < categoryEntriesLength; i++) {
+
+        var starttime = categoryEntries[i]['starttime'].split('T')[1].split('.')[0],
+            endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
+            entry_date = categoryEntries[i]['entry_date'];
+
+        // with starttime and endtime find duration in Hrs
+        var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600;
+
+        // here if you want to restrict insertion
+
+        //add up
+        categoryTimeInHrs += entryDurInHrs;
+      }
+    
+      categoryData.push(categoryTimeInHrs);
+      weekData.push(categoryData);
+    }
+    return weekData;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+

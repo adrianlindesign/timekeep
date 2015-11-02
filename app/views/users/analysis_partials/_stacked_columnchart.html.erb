@@ -14,20 +14,27 @@
 
 <script>
 
-  
+  // function makeWeekGoogleChart(weekDataArray, options, chartEl, chartType) {
+  //   var data = google.visualization.arrayToDataTable(weekDataArray),
+  //       chartTypesHash = {
+  //         'donut':
+  //       }
+
+
+  // }
 
   $(document).ready(function(){
     
-      /* Draw individual column chart for this week */
-      var thisWeekUsageChart = $('#individual-columnchart div'),
-          weekArray = getWeekArray(dataHash);
+      /* Draw average column chart */
+      var averageColumnChart = $('#average-columnchart div')[0],
+          averageColumnChartArray = getAverageColumnChartArray(dataHash);
 
-      makeWeekChart(weekArray, thisWeekUsageChart);
+      makeaverageColumnChart(averageColumnChartArray, averageColumnChart);
 
   });
 
 
-  function makeWeekChart(weekArray, chartEl) {
+  function makeaverageColumnChart(weekArray, chartEl) {
     var data = google.visualization.arrayToDataTable(weekArray),
         options = {
           width: 600,
@@ -36,12 +43,12 @@
           bar: { groupWidth: '75%' },
           isStacked: true,
         },
-        chart = new google.visualization.ColumnChart(chartEl[0]) ;
+        chart = new google.visualization.ColumnChart(chartEl) ;
 
     chart.draw(data, options);
   }
 
-  function getWeekArray(dataHash){
+  function getAverageColumnChartArray(dataHash){
     var weekData = [
       ['Category', {role:'annotation'}],
       ['Sun', ''],
@@ -76,8 +83,8 @@
         Friday: 0,
         Saturday: 0
       },
-          categoryEntries = dataHash[cat]['entries'],
-          categoryEntriesLength = categoryEntries.length;
+      categoryEntries = dataHash[cat]['entries'],
+      categoryEntriesLength = categoryEntries.length;
       
       
       /* loop through entries in category */
