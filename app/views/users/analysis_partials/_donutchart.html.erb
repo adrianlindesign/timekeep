@@ -16,7 +16,7 @@
  
 
     var averageDonutChart = $('#individual-donutchart div')[0],
-        averageDonutChartArray = getAverageDonutChartArray(dataHash, 'all time');
+        averageDonutChartArray = getAverageDonutChartArray(dataHash, 'eternity');
 
     makeAverageDonutChart(averageDonutChartArray, averageDonutChart);     
   });
@@ -61,16 +61,17 @@
 
         
 
-        //add up either all within this week, or from all time
-        if (sampledPeriod === 'past week') {
+        //if entry's entry_date is in the acceptable time period, add it to the total time spent on the category; if it's eternity, do all
 
-        } else if (sampledPeriod === 'past month') {
-
-        } else if (sampledPeriod === 'past year') {
-
-        } else if (sampledPeriod === 'all time') {
+        if (sampledPeriod === "eternity") {
           categoryTimeInHrs += entryDurInHrs;
+        } else {
+          var acceptablePeriods = getAcceptablePeriodsArray(sampledPeriod);
+          if (acceptablePeriods.indexOf(entry_date) !== -1) {
+            categoryTimeInHrs += entryDurInHrs;
+          }
         }
+
       }
     
       categoryData.push(categoryTimeInHrs);
@@ -79,6 +80,43 @@
     return weekData;
   }
 
+  function getAcceptablePeriodsArray(sampledPeriod) {
+    
+    var formatDate = function(date){  
+          var dd = date.getDate(),
+              mm = date.getMonth() + 1,
+              yyyy = date.getFullYear();
+          if(dd < 10) {
+            dd = '0' + dd
+          }
+          if(mm < 10) {
+            mm = '0' + mm
+          }
+          date = yyyy + '-' + mm + '-' + dd;
+          return date;
+        },
+        lastNDays = function(n){
+          var result = [];
+          for (var i=0; i<n; i++) {
+              var d = new Date();
+              d.setDate(d.getDate() - i);
+              result.push( formatDate(d) )
+          }
+
+          return result;
+        }
+        
+
+
+        sampledPeriodRouter = {
+          'week': lastNDays(7),
+          'month': lastNDays(30),
+          'year': lastNDays(365)
+        };
+
+      return sampledPeriodRouter[sampledPeriod];
+      
+  }
 
 
 </script>
