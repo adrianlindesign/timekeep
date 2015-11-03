@@ -8,11 +8,12 @@
   #topbar .toggle {
     width:12vw;
     height:12vw;
-    border:0.5vw solid grey;
     float:left;
     margin-left:16.5vw;
     margin-top:1.5vw;
-    font-size:10vw;
+    font-size:8vw;
+  }
+  .toggle .glyphicon {
     text-align: center;
   }
 </style>
@@ -21,13 +22,13 @@
 <nav id="topbar">
   
   <a href="/">
-    <div id="toggle-timeline" class="toggle"><span class="glyphicon glyphicon glyphicon-th-list"></span></div>
+    <button id="toggle-timeline" class="toggle btn btn-default"><span class="glyphicon glyphicon glyphicon-th-list"></span></button>
   </a>
   <a href="/users/<%=session[:user_id]%>/analysis">
-    <div id="toggle-data" class="toggle"><span class="glyphicon glyphicon glyphicon-stats"></span></div>
+    <button id="toggle-data" class="toggle btn btn-default"><span class="glyphicon glyphicon glyphicon-stats"></span></button>
   </a>
   <a href="/settings">
-    <div id="toggle-setting" class="toggle"><span class="glyphicon glyphicon glyphicon-cog"></span></div>
+    <button id="toggle-setting" class="toggle btn btn-default"><span class="glyphicon glyphicon glyphicon-cog"></span></button>
   </a>
 </nav>
 
