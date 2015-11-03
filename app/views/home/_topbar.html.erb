@@ -21,7 +21,9 @@
   <a href="/">
     <div id="toggle-timeline" class="toggle"><h2>Timeline</h2></div>
   </a>
-  <div id="toggle-data" class="toggle"><h2>Data</h2></div>
+  <a href="/users/<%=session[:user_id]%>/analysis">
+    <div id="toggle-data" class="toggle"><h2>Data</h2></div>
+  </a>
   <a href="/settings">
     <div id="toggle-setting" class="toggle"><h2>Settings</h2></div>
   </a>

@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     render :signup
   end
 
-  def analyses
+  def analysis
     
 
     categories_activerecord_relation = Category.where(user_id: params[:id])
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     end
 
 
-    render :analyses
+    render :analysis
   end
 
   def settings 

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   post '/login' => 'session#create'
   delete '/session' => 'session#destroy'
 
-  get '/users/:id/entries' => 'users#analyses'
+  get '/users/:id/analysis' => 'users#analysis'
 
   get '/settings' => 'users#settings'
 

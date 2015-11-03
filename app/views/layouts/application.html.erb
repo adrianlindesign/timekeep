@@ -6,8 +6,17 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
   <style>
-    body {
+    /*body {
       margin:0;
     }
     input {
@@ -27,14 +36,61 @@
     h5 {font-size:6vw;}
     h6 {font-size:5vw;}
 
-    p, a, input, button {font-size:4vw;}
+    p, a, input, button {font-size:4vw;}*/
 
   </style>
+
+
+  <!-- GOOGLE CHART STUFF -->
+  <!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+  // Load the Visualization API library and the piechart library.
+  google.load('visualization', '1', {'packages':['corechart']});
+  google.setOnLoadCallback(drawChart);
+     // ... draw the chart...
+
+     // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      // function drawChart() {
+
+      // // Create the data table.
+      // var data = new google.visualization.DataTable();
+      // data.addColumn('string', 'Topping');
+      // data.addColumn('number', 'Slices');
+      // data.addRows([
+      //   ['Mushrooms', 3],
+      //   ['Onions', 1],
+      //   ['Olives', 1],
+      //   ['Zucchini', 1],
+      //   ['Pepperoni', 2]
+      // ]);
+
+      // // Set chart options
+      // var options = {'title':'How Much Pizza I Ate Last Night',
+      //                'width':400,
+      //                'height':300};
+
+      // // Instantiate and draw our chart, passing in some options.
+      // var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+      // chart.draw(data, options);
+    // }
+</script>
+
 </head>
 <body>
   <%= render 'home/topbar' %>
 
   <%= yield %>
+
+  <script>
+    $(document).ready(function(){
+
+    });
+
+  </script>
 
 </body>
 </html>
