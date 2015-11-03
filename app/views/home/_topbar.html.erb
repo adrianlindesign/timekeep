@@ -8,10 +8,12 @@
   #topbar .toggle {
     width:12vw;
     height:12vw;
-    background-color:grey;
+    border:0.5vw solid grey;
     float:left;
     margin-left:16.5vw;
     margin-top:1.5vw;
+    font-size:10vw;
+    text-align: center;
   }
 </style>
 
@@ -19,13 +21,13 @@
 <nav id="topbar">
   
   <a href="/">
-    <div id="toggle-timeline" class="toggle"><h2>Timeline</h2></div>
+    <div id="toggle-timeline" class="toggle"><span class="glyphicon glyphicon glyphicon-th-list"></span></div>
   </a>
   <a href="/users/<%=session[:user_id]%>/analysis">
-    <div id="toggle-data" class="toggle"><h2>Data</h2></div>
+    <div id="toggle-data" class="toggle"><span class="glyphicon glyphicon glyphicon-stats"></span></div>
   </a>
   <a href="/settings">
-    <div id="toggle-setting" class="toggle"><h2>Settings</h2></div>
+    <div id="toggle-setting" class="toggle"><span class="glyphicon glyphicon glyphicon-cog"></span></div>
   </a>
 </nav>
 
