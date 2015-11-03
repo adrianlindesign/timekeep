@@ -1,4 +1,18 @@
-<nav>
-  time-period
-  
+
+<style>
+  #period-bar .toggle {font-size:5vw;}
+</style>
+
+<nav id="period-bar" class="btn-group" role="group" aria-label="...">
+  <button type="button" class="toggle btn btn-default" value="week">Week</button>
+  <button type="button" class="toggle btn btn-default" value="month">Month</button>
+  <button type="button" class="toggle btn btn-default" value="year">Year</button>
 </nav>
+<script>
+  $(document).ready(function(){
+    $('#period-bar button').on('click', function(){
+      var period = $(this).val();
+      //change the charts to reflect the appropriate time period;
+    }); 
+  });
+</script>
