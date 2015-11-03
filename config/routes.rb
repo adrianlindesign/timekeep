@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   get '/users/:id/entries' => 'users#analyses'
 
+  get '/settings' => 'users#settings'
+
 
 
 #                   Prefix Verb   URI Pattern                                                        Controller#Action

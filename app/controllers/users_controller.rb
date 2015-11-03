@@ -58,4 +58,9 @@ class UsersController < ApplicationController
 
     render :analyses
   end
+
+  def settings 
+    @users = User.all
+    render :settings
+  end
 end

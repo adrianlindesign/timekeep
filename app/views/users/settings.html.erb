@@ -1,0 +1,33 @@
+
+<h1>Settings</h1>
+
+<%if session[:user_id]%>
+  <!-- Greeting -->
+  <%@users.each do |user|%>
+    <%if user.id == session[:user_id]%>
+      <h3>Hello, <%= user.email %>! </h3> <!-- TODO: got better way? -->
+    <%end%>
+  <%end%>
+  
+  <!--Log out Button--> 
+  <form id="logout-button" action="/session" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+    <button type="submit">Log out</button>
+  </form>
+
+<%else%>
+  <h1>Not logged in</h1>
+
+  <!--Log in Button-->
+  <form id="signup-button-form" action="/login" method="POST">
+    <input type="email" name="email" placeholder="Email">
+    <input type="password" name="password" placeholder="Password">
+    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+    <button type="submit">Log in</button>
+  </form>
+
+
+  <!-- sign up button -->
+  <a href="/users/new">Sign up</a>
+<%end%>

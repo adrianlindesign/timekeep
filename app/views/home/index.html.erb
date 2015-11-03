@@ -1,5 +1,7 @@
 <!-- TODO move styles elsewhere-->
 <style>
+
+
   #timeline {
     height:70vh;
     width:90vw;
@@ -9,33 +11,6 @@
 </style>
 
 
-<nav>
-  
-
-  <%if session[:user_id]%>
-    <!-- log out button -->
-    <%= render 'home/logout_button' %>
-
-    
-
-    <br><br>
-    <button id="category-screen-link">Categories</button> <!-- TODO -->
-  
-    <a href="/users/<%=session[:user_id]%>/entries"><button id="analysis-screen-link">Analysis</button></a>
-    
-
-  <%else%>
-
-    <!-- log in button/form -->
-    <%= render 'home/login_button' %>
-   
-    <!-- sign up button -->
-    <a href="/users/new">Sign up</a>
-
-    
-  <%end%>
-
-</nav>
 
 
 <main id="timeline">

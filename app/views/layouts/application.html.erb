@@ -5,10 +5,36 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
+  <style>
+    body {
+      margin:0;
+    }
+    input {
+      width:35vw;
+      height:10vw;
+      border:1vw solid darkgrey;
+    }
+    button {
+      width:15vw;
+      height:10vw;
+      background-color:darkgrey;
+    }
+    h1 {font-size:10vw;}
+    h2 {font-size:9vw;}
+    h3 {font-size:8vw;}
+    h4 {font-size:7vw;}
+    h5 {font-size:6vw;}
+    h6 {font-size:5vw;}
+
+    p, a, input, button {font-size:4vw;}
+
+  </style>
 </head>
 <body>
+  <%= render 'home/topbar' %>
 
-<%= yield %>
+  <%= yield %>
 
 </body>
 </html>
