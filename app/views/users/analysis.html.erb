@@ -1,3 +1,5 @@
+
+
 <!-- category navbar -->
 <%= render 'users/analysis_partials/navbar/category' %>
 
@@ -22,7 +24,6 @@
 
 
   
-
 
 
   
@@ -87,50 +88,39 @@
     }
 
     $(document).ready(function(){
-      /* make week column chart */
-      var weekColumnChart = $('#week-columnchart div')[0],
-          weekColumnChartArray = getColumnChartArray(dataHash, 'week'),
-          weekColumnChartOptions = {
-            width: 600,
-            height: 400,
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '75%' },
-            isStacked: true,
-          };
-      makeColumnChart(weekColumnChartArray, weekColumnChart, weekColumnChartOptions);
+      $('#period-bar button').on('click', function(){
+        var selectedPeriod = $(this).val();
+        
 
-    
-      /* Draw total column chart */
-      var columnChart = $('#total-columnchart div')[0],
-          columnChartArray = getColumnChartArray(dataHash, 'eternity'),
-          columnChartOptions = {
-            width: 600,
-            height: 400,
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '75%' },
-            isStacked: true,
-          };
-      makeColumnChart(columnChartArray, columnChart, columnChartOptions);
+        /* donut chart */
+        var donutChartDiv = $('#donutchart div')[0],
+            donutChartArray = getDonutChartArray(dataHash, selectedPeriod),
+            donutChartOptions = {
+              title: 'Time spent',
+              pieHole: 0.4
+            },
+            donutChartTitle = $(donutChartDiv).parent().children('.chart-title');
+
+        makeDonutChart(donutChartArray, donutChartDiv, donutChartOptions);
+        donutChartTitle.html(donutChartTitle += ' for this ' + selectedPeriod);
 
 
-      /* make week donut chart */
-      var weekDonutChart = $('#week-donutchart div')[0],
-          weekDonutChartArray = getDonutChartArray(dataHash, 'week'),
-          weekDonutChartOptions = {
-            title: 'Time spent',
-            pieHole: 0.4,
-          };
-      makeDonutChart(weekDonutChartArray, weekDonutChart, weekDonutChartOptions); 
+        /* column chart */
+        var columnChartDiv = $('#columnchart div')[0],
+            columnChartArray = getColumnChartArray(dataHash, selectedPeriod),
+            columnChartOptions = {
+              // width: 600,
+              // height: 400,
+              legend: { position: 'top', maxLines: 3 },
+              bar: { groupWidth: '75%' },
+              isStacked: true
+            },
+            columnChartTitle = $(columnChartDiv).parent().children('.chart-title');
 
-   
-      /* make total donut chart */
-      var donutChart = $('#total-donutchart div')[0],
-          donutChartArray = getDonutChartArray(dataHash, 'eternity'),
-          donutChartOptions = {
-            title: 'Time spent',
-            pieHole: 0.4,
-          };
-      makeDonutChart(donutChartArray, donutChart, donutChartOptions); 
+        makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
+        columnChartTitle.html(columnChartTitle += ' for this ' + selectedPeriod);
+
+      }); 
 
     });
     
