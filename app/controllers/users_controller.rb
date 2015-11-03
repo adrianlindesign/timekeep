@@ -38,8 +38,8 @@ class UsersController < ApplicationController
       }
 
       entries = Entry.where(category_id: category_id)
+      
       # add entry details
-
       entries.each do |ent|
         entry_data = {
           starttime: ent.starttime,
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
       
     end
 
-    # @data_hash = @data_hash.to_json
+    # @data_hash = @data_hash.to_json #does this even work?
     render :analysis
   end
 
