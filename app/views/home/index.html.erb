@@ -17,9 +17,17 @@
   
   <%if session[:user_id]%>
 
-  <!-- timeline -->
-  <%= render "home/timeline" %>
+    <!-- timeline -->
+    <%= render "home/timeline" %>
+  <%else%>
 
+    <!-- Describe what Timekeep is about -->
+
+    <h3>Time is money; track your spending.</h3>
+
+    <p>Timekeep is a web app that helps you track how you spend your time. It is primarily a mobile web app because in this day and age, everyone is always on their phones. Periodically note what you've done in the past hour or two, and be honest: how much of that time did you spend surfing the web? Be honest and write that down in Timekeep. As you use Timekeep more and more, you'll become more mindful of your time-spending habits and become more aware when you are goofing off. Time is money; track your spending.</p>
+
+    <h3>You are not logged in: click on settings on the top right to sign up or log in!</h3>
 
   <%end%>
 
