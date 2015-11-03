@@ -55,7 +55,7 @@ class UsersController < ApplicationController
       
     end
 
-
+    # @data_hash = @data_hash.to_json
     render :analysis
   end
 

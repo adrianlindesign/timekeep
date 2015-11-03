@@ -17,13 +17,12 @@
   </section>
 
 
+  
 
 
 
+  
 
-  <!-- converts ruby object to JSON -->
-  <!-- IMPORTANT -->
-  <%= javascript_tag "var dataHash = #{@data_hash.to_json}" %> 
   <script>
     function hmsToSeconds(s) {
       var b = s.split(':');
@@ -82,6 +81,54 @@
         return sampledPeriodRouter[sampledPeriod];
         
     }
+
+    $(document).ready(function(){
+      /* make week column chart */
+      var weekColumnChart = $('#week-columnchart div')[0],
+          weekColumnChartArray = getColumnChartArray(dataHash, 'week'),
+          weekColumnChartOptions = {
+            width: 600,
+            height: 400,
+            legend: { position: 'top', maxLines: 3 },
+            bar: { groupWidth: '75%' },
+            isStacked: true,
+          };
+      makeColumnChart(weekColumnChartArray, weekColumnChart, weekColumnChartOptions);
+
+    
+      /* Draw total column chart */
+      var columnChart = $('#total-columnchart div')[0],
+          columnChartArray = getColumnChartArray(dataHash, 'eternity'),
+          columnChartOptions = {
+            width: 600,
+            height: 400,
+            legend: { position: 'top', maxLines: 3 },
+            bar: { groupWidth: '75%' },
+            isStacked: true,
+          };
+      makeColumnChart(columnChartArray, columnChart, columnChartOptions);
+
+
+      /* make week donut chart */
+      var weekDonutChart = $('#week-donutchart div')[0],
+          weekDonutChartArray = getDonutChartArray(dataHash, 'week'),
+          weekDonutChartOptions = {
+            title: 'Time spent',
+            pieHole: 0.4,
+          };
+      makeDonutChart(weekDonutChartArray, weekDonutChart, weekDonutChartOptions); 
+
+   
+      /* make total donut chart */
+      var donutChart = $('#total-donutchart div')[0],
+          donutChartArray = getDonutChartArray(dataHash, 'eternity'),
+          donutChartOptions = {
+            title: 'Time spent',
+            pieHole: 0.4,
+          };
+      makeDonutChart(donutChartArray, donutChart, donutChartOptions); 
+
+    });
     
   </script>
 

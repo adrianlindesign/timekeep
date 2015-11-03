@@ -17,38 +17,6 @@
 <script>
 
 
-
-  $(document).ready(function(){
-      /* make week column chart */
-      var weekColumnChart = $('#week-columnchart div')[0],
-          weekColumnChartArray = getColumnChartArray(dataHash, 'week'),
-          weekColumnChartOptions = {
-            width: 600,
-            height: 400,
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '75%' },
-            isStacked: true,
-          };
-
-      makeColumnChart(weekColumnChartArray, weekColumnChart, weekColumnChartOptions);
-
-    
-      /* Draw total column chart */
-      var columnChart = $('#total-columnchart div')[0],
-          columnChartArray = getColumnChartArray(dataHash, 'eternity'),
-          columnChartOptions = {
-            width: 600,
-            height: 400,
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '75%' },
-            isStacked: true,
-          };
-
-      makeColumnChart(columnChartArray, columnChart, columnChartOptions);
-
-  });
-
-
   function makeColumnChart(dataArray, chartEl, options) {
     var data = google.visualization.arrayToDataTable(dataArray),
         chart = new google.visualization.ColumnChart(chartEl) ;

@@ -12,29 +12,6 @@
 
 
 <script>
-  
-
-  $(document).ready(function(){
-    /* make week donut chart */
-    var weekDonutChart = $('#week-donutchart div')[0],
-        weekDonutChartArray = getDonutChartArray(dataHash, 'week'),
-        weekDonutChartOptions = {
-          title: 'Time spent',
-          pieHole: 0.4,
-        };
-    makeDonutChart(weekDonutChartArray, weekDonutChart, weekDonutChartOptions); 
-
- 
-    /* make total donut chart */
-    var donutChart = $('#total-donutchart div')[0],
-        donutChartArray = getDonutChartArray(dataHash, 'eternity'),
-        donutChartOptions = {
-          title: 'Time spent',
-          pieHole: 0.4,
-        };
-    makeDonutChart(donutChartArray, donutChart, donutChartOptions); 
-
-  });
 
   function makeDonutChart(dataArray, chartEl, options) {
     var data = google.visualization.arrayToDataTable(dataArray),
@@ -47,7 +24,6 @@
     var chartData = [
       ['Category', 'Recorded hours']
     ];
-
 
     /* loop through categories */
     for (var cat in dataHash){
@@ -92,8 +68,6 @@
   }
 
   
-
-
 </script>
 
 

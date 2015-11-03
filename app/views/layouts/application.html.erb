@@ -15,69 +15,22 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
-  <style>
-    /*body {
-      margin:0;
-    }
-    input {
-      width:35vw;
-      height:10vw;
-      border:1vw solid darkgrey;
-    }
-    button {
-      width:15vw;
-      height:10vw;
-      background-color:darkgrey;
-    }
-    h1 {font-size:10vw;}
-    h2 {font-size:9vw;}
-    h3 {font-size:8vw;}
-    h4 {font-size:7vw;}
-    h5 {font-size:6vw;}
-    h6 {font-size:5vw;}
 
-    p, a, input, button {font-size:4vw;}*/
 
-  </style>
+  <!-- converts ruby object to JSON -->
+  <!-- IMPORTANT -->
+  <%= javascript_tag "var dataHash = #{@data_hash.to_json}" %>
+
 
 
   <!-- GOOGLE CHART STUFF -->
   <!--Load the AJAX API-->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-
-  // Load the Visualization API library and the piechart library.
-  google.load('visualization', '1', {'packages':['corechart']});
-  google.setOnLoadCallback(drawChart);
-     // ... draw the chart...
-
-     // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      // function drawChart() {
-
-      // // Create the data table.
-      // var data = new google.visualization.DataTable();
-      // data.addColumn('string', 'Topping');
-      // data.addColumn('number', 'Slices');
-      // data.addRows([
-      //   ['Mushrooms', 3],
-      //   ['Onions', 1],
-      //   ['Olives', 1],
-      //   ['Zucchini', 1],
-      //   ['Pepperoni', 2]
-      // ]);
-
-      // // Set chart options
-      // var options = {'title':'How Much Pizza I Ate Last Night',
-      //                'width':400,
-      //                'height':300};
-
-      // // Instantiate and draw our chart, passing in some options.
-      // var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      // chart.draw(data, options);
-    // }
-</script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+    // Load the Visualization API library and the piechart library.
+    google.load('visualization', '1', {'packages':['corechart']});
+    google.setOnLoadCallback(drawChart);
+  </script>
 
 </head>
 <body>
@@ -87,6 +40,7 @@
 
   <script>
     $(document).ready(function(){
+
 
     });
 
