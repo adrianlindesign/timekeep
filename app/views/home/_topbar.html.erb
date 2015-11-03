@@ -1,17 +1,20 @@
 <style>
   #topbar {
-    width:100vw;
-    height:15vw;
-    background-color:lightgrey;
   }
 
   #topbar .toggle {
-    width:12vw;
+    width:33vw;
+    margin:0.1vw;
+/*    width:12vw;
     height:12vw;
     float:left;
     margin-left:16.5vw;
-    margin-top:1.5vw;
+    margin-top:1.5vw;*/
     font-size:8vw;
+  }
+  .toggle a {
+    width:100%;
+    height:100%;
   }
   .toggle .glyphicon {
     text-align: center;
@@ -19,18 +22,26 @@
 </style>
 
 
-<nav id="topbar">
+
+<nav id="topbar" class="btn-group" role="group" aria=label="...">
   
-  <a href="/">
-    <button id="toggle-timeline" class="toggle btn btn-default"><span class="glyphicon glyphicon glyphicon-th-list"></span></button>
-  </a>
-  <a href="/users/<%=session[:user_id]%>/analysis">
-    <button id="toggle-data" class="toggle btn btn-default"><span class="glyphicon glyphicon glyphicon-stats"></span></button>
-  </a>
-  <a href="/settings">
-    <button id="toggle-setting" class="toggle btn btn-default"><span class="glyphicon glyphicon glyphicon-cog"></span></button>
-  </a>
+  <button id="toggle-timeline" class="toggle btn btn-default">
+    <a href="/"><span class="glyphicon glyphicon glyphicon-th-list"></span></a>
+  </button>
+
+
+  <button id="toggle-data" class="toggle btn btn-default">
+    <a href="/users/<%=session[:user_id]%>/analysis"><span class="glyphicon glyphicon glyphicon-stats"></span></a>
+  </button>
+
+
+  <button id="toggle-setting" class="toggle btn btn-default">
+    <a href="/settings"><span class="glyphicon glyphicon glyphicon-cog"></span></a>
+  </button>
+  
 </nav>
+
+
 
 <script>
   $(document).ready(function(){
