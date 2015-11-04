@@ -31,13 +31,12 @@
 
   <%end%>
 
+
+  <!-- hidden new entry modal -->
+  <%= render 'home/modal_partials/new_entry' %>
+
 </main>
 
-<!-- hidden new entry screen -->
-<%= render "home/new_entry" %>
-
-<!-- hidden categories screen -->
-<%= render 'home/categories' %>
 
 
 
@@ -96,37 +95,58 @@
      }
   }
 
+  Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+  });
+
+
+  $(document).ready(function(){
+    var newEntryForm = $('#new-entry-form');
+
+    /* event listener: new entry modal */
+    $('.hour').on('click', function(){
+
+      var startHour = this.id.split('-')[1],
+          startMinute = "00", //TODO make this customisable later
+          duration = "1::30";
+
+      // Autopopulate [starttime, endtime, entry_date]
+      var durations = getEntryDuration(startHour, startMinute, duration);
+      $('input[name="starttime"]').val(durations['starttime']);
+      $('input[name="endtime"]').val(durations['endtime']);
+      $('input[name="entry_date"]').val( new Date().toDateInputValue() );
+
+      $('#new-entry').modal('toggle');
+    });
+
+    /* event listener: submitting new entry form */
+    $('#new-entry-submit').on('click', function(){
+      var categoryId = $('select[name="category_id"]').val(),
+          formAction = newEntryForm.attr('action'),
+          formAction = formAction.split('categories/')[0];
+          formAction += 'categories/' + categoryId + '/entries';
+
+
+      newEntryForm.attr('action', formAction);
+      newEntryForm.submit();
+    });
+
+
+
+
+
+    /* show categories screen */
+    $('#category-screen-link').on('click', function(){
+      $('#new-category-screen').show();
+    });
+  });
   
 
 
 
 
-
-  /* show new entry screen */
-  $('.hour').on('click', function(){
-
-    var startHour = this.id.split('-')[1],
-        startMinute = "00", //TODO make this customisble later
-        duration = "1::30";
-
-    // Autopopulate start time
-    var durations = getEntryDuration(startHour, startMinute, duration);
-
-    $('input[name="starttime"]').val(durations['starttime']);
-    $('input[name="endtime"]').val(durations['endtime']);
-
-
-    $('#new-entry-screen').show();
-  });
-
-
-
-  /* show categories screen */
-  $('#category-screen-link').on('click', function(){
-    $('#new-category-screen').show();
-  });
-
-
-
-
 </script>
+
+

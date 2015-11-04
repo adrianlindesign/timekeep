@@ -1,0 +1,56 @@
+
+<div class="modal fade" id="new-entry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <form action="/users/<%=session[:user_id]%>/categories/~<{[]}>~/entries" /method="POST" id="new-entry-form">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <label>New 
+            <select name="category_id" required>
+              <%@categories.each do |c|%>
+                <%if c.user_id == session[:user_id]%>
+                  <option value="<%=c[:id]%>"> <%=c[:name]%> </option>
+                <%end%>
+              <%end%>
+            </select>
+          Entry </label> 
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="modal-body">
+        
+          <label>Date
+            <input type="date" name="entry_date" required>
+          </label>
+
+          <label>Start
+            <input type="time" name="starttime" required>
+          </label>
+
+          <label>End
+            <input type="time" name="endtime" required>
+          </label>
+
+          <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+        
+        </div>
+      </form>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+<!--         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-primary" id="new-entry-submit">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

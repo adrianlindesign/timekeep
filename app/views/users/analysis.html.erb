@@ -121,7 +121,14 @@
         makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
         columnChartTitle.html('Column chart for this ' + selectedPeriod);
 
+        //Aesthetics: removing the default button selection
+        $('#period-bar button').removeClass('active');
+        $(this).addClass('active');
+
       }); 
+
+
+      
 
       /* default button selection */
       $('#period-bar').children('button[value="week"]').click().addClass('active');
