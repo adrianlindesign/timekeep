@@ -18,16 +18,36 @@
 
 
         <div class="modal-body">
-          <select name="icon">
-            <option value="1">icon 1</option>
-            <option value="2">icon 2</option>
-            <option value="3">icon 3</option>
-          </select> <!-- TODO -->
+          <input type="hidden" name="icon"> <!-- TODO -->
+          <div id="icon-choices">
+            <span class="glyphicon glyphicon-star"></span>
+            <span class="glyphicon glyphicon-ok"></span>
+            <span class="glyphicon glyphicon-remove"></span>
+            <span class="glyphicon glyphicon-music"></span>
+            <span class="glyphicon glyphicon-glass"></span>
+            <span class="glyphicon glyphicon-heart"></span>
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="glyphicon glyphicon-book"></span>
+            <span class="glyphicon glyphicon-check"></span>
+            <span class="glyphicon glyphicon-plane"></span>
+            <span class="glyphicon glyphicon-comment"></span>
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            <span class="glyphicon glyphicon-usd"></span>
+            <span class="glyphicon glyphicon-tree-conifer"></span>
+            <span class="glyphicon glyphicon-grain"></span>
+            <span class="glyphicon glyphicon-text-background"></span>
+            <span class="glyphicon glyphicon-education"></span>
+            <span class="glyphicon glyphicon-camera"></span>
+            <span class="glyphicon glyphicon-asterisk"></span>
+            <span class="glyphicon glyphicon-road"></span>
+
+          </div>
 
           <input type="hidden" name="user_id" value="<%=session[:user_id]%>">
           <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
         </div>
-
+        
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
