@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   
   def create
+    
     u = User.create(
-      email: params['email'],
+      email: params['email'].downcase,
       password: params['password'] # HAS TO BE password, not password_digest
     )
 

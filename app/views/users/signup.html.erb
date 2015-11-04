@@ -3,7 +3,7 @@
 
 <form action="/users" method="POST">
   <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-  <input type="text" name="email" placeholder="Email">
+  <input type="email" name="email" placeholder="Email">
   <input type="password" name="password" placeholder="Password">
 
   <button>Sign up</button>
