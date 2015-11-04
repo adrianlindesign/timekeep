@@ -7,12 +7,8 @@
 <%= render 'users/analysis_partials/navbar/time_period' %>
 
 
-<!-- <div id="chart_div"></div>
- -->
 <section id="data-analysis-screen">
-  <h1>data analysis</h1>
-  
- 
+
 
   <section id="data-stacked-barchart">
     <%= render 'users/analysis_partials/charts/columnchart' %>
@@ -22,120 +18,113 @@
     <%= render 'users/analysis_partials/charts/donutchart' %>
   </section>
 
-
-  
-
-
-  
-
-  <script>
-    function hmsToSeconds(s) {
-      var b = s.split(':');
-      return b[0]*3600 + b[1]*60 + (+b[2] || 0);
-    }
-
-    function secondsToHMS(secs) {
-      function z(n){return (n<10?'0':'') + n;}
-      var sign = secs < 0? '-':'';
-      secs = Math.abs(secs);
-      return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
-    }
-
-    //add a .getWeek() method to the Date() object
-    Date.prototype.getWeek = function() {
-        var onejan = new Date(this.getFullYear(), 0, 1);
-        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-    }
-
-
-
-    function getAcceptablePeriodsArray(sampledPeriod) {
-    
-      var formatDate = function(date){  
-            var dd = date.getDate(),
-                mm = date.getMonth() + 1,
-                yyyy = date.getFullYear();
-            if(dd < 10) {
-              dd = '0' + dd
-            }
-            if(mm < 10) {
-              mm = '0' + mm
-            }
-            date = yyyy + '-' + mm + '-' + dd;
-            return date;
-          },
-          lastNDays = function(n){
-            var result = [];
-            for (var i=0; i<n; i++) {
-                var d = new Date();
-                d.setDate(d.getDate() - i);
-                result.push( formatDate(d) )
-            }
-
-            return result;
-          }
-          
-
-
-          sampledPeriodRouter = {
-            'week': lastNDays(7),
-            'month': lastNDays(30),
-            'year': lastNDays(365)
-          };
-
-        return sampledPeriodRouter[sampledPeriod];
-        
-    }
-
-    $(document).ready(function(){
-
-      $('#period-bar button').on('click', function(){
-        var selectedPeriod = $(this).val();
-        
-        /* donut chart */
-        var donutChartDiv = $('#donutchart div')[0],
-            donutChartArray = getDonutChartArray(dataHash, selectedPeriod),
-            donutChartOptions = {
-              title: 'Time spent',
-              pieHole: 0.4
-            },
-            donutChartTitle = $(donutChartDiv).parent().children('.chart-title');
-
-        makeDonutChart(donutChartArray, donutChartDiv, donutChartOptions);
-        newDonutChartTitle =  selectedPeriod;
-        donutChartTitle.html('Donut chart for this ' + selectedPeriod);
-
-
-        /* column chart */
-        var columnChartDiv = $('#columnchart div')[0],
-            columnChartArray = getColumnChartArray(dataHash, selectedPeriod),
-            columnChartOptions = {
-              legend: { position: 'top', maxLines: 3 },
-              bar: { groupWidth: '75%' },
-              isStacked: true
-            },
-            columnChartTitle = $(columnChartDiv).parent().children('.chart-title');
-            
-        makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
-        columnChartTitle.html('Column chart for this ' + selectedPeriod);
-
-        //Aesthetics: removing the default button selection
-        $('#period-bar button').removeClass('active');
-        $(this).addClass('active');
-
-      }); 
-
-
-      /* week is the default selected upon navigating to this page */
-      $('#period-bar').children('button[value="week"]').click().addClass('active');
-
-    });
-    
-  </script>
-
-
 </section>
 
+
+<script>
+  function hmsToSeconds(s) {
+    var b = s.split(':');
+    return b[0]*3600 + b[1]*60 + (+b[2] || 0);
+  }
+
+  function secondsToHMS(secs) {
+    function z(n){return (n<10?'0':'') + n;}
+    var sign = secs < 0? '-':'';
+    secs = Math.abs(secs);
+    return sign + z(secs/3600 |0) + ':' + z((secs%3600) / 60 |0) + ':' + z(secs%60);
+  }
+
+  //add a .getWeek() method to the Date() object
+  Date.prototype.getWeek = function() {
+      var onejan = new Date(this.getFullYear(), 0, 1);
+      return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  }
+
+
+
+  function getAcceptablePeriodsArray(sampledPeriod) {
+  
+    var formatDate = function(date){  
+          var dd = date.getDate(),
+              mm = date.getMonth() + 1,
+              yyyy = date.getFullYear();
+          if(dd < 10) {
+            dd = '0' + dd
+          }
+          if(mm < 10) {
+            mm = '0' + mm
+          }
+          date = yyyy + '-' + mm + '-' + dd;
+          return date;
+        },
+        lastNDays = function(n){
+          var result = [];
+          for (var i=0; i<n; i++) {
+              var d = new Date();
+              d.setDate(d.getDate() - i);
+              result.push( formatDate(d) )
+          }
+
+          return result;
+        }
+        
+
+
+        sampledPeriodRouter = {
+          'week': lastNDays(7),
+          'month': lastNDays(30),
+          'year': lastNDays(365)
+        };
+
+      return sampledPeriodRouter[sampledPeriod];
+      
+  }
+
+  $(document).ready(function(){
+
+    $('#period-bar button').on('click', function(){
+      var selectedPeriod = $(this).val();
+      
+      /* donut chart */
+      var donutChartDiv = $('#donutchart div')[0],
+          donutChartArray = getDonutChartArray(dataHash, selectedPeriod),
+          donutChartOptions = {
+            title: 'Time spent',
+            pieHole: 0.4
+          },
+          donutChartTitle = $(donutChartDiv).parent().children('.chart-title');
+
+      makeDonutChart(donutChartArray, donutChartDiv, donutChartOptions);
+      newDonutChartTitle =  selectedPeriod;
+      donutChartTitle.html('Donut chart for this ' + selectedPeriod);
+
+
+      /* column chart */
+      var columnChartDiv = $('#columnchart div')[0],
+          columnChartArray = getColumnChartArray(dataHash, selectedPeriod),
+          columnChartOptions = {
+            legend: { position: 'top', maxLines: 3 },
+            bar: { groupWidth: '75%' },
+            isStacked: true
+          },
+          columnChartTitle = $(columnChartDiv).parent().children('.chart-title');
+
+      makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
+      columnChartTitle.html('Column chart for this ' + selectedPeriod);
+
+      //Aesthetics: removing the default button selection
+      $('#period-bar button').removeClass('active');
+      $(this).addClass('active');
+
+    }); 
+
+
+    /* week is the default selected upon navigating to this page */
+    $('#period-bar').children('button[value="week"]').click().addClass('active');
+
+  });
+  
+</script>
 
 
 

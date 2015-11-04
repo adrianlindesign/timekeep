@@ -35,6 +35,9 @@
   <!-- hidden new entry modal -->
   <%= render 'home/modal_partials/new_entry' %>
 
+  <!-- hidden new category modal -->
+  <%= render 'home/modal_partials/new_category' %>
+
 </main>
 
 
@@ -103,9 +106,10 @@
 
 
   $(document).ready(function(){
-    var newEntryForm = $('#new-entry-form');
+    var newEntryForm = $('#new-entry-form'),
+        newEntryModal = $('#new-entry');
 
-    /* event listener: new entry modal */
+    /* event listener: NEW ENTRY MODAL */
     $('.hour').on('click', function(){
 
       var startHour = this.id.split('-')[1],
@@ -118,7 +122,7 @@
       $('input[name="endtime"]').val(durations['endtime']);
       $('input[name="entry_date"]').val( new Date().toDateInputValue() );
 
-      $('#new-entry').modal('toggle');
+      newEntryModal.modal('toggle');
     });
 
     /* event listener: submitting new entry form */
@@ -134,12 +138,11 @@
     });
 
 
+    /* event listener: NEW CATEGORY MODAL */
+    $('#new-category-btn').on('click', function(){
+      newEntryModal.modal('toggle');
+      $('#new-category').modal('toggle');
 
-
-
-    /* show categories screen */
-    $('#category-screen-link').on('click', function(){
-      $('#new-category-screen').show();
     });
   });
   
