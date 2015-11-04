@@ -6,6 +6,7 @@
 
         <div class="modal-header">
           <h4 class="modal-title" id="myModalLabel">Edit / Create Category</h4>
+          <span id="chosen-icon" class="glyphicon glyphicon-star"></span>
           <input type="text" name="name" list="categories-list"/>
           <datalist id="categories-list">
             <%@categories.each do |c|%>
@@ -55,3 +56,21 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('#icon-choices .glyphicon').on('click', function(){
+      var thisIcon = $(this);
+          iconClass = $(this).attr('class'),
+          iconName = iconClass.split('-')[1];
+
+      //remove selected glow
+      $('.glyphicon').removeClass('selected');
+      thisIcon.addClass('selected');
+
+      //put to input
+      $('input[name="icon"]').val(iconName);
+      $('#chosen-icon').removeAttr('class').addClass(iconClass);
+    });
+  });
+</script>
