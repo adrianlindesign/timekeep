@@ -110,14 +110,12 @@
         var columnChartDiv = $('#columnchart div')[0],
             columnChartArray = getColumnChartArray(dataHash, selectedPeriod),
             columnChartOptions = {
-              // width: 600,
-              // height: 400,
               legend: { position: 'top', maxLines: 3 },
               bar: { groupWidth: '75%' },
               isStacked: true
             },
             columnChartTitle = $(columnChartDiv).parent().children('.chart-title');
-
+            
         makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
         columnChartTitle.html('Column chart for this ' + selectedPeriod);
 
@@ -128,9 +126,7 @@
       }); 
 
 
-      
-
-      /* default button selection */
+      /* week is the default selected upon navigating to this page */
       $('#period-bar').children('button[value="week"]').click().addClass('active');
 
     });

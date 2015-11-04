@@ -43,14 +43,15 @@
       }
 
       var categoryHrsOnDays = {
-        name: cat,
+        name: cat, 
+        Saturday: 0, 
         Sunday: 0,
         Monday: 0,
         Tuesday: 0,
         Wednesday: 0,
         Thurday: 0,
-        Friday: 0,
-        Saturday: 0
+        Friday: 0
+        // TODO: I have no idea why the hash must be arranged as such. But without it like this, all the entry dates are shifted back one day. If I increase the index number, errors occur. This fixes it.
       },
       categoryEntries = dataHash[cat]['entries'],
       categoryEntriesLength = categoryEntries.length;
@@ -66,6 +67,7 @@
         // with starttime and endtime find duration in Hrs
         var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600,
             entryDay = getDay(entry_date);
+            
 
         // here if you want to restrict insertion TODO
 
@@ -86,8 +88,8 @@
       /* insert data from categoryHrsOnDays into chartData; */
       var i = 0;
       for (var item in categoryHrsOnDays) {
-        var chartDataArray = chartData[i],
-            indexToInsertAt = chartDataArray.length - 1;
+        var chartDataArray = chartData[i];
+        var indexToInsertAt = chartDataArray.length + 1;
 
         chartDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);        
         i ++
