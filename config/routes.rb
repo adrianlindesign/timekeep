@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   get '/users/:id/analysis' => 'users#analysis'
 
+  get '/users/:id/data_hash' => 'users#data_hash'
+
   get '/settings' => 'users#settings'
 
 

@@ -81,40 +81,56 @@
   }
 
   $(document).ready(function(){
-
+    // var dataHash;
     $('#period-bar button').on('click', function(){
-      var selectedPeriod = $(this).val();
-      
-      /* donut chart */
-      var donutChartDiv = $('#donutchart div')[0],
-          donutChartArray = getDonutChartArray(dataHash, selectedPeriod),
-          donutChartOptions = {
-            title: 'Time spent',
-            pieHole: 0.4
-          },
-          donutChartTitle = $(donutChartDiv).parent().children('.chart-title');
-
-      makeDonutChart(donutChartArray, donutChartDiv, donutChartOptions);
-      newDonutChartTitle =  selectedPeriod;
-      donutChartTitle.html('Donut chart for this ' + selectedPeriod);
-
-
-      /* column chart */
-      var columnChartDiv = $('#columnchart div')[0],
-          columnChartArray = getColumnChartArray(dataHash, selectedPeriod),
-          columnChartOptions = {
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '75%' },
-            isStacked: true
-          },
-          columnChartTitle = $(columnChartDiv).parent().children('.chart-title');
-
-      makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
-      columnChartTitle.html('Column chart for this ' + selectedPeriod);
+      var sessionId = $('#session-id').val(),
+          selectedPeriod = $(this).val();
 
       //Aesthetics: removing the default button selection
       $('#period-bar button').removeClass('active');
       $(this).addClass('active');
+
+      $.ajax('/users/' + sessionId + '/data_hash', {
+        success: function(data) {
+          
+          dataHash = data;
+
+          /* donut chart */
+          var donutChartDiv = $('#donutchart div')[0],
+              donutChartArray = getDonutChartArray(dataHash, selectedPeriod),
+              donutChartOptions = {
+                title: 'Time spent',
+                pieHole: 0.4
+              },
+              donutChartTitle = $(donutChartDiv).parent().children('.chart-title');
+
+          makeDonutChart(donutChartArray, donutChartDiv, donutChartOptions);
+          newDonutChartTitle =  selectedPeriod;
+          donutChartTitle.html('Donut chart for this ' + selectedPeriod);
+
+
+          /* column chart */
+          var columnChartDiv = $('#columnchart div')[0],
+              columnChartArray = getColumnChartArray(dataHash, selectedPeriod),
+              columnChartOptions = {
+                legend: { position: 'top', maxLines: 3 },
+                bar: { groupWidth: '75%' },
+                isStacked: true
+              },
+              columnChartTitle = $(columnChartDiv).parent().children('.chart-title');
+
+          makeColumnChart(columnChartArray, columnChartDiv, columnChartOptions);
+          columnChartTitle.html('Column chart for this ' + selectedPeriod);
+        }, 
+        error: function(){
+          console.log('ajax failed');
+        }
+      });
+      
+      
+      
+
+      
 
     }); 
 
