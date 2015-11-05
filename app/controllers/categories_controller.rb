@@ -9,18 +9,21 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    binding.pry
     user_categories = Category.where( {user_id: params['user_id']} ) 
     same_category = user_categories.find_by( {name: params['name']} )
 
     if same_category  # if category with same user_id and name exists, update icon
-      same_category.update( {icon: params['icon']} )  #TODO: make it UPDATEABLE!!!!!!!!!!!!!!
+      same_category.update( {
+          icon: params['icon'],  
+          color: params['color']
+      })  #TODO: make it UPDATEABLE!!!!!!!!!!!!!!
       puts 'Category icon updated'
     else #if category with same user_id and name doesn't exist, create new
       c = Category.create(
         name: params['name'],
         user_id: params['user_id'],
-        icon: params['icon']
+        icon: params['icon'],
+        color: params['color']
       )
     end
 
