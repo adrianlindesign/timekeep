@@ -67,6 +67,7 @@ class UsersController < ApplicationController
 
   def settings 
     @users = User.all
+    @categories = Category.all
     render :settings
   end
 end

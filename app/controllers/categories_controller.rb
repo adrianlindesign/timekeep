@@ -41,6 +41,8 @@ class CategoriesController < ApplicationController
   def destroy
     c = Category.find( params[:id] )
     c.destroy
+
+    redirect_to request.referrer
   end
 
   def update

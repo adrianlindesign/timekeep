@@ -13,6 +13,12 @@
     #login-button-form button {
       width: 20vw;
     }
+    .edit-category {
+      color:lightgrey;
+    }
+    .delete-category-btn {
+      float:left;
+    }
   </style>
 <h1>Settings</h1>
 
@@ -32,6 +38,61 @@
     <button type="submit" class="btn btn-default">Log out</button>
   </form>
 
+  <!-- Categories -->
+  <h3>My Categories</h3>
+  <%@categories.each do |cat|%>
+    <ul>
+      <li>
+        <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
+        <%=cat[:name]%>
+        <span class="edit-category glyphicon glyphicon-cog" value="<%=cat[:name]%>"></span>
+
+        <!-- Modal -->
+        <div class="modal fade modal-edit-category" id="modal-<%=cat[:name]%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                
+                <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
+                <%=cat[:name]%>
+                
+              </div>
+
+              <div class="modal-body">
+
+                <!-- edit form -->
+                <form action="">
+                  <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+                </form>
+
+                
+              </div>
+            
+              <div class="modal-footer">
+                <!-- delete form -->
+                <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+                  <button type="submit" class="btn btn-default delete-category-btn"><span class="glyphicon glyphicon-trash"></span></button>
+                </form>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+
+   
+
+
+
+  <%end%>
+
 <%else%>
   <h1>Not logged in</h1>
 
@@ -46,12 +107,13 @@
       <input type="password" name="password" class="form-control"placeholder="Password">
     </div>
     <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">Log in</button>
   </form>
 
   <!-- sign up button -->
   <a href="/users/new">Sign up</a>
 <%end%>
+
 
 
 <h3>About Timekeep</h3>
@@ -63,3 +125,23 @@
   Timekeep was made by Adrian Mh Lin as a personal project because he could not find any app out there that did what he needed it to do. Adrian Mh Lin is a web developer, UX designer, and linguist. In his free time Adrian likes making web apps and improving life's user experience.
 </p>
 
+<script>
+  $(document).ready(function(){
+    $('.edit-category').on('click', function(){
+      
+      var thisCat = $(this).attr('value');
+
+      $('#modal-' + thisCat).modal('toggle');
+
+      // catModal.modal('toggle');
+      //update the details to be shown on the modal
+
+      //when clicking the modal, ajax call to update
+
+      //Confirm: Do you really want to delete this category?
+      $('.delete-category-btn').on('click', function(){
+        return confirm('Are you sure you want to delete this category? All entries made under this category will also be deleted!');
+      });
+    });
+  });
+</script>
