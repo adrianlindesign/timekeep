@@ -49,8 +49,7 @@ class CategoriesController < ApplicationController
     user_categories = Category.where( {user_id: params['user_id']} ) 
     same_category_name = user_categories.find_by( {name: params['name']} )
    
-    unless same_category_name.user_id == params['user_id'] #allows it to edit itself  but not to a name that exists for another category
-      c = Category.find( params[:id] )
+    unless same_category_name.user_id == params['user_id']
       c.update({
         name: params['name'],
         icon: params['icon'],
