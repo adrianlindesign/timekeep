@@ -59,7 +59,7 @@ class CategoriesController < ApplicationController
     end
     
 
-    redirect_to request.referrer
+    redirect_to '/'
   end
 
 end
