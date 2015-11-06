@@ -164,9 +164,9 @@
   function setScrollStart(){
     var timeNow = new Date().getHours();
 
-    if (timeNow > 7) {
+    if (timeNow < 7) {
       window.scrollTo(0, 0);
-    } else if (timeNow > 15) {
+    } else if (timeNow < 15) {
       window.scrollTo(0, 400);
     } else {
       window.scrollTo(0, 800);
