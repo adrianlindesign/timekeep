@@ -50,6 +50,7 @@ class CategoriesController < ApplicationController
     same_category_name = user_categories.find_by( {name: params['name']} )
    
     unless same_category_name.user_id == params['user_id']
+      c = Category.find(params[:id])
       c.update({
         name: params['name'],
         icon: params['icon'],
@@ -58,7 +59,7 @@ class CategoriesController < ApplicationController
     end
     
 
-    redirect_to '/'
+    redirect_to request.referrer
   end
 
 end
