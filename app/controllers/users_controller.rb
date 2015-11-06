@@ -67,7 +67,7 @@ class UsersController < ApplicationController
 
   def settings 
     @users = User.all
-    @categories = Category.all
+    @categories = Category.where(user_id: session[:user_id])
     render :settings
   end
 end
