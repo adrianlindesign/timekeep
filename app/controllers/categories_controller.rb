@@ -46,7 +46,14 @@ class CategoriesController < ApplicationController
   end
 
   def update
+    c = Category.find( params[:id] )
+    c.update({
+      name: params['name'],
+      icon: params['icon'],
+      color: params['color']
+    })
 
+    redirect_to request.referrer
   end
 
 end

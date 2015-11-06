@@ -70,7 +70,7 @@
     $('#icon-choices .glyphicon').on('click', function(){
       var thisIcon = $(this);
           iconClass = $(this).attr('class'),
-          iconName = iconClass.split('-')[1];
+          iconName = iconClass.split('glyphicon-')[1];
 
       //remove selected glow
       $('.glyphicon').removeClass('selected');

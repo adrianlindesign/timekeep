@@ -18,7 +18,9 @@
     }
     .delete-category-btn {
       float:left;
+      margin: -12vw 0 0 4vw;
     }
+
   </style>
 <h1>Settings</h1>
 
@@ -52,68 +54,69 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
 
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                
-                <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
-                <%=cat[:name]%>
-                
-              </div>
-
-              <div class="modal-body">
-
-                <!-- edit form -->
-                <form action="/users/<%=cat[:user_id]%>/categories/<%cat[:id]%>" method="POST">
-                  <div class="edit-category-icon">
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-ok"></span>
-                    <span class="glyphicon glyphicon-remove"></span>
-                    <span class="glyphicon glyphicon-music"></span>
-                    <span class="glyphicon glyphicon-glass"></span>
-                    <span class="glyphicon glyphicon-heart"></span>
-                    <span class="glyphicon glyphicon-user"></span>
-                    <span class="glyphicon glyphicon-home"></span>
-                    <span class="glyphicon glyphicon-book"></span>
-                    <span class="glyphicon glyphicon-check"></span>
-                    <span class="glyphicon glyphicon-plane"></span>
-                    <span class="glyphicon glyphicon-comment"></span>
-                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                    <span class="glyphicon glyphicon-usd"></span>
-                    <span class="glyphicon glyphicon-tree-conifer"></span>
-                    <span class="glyphicon glyphicon-grain"></span>
-                    <span class="glyphicon glyphicon-text-background"></span>
-                    <span class="glyphicon glyphicon-education"></span>
-                    <span class="glyphicon glyphicon-camera"></span>
-                    <span class="glyphicon glyphicon-road"></span>
-                    <span class="glyphicon glyphicon-phone"></span>
-                    <span class="glyphicon glyphicon-credit-card"></span>
-                    <span class="glyphicon glyphicon-bed"></span>
-                    <span class="glyphicon glyphicon-wrench"></span>
-                    <span class="glyphicon glyphicon-warning-sign"></span>
-                    <span class="glyphicon glyphicon-picture"></span>
-                    <span class="glyphicon glyphicon-tags"></span>
-                    <span class="glyphicon glyphicon-envelope"></span>
-                  </div>
+              <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  
+                  <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
                   <input type="text" name="name" value="<%=cat[:name]%>">
-                  <input type="hidden" name="icon" value="<%=cat[:icon]%>"> 
-                  <input type="color" name="color" value="<%=cat[:color]%>">
+                  
+                </div>
 
-                  <input type="hidden" name="_method" value="PUT">
-                  <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-                </form>
+                <div class="modal-body">
 
-                
-              </div>
-            
-              <div class="modal-footer">
-                <!-- delete form -->
-                <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
-                  <input type="hidden" name="_method" value="DELETE">
-                  <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-                  <button type="submit" class="btn btn-default delete-category-btn"><span class="glyphicon glyphicon-trash"></span></button>
-                </form>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
+                  <!-- edit form -->
+                  
+                    <div class="edit-category-icon">
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-ok"></span>
+                      <span class="glyphicon glyphicon-remove"></span>
+                      <span class="glyphicon glyphicon-music"></span>
+                      <span class="glyphicon glyphicon-glass"></span>
+                      <span class="glyphicon glyphicon-heart"></span>
+                      <span class="glyphicon glyphicon-user"></span>
+                      <span class="glyphicon glyphicon-home"></span>
+                      <span class="glyphicon glyphicon-book"></span>
+                      <span class="glyphicon glyphicon-check"></span>
+                      <span class="glyphicon glyphicon-plane"></span>
+                      <span class="glyphicon glyphicon-comment"></span>
+                      <span class="glyphicon glyphicon-shopping-cart"></span>
+                      <span class="glyphicon glyphicon-usd"></span>
+                      <span class="glyphicon glyphicon-tree-conifer"></span>
+                      <span class="glyphicon glyphicon-grain"></span>
+                      <span class="glyphicon glyphicon-text-background"></span>
+                      <span class="glyphicon glyphicon-education"></span>
+                      <span class="glyphicon glyphicon-camera"></span>
+                      <span class="glyphicon glyphicon-road"></span>
+                      <span class="glyphicon glyphicon-phone"></span>
+                      <span class="glyphicon glyphicon-credit-card"></span>
+                      <span class="glyphicon glyphicon-bed"></span>
+                      <span class="glyphicon glyphicon-wrench"></span>
+                      <span class="glyphicon glyphicon-warning-sign"></span>
+                      <span class="glyphicon glyphicon-picture"></span>
+                      <span class="glyphicon glyphicon-tags"></span>
+                      <span class="glyphicon glyphicon-envelope"></span>
+                    </div>
+                    <input type="hidden" name="icon" value="<%=cat[:icon]%>"> 
+                    <input type="color" name="color" value="<%=cat[:color]%>">
+
+                    <input type="hidden" name="_method" value="PUT">
+                    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+                  
+
+                  
+                </div>
+                <div class="modal-footer">
+                  
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </form>
+              <!-- delete form -->
+              <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+                <button type="submit" class="btn btn-default delete-category-btn"><span class="glyphicon glyphicon-trash"></span></button>
+              </form>
 
             </div>
           </div>
@@ -165,22 +168,21 @@
     $('.edit-category').on('click', function(){
       
       var thisCat = $(this).attr('value');
-
       $('#modal-' + thisCat).modal('toggle');
 
-      // catModal.modal('toggle');
-      //update the details to be shown on the modal
 
-      //when clicking the modal, ajax call to update
+
 
       //Edit - update hidden icon input value
       $('.edit-category-icon span').on('click', function(){
         var thisIcon = $(this);
             iconClass = $(this).attr('class'),
-            iconName = iconClass.split('-')[1],
-            iconInput = $(this).parent().parent().find('input[name="icon"]');
+            iconName = iconClass.split('glyphicon-')[1],
+            iconInput = $(this).parent().parent().find('input[name="icon"]'),
+            chosenIcon = $(this).parent().parent().parent().parent().find('.modal-header').find('.glyphicon');
 
         iconInput.val(iconName);
+        chosenIcon.removeAttr('class').addClass('glyphicon glyphicon-' + iconName);
       });
 
       //Confirm: Do you really want to delete this category?
