@@ -45,7 +45,7 @@
   <%@categories.each do |cat|%>
     <ul>
       <li>
-        <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
+        <span class="glyphicon glyphicon-<%=cat[:icon]%>" style="color:<%=cat[:color]%>"></span> 
         <%=cat[:name]%>
         <span class="edit-category glyphicon glyphicon-cog" value="<%=cat[:name]%>"></span>
 
@@ -170,19 +170,25 @@
       var thisCat = $(this).attr('value');
       $('#modal-' + thisCat).modal('toggle');
 
+      //Edit - update color related
+      $('input[name="color"]').change(function(){
+        var newColor = $(this).val(),
+            icons = $(this).parent().parent().find('.glyphicon');
 
+        icons.css('color', newColor);
+      });
 
-
-      //Edit - update hidden icon input value
+      //Edit - update icon related
       $('.edit-category-icon span').on('click', function(){
         var thisIcon = $(this);
             iconClass = $(this).attr('class'),
-            iconName = iconClass.split('glyphicon-')[1],
+            newIcon = iconClass.split('glyphicon-')[1],
             iconInput = $(this).parent().parent().find('input[name="icon"]'),
             chosenIcon = $(this).parent().parent().parent().parent().find('.modal-header').find('.glyphicon');
 
-        iconInput.val(iconName);
-        chosenIcon.removeAttr('class').addClass('glyphicon glyphicon-' + iconName);
+        iconInput.val(newIcon);
+        chosenIcon.removeAttr('class')
+                  .addClass('glyphicon glyphicon-' + newIcon);
       });
 
       //Confirm: Do you really want to delete this category?
