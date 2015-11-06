@@ -19,40 +19,11 @@
 
 
         <div class="modal-body">
-          <input type="hidden" name="icon"> <!-- TODO -->
-          <div id="icon-choices">
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-ok"></span>
-            <span class="glyphicon glyphicon-remove"></span>
-            <span class="glyphicon glyphicon-music"></span>
-            <span class="glyphicon glyphicon-glass"></span>
-            <span class="glyphicon glyphicon-heart"></span>
-            <span class="glyphicon glyphicon-user"></span>
-            <span class="glyphicon glyphicon-home"></span>
-            <span class="glyphicon glyphicon-book"></span>
-            <span class="glyphicon glyphicon-check"></span>
-            <span class="glyphicon glyphicon-plane"></span>
-            <span class="glyphicon glyphicon-comment"></span>
-            <span class="glyphicon glyphicon-shopping-cart"></span>
-            <span class="glyphicon glyphicon-usd"></span>
-            <span class="glyphicon glyphicon-tree-conifer"></span>
-            <span class="glyphicon glyphicon-grain"></span>
-            <span class="glyphicon glyphicon-text-background"></span>
-            <span class="glyphicon glyphicon-education"></span>
-            <span class="glyphicon glyphicon-camera"></span>
-            <span class="glyphicon glyphicon-road"></span>
-            <span class="glyphicon glyphicon-phone"></span>
-            <span class="glyphicon glyphicon-credit-card"></span>
-            <span class="glyphicon glyphicon-bed"></span>
-            <span class="glyphicon glyphicon-wrench"></span>
-            <span class="glyphicon glyphicon-warning-sign"></span>
-            <span class="glyphicon glyphicon-picture"></span>
-            <span class="glyphicon glyphicon-tags"></span>
-            <span class="glyphicon glyphicon-envelope"></span>
-          </div>
+          <input type="hidden" name="icon"> 
+          <%= render 'users/settings_partials/icon_choices' %>
 
-          <input type="color" name="color">
-
+          <input type="hidden" name="color">
+          <%= render 'users/settings_partials/color_swatches' %>
           <input type="hidden" name="user_id" value="<%=session[:user_id]%>">
           <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
         </div>
@@ -67,7 +38,9 @@
 
 <script>
   $(document).ready(function(){
-    $('#icon-choices .glyphicon').on('click', function(){
+
+    /* GLYPHICONS */
+    $('.edit-category-icon .glyphicon').on('click', function(){
       var thisIcon = $(this);
           iconClass = $(this).attr('class'),
           iconName = iconClass.split('glyphicon-')[1];
@@ -78,17 +51,25 @@
 
       //put to input
       $('input[name="icon"]').val(iconName);
-      $('#chosen-icon').removeAttr('class').addClass(iconClass);
+      $('#chosen-icon').removeAttr('class').addClass(iconClass);   
+    });
 
-      //Edit - prevent bad characters from being typed in
-      $('input[name="name"]').keypress(function(event){
-        var keyVal = event.which,
-            allowedKeys = [48,49,50,51,52,53,54,55,56,57, 45, 97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122, 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90] //only a-z, A-Z, 0-9, and -
-            if (allowedKeys.indexOf(keyVal) === -1) {
-              event.preventDefault();
-            } 
-      });
+    //Edit - prevent bad characters from being typed in
+    $('input[name="name"]').keypress(function(event){
+      var keyVal = event.which,
+          allowedKeys = [48,49,50,51,52,53,54,55,56,57, 45, 97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122, 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90] //only a-z, A-Z, 0-9, and -
+      if (allowedKeys.indexOf(keyVal) === -1) {
+        event.preventDefault();
+      } 
+    });
 
+    //Edit - update color related
+    $('.swatch').on('click', function(){
+      var newHex = $(this).attr('value'),
+          icons = $(this).parent().parent().parent().find('.glyphicon');
+
+      icons.css('color', newHex);
+      $(this).parent().parent().find('input[name="color"]').val(newHex);        
     });
   });
 </script>

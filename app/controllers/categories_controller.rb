@@ -46,10 +46,8 @@ class CategoriesController < ApplicationController
   end
 
   def update
-    binding.pry
     user_categories = Category.where( {user_id: params['user_id']} ) 
     same_category_name = user_categories.find_by( {name: params['name']} )
-
    
     unless same_category_name
       c = Category.find( params[:id] )
