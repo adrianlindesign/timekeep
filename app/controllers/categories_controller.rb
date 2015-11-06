@@ -46,12 +46,18 @@ class CategoriesController < ApplicationController
   end
 
   def update
-    c = Category.find( params[:id] )
-    c.update({
-      name: params['name'],
-      icon: params['icon'],
-      color: params['color']
-    })
+
+    alreadyExists = Category.find_by(name: params['name']);
+
+    unless alreadyExists
+      c = Category.find( params[:id] )
+      c.update({
+        name: params['name'],
+        icon: params['icon'],
+        color: params['color']
+      })
+    end
+    
 
     redirect_to request.referrer
   end
