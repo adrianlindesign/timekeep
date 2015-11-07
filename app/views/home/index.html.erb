@@ -237,6 +237,24 @@
       //TODO: what to do if the hour is 24:00
       
       return newHr + ':' + newMins;
+    };
+
+    var makeTimeSlotEl = function(starttime, endtime){
+      var hoursSlot = $('.hour'),
+          hoursSlotLength = hoursSlot.length;
+
+      for (var i = 0; i < hoursSlotLength; i++){
+        var hour = $(hoursSlot[i]).find('h6').html(); // "00:00"
+        
+        if (hour === starttime) {
+          //create element for this div
+            //attach data from entry into it so when clicked, it can be clicked and its input is prefilled and when saved, it updates the corresponding row in the database
+
+          //then find the element corresponding to the slot before the endtime.
+            //create elements for each of these slots in between as above
+        }
+
+      }
     }
 
     //loop through categories
@@ -262,10 +280,13 @@
         
         //then create the time slot objects
         //TODO
-        debugger
+        makeTimeSlotEl(approxStart, approxEnd);
+        
       }    
     }
   }
+
+
 
   /*gets categories and entries based on date */
   function getDatesCatsAndEntries(thisDate){
