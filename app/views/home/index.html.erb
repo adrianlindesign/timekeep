@@ -160,7 +160,19 @@
 
 
     /* show the activities on the timeline for today */
-    showTimeSlots();
+    var sessionId = $('#session-id').val();
+    $.ajax('/users/' + sessionId + '/data_hash', {
+      success: function(data) {
+        var nowDate = new Date()
+        console.log('ajax succeeded');
+        dataHash = data;     
+           
+        setUpTimeline();
+      },
+      error: function(){
+        console.log('ajax failed');
+      }
+    });
 
   });
 
@@ -176,29 +188,60 @@
     }
   }
 
-  function showTimeSlots() {
+  
     
-    var sessionId = $('#session-id').val();
-    $.ajax('/users/' + sessionId + '/data_hash', {
-      success: function(data) {
-        console.log('ajax succeeded');
-        dataHash = data;     
-           
-        return generateTimeSlots();
-      },
-      error: function(){
-        console.log('ajax failed');
-      }
-    });
+    
+  
+  
+  function formatDate(date){  
+    var dd = date.getDate(),
+        mm = date.getMonth() + 1,
+        yyyy = date.getFullYear();
+    if(dd < 10) {
+      dd = '0' + dd
+    }
+    if(mm < 10) {
+      mm = '0' + mm
+    }
+    date = yyyy + '-' + mm + '-' + dd;
+    return date;
+  }     
 
-    var generateTimeSlots = function(){
-      
-      //Loop through categories
-      for (var cat in dataHash) {
+  function setUpTimeline(){
+    var date = formatDate( new Date() ),
+        datesCatsAndEntries = getDatesCatsAndEntries(date);
+
+    debugger;
+
+
+  }
+
+  /*gets categories and entries based on date */
+  function getDatesCatsAndEntries(thisDate){
+    var catsAndEntries = [];
+    //Loop through categories
+    for (var cat in dataHash) {
+      var thisCategory = {
+        'name': dataHash[cat]['name'],
+        'color': dataHash[cat]['color'],
+        'icon': dataHash[cat]['icon'],
+        'entries': []
+      };
+      //loop through entries in categories
+      for (var entry in dataHash[cat]['entries']) {
+        var thisEntry = dataHash[cat]['entries'][entry];
         
-        
+        //if the date is today's date, insert into array
+        if (thisEntry['entry_date'] === thisDate) {
+          thisCategory['entries'].push(thisEntry);
+        }
+      }
+      //if the category's entries is greater than zero, insert, else don't.
+      if (thisCategory['entries'].length > 0) {
+        catsAndEntries.push(thisCategory);
       }
     }
+    return catsAndEntries;
   }
 
 

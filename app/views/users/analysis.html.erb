@@ -45,39 +45,37 @@
   function getAcceptablePeriodsArray(sampledPeriod) {
   
     var formatDate = function(date){  
-          var dd = date.getDate(),
-              mm = date.getMonth() + 1,
-              yyyy = date.getFullYear();
-          if(dd < 10) {
-            dd = '0' + dd
-          }
-          if(mm < 10) {
-            mm = '0' + mm
-          }
-          date = yyyy + '-' + mm + '-' + dd;
-          return date;
-        },
-        lastNDays = function(n){
-          var result = [];
-          for (var i=0; i<n; i++) {
-              var d = new Date();
-              d.setDate(d.getDate() - i);
-              result.push( formatDate(d) )
-          }
-
-          return result;
+        var dd = date.getDate(),
+            mm = date.getMonth() + 1,
+            yyyy = date.getFullYear();
+        if(dd < 10) {
+          dd = '0' + dd
         }
-        
-
-
-        sampledPeriodRouter = {
-          'week': lastNDays(7),
-          'month': lastNDays(30),
-          'year': lastNDays(365)
-        };
-
-      return sampledPeriodRouter[sampledPeriod];
+        if(mm < 10) {
+          mm = '0' + mm
+        }
+        date = yyyy + '-' + mm + '-' + dd;
+        return date;
+      };
       
+    var lastNDays = function(n){
+        var result = [];
+        for (var i=0; i<n; i++) {
+          var d = new Date();
+          d.setDate(d.getDate() - i);
+          result.push( formatDate(d) );
+        }
+
+        return result;
+      };
+      
+    var sampledPeriodRouter = {
+        'week': lastNDays(7),
+        'month': lastNDays(30),
+        'year': lastNDays(365)
+      };
+      
+    return sampledPeriodRouter[sampledPeriod];  
   }
 
   $(document).ready(function(){
