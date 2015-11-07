@@ -83,17 +83,20 @@
 
 
       /* insert data from categoryHrsOnDays into chartData; */
-      var i = 0;
-      for (var item in categoryHrsOnDays) {
-        var chartDataArray = chartData[i];
-        var indexToInsertAt; 
+      var i = 0,
+          chartDataLength = chartData.length;
 
-        if (chartDataArray) { //not sure why we need this
-          indexToInsertAt = chartDataArray.length + 1;
+      while (i < chartDataLength) {
+        for (var item in categoryHrsOnDays) {
+          var chartDataArray = chartData[i],
+              indexToInsertAt = chartDataArray.length + 1;
+              
           chartDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);  
-        }    
-        i ++
-      }   
+              
+          i ++
+        }   
+      }
+      
     }
     return chartData;
   }
