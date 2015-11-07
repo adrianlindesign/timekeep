@@ -89,8 +89,8 @@
       while (i < chartDataLength) {
         for (var item in categoryHrsOnDays) {
           var chartDataArray = chartData[i],
-              indexToInsertAt = chartDataArray.length + 1;
-              
+              indexToInsertAt = chartDataArray.length - 1;
+
           chartDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);  
               
           i ++
