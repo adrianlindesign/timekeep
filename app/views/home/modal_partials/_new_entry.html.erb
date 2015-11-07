@@ -28,11 +28,11 @@
           </label>
 
           <label>Start
-            <input type="time" name="starttime" required>
+            <input type="time" step="1800" name="starttime" required>
           </label>
 
           <label>End
-            <input type="time" name="endtime" required>
+            <input type="time" step="1800" name="endtime" required>
           </label>
 
           <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
