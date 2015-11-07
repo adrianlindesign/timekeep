@@ -86,9 +86,12 @@
       var i = 0;
       for (var item in categoryHrsOnDays) {
         var chartDataArray = chartData[i];
-        var indexToInsertAt = chartDataArray.length + 1;
+        var indexToInsertAt; 
 
-        chartDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);        
+        if (chartDataArray) { //not sure why we need this
+          indexToInsertAt = chartDataArray.length + 1;
+          chartDataArray.splice(indexToInsertAt, 0, categoryHrsOnDays[item]);  
+        }    
         i ++
       }   
     }
