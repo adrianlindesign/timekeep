@@ -159,6 +159,9 @@
     setScrollStart();
 
 
+    /* show the activities on the timeline for today */
+    showTimeSlots();
+
   });
 
   function setScrollStart(){
@@ -170,6 +173,31 @@
       window.scrollTo(0, 400);
     } else {
       window.scrollTo(0, 800);
+    }
+  }
+
+  function showTimeSlots() {
+    
+    var sessionId = $('#session-id').val();
+    $.ajax('/users/' + sessionId + '/data_hash', {
+      success: function(data) {
+        console.log('ajax succeeded');
+        dataHash = data;     
+           
+        return generateTimeSlots();
+      },
+      error: function(){
+        console.log('ajax failed');
+      }
+    });
+
+    var generateTimeSlots = function(){
+      
+      //Loop through categories
+      for (var cat in dataHash) {
+        
+        
+      }
     }
   }
 
