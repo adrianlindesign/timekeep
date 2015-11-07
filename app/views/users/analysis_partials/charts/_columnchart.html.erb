@@ -40,14 +40,14 @@
       // }
 
       var categoryHrsOnDays = {
-        'name': cat, 
-        'Saturday': 0, 
+        'name': cat,   
         'Sunday': 0,
         'Monday': 0,
         'Tuesday': 0,
         'Wednesday': 0,
         'Thursday': 0,
-        'Friday': 0
+        'Friday': 0,
+        'Saturday': 0
         // TODO: I have no idea why the hash must be arranged as such. But without it like this, all the entry dates are shifted back one day. If I increase the index number, errors occur. This fixes it.
       },
       categoryEntries = dataHash[cat]['entries'],
