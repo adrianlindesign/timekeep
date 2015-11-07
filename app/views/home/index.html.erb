@@ -122,8 +122,8 @@
     $('.hour').on('click', function(){
 
       var startHour = this.id.split('-')[1],
-          startMinute = "00", //TODO make this customisable later
-          duration = "1::30";
+          startMinute = "00", 
+          duration = "1::00"; //entry defaults to an hour
 
       // Autopopulate [starttime, endtime, entry_date]
       var durations = getEntryDuration(startHour, startMinute, duration);
@@ -209,11 +209,34 @@
 
   function setUpTimeline(){
     var date = formatDate( new Date() ),
-        datesCatsAndEntries = getDatesCatsAndEntries(date);
+        datesCatsAndEntries = getDatesCatsAndEntries(date),
+        datesCatsAndEntriesLength = datesCatsAndEntries.length;
 
-        // debugger
+        
+
+    //loop through categories
+    for (var i = 0; i < datesCatsAndEntriesLength; i++) {
+
+      // approximate time slot; eg. 2:53-4:41 => 3:00-4:30
+      
+      // loop through entries of the category from datesCatsAndEntries
+      var entries = datesCatsAndEntries[i]['entries'],
+          entriesLength = datesCatsAndEntries[i]['entries'].length;
+
+      for (var t = 0; i < entriesLength; i++) {
+        var thisEntry = entries[t],
+            actualStart = thisEntry['starttime'].split('T')[1].substring(0, 5),
+            actualEnd = thisEntry['endtime'].split('T')[1].substring(0, 5),
+            approxStart,
+            approxEnd;
 
 
+        // calculate a new start and exit time. don't update the time here, because i want to put the original times into the time slot object, so when people click on it, tehy can get the original data
+
+        //then create the time slot objects
+        debugger
+      }    
+    }
   }
 
   /*gets categories and entries based on date */
