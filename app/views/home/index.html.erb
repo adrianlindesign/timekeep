@@ -212,7 +212,32 @@
         datesCatsAndEntries = getDatesCatsAndEntries(date),
         datesCatsAndEntriesLength = datesCatsAndEntries.length;
 
-        
+    var approximateTime = function(time) {
+      var hr = parseInt( time.split(':')[0] ),
+          mins = parseInt( time.split(':')[1] ),
+          newHr = hr,
+          newMins,
+          newTime;
+
+      if (mins < 15) {
+        newMins = "00";
+      } else if (mins < 45) {
+        newMins = "30";
+      } else {
+        newMins = "00";
+        newHr += 1;
+      }
+
+      newHr = newHr.toString();
+
+      if (newHr.length < 2) {
+        newHr = "0" + newHr;
+      }
+
+      //TODO: what to do if the hour is 24:00
+      
+      return newHr + ':' + newMins;
+    }
 
     //loop through categories
     for (var i = 0; i < datesCatsAndEntriesLength; i++) {
@@ -232,8 +257,11 @@
 
 
         // calculate a new start and exit time. don't update the time here, because i want to put the original times into the time slot object, so when people click on it, tehy can get the original data
-
+        approxStart = approximateTime(actualStart);
+        approxEnd = approximateTime(actualEnd);
+        
         //then create the time slot objects
+        //TODO
         debugger
       }    
     }
