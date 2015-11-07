@@ -10,7 +10,7 @@
   .selected {
     color:lightgreen;
   }
-  .entry-slot {
+  .half-hour-slot {
     width:100%;
     height:100%;
   }
@@ -243,21 +243,45 @@
       return newHr + ':' + newMins;
     };
 
-    var makeTimeSlotEl = function(starttime, endtime, entryId){
+    var makeTimelineEvent = function(starttime, endtime, entryId, entrysCatName, entrysCatColor, entrysCatIcon){
       var hoursSlot = $('.hour'),
           hoursSlotLength = hoursSlot.length;
 
+      var makeHalfHrSlot = function() {
+        var halfHrSlot = ''; 
 
+        halfHrSlot += '<div class="half-hour-slot" ';
+        //store entry and cat data
+        halfHrSlot += 'data-id="' + entryId + '" ';
+        halfHrSlot += 'data-cat-name="' + entrysCatName + '" ';
+        halfHrSlot += 'data-cat-color="' + entrysCatColor + '" ';
+        halfHrSlot += 'data-cat-icon="' + entrysCatIcon + '" ';
+
+        //do styles
+        halfHrSlot += 'style="background-color:' + entrysCatColor + ';"';
+        halfHrSlot += '></div>';
+
+        return halfHrSlot;
+      };
+
+      /* loop through all hour slots */
       for (var i = 0; i < hoursSlotLength; i++){
         var hour = $(hoursSlot[i]).find('h6').html(); // "00:00"
         
         if (hour === starttime) {
           //create element for this div
-          var entrySlot = '<div class="entry-slot"></div>';
+          
+          var halfHrSlot = makeHalfHrSlot();
 
-
+          //attach to first half hour of hour
           debugger
+          $($(hoursSlot[i]).children()[0]).append(halfHrSlot);
+          
+//TODO TODO TODO: instead of all this, maybe just attach these data to the appropriate time slots;
+          
             //attach data from entry into it so when clicked, it can be clicked and its input is prefilled and when saved, it updates the corresponding row in the database
+
+            //create eventListener
 
           //then find the element corresponding to the slot before the endtime.
             //create elements for each of these slots in between as above
@@ -279,12 +303,13 @@
         var thisEntry = entries[t],
             actualStart = thisEntry['starttime'].split('T')[1].substring(0, 5),
             actualEnd = thisEntry['endtime'].split('T')[1].substring(0, 5),
-            approxStart,
-            approxEnd,
             entryId = thisEntry['entry_id'],
-            entrysCat = datesCatsAndEntries[i]['name']; // todo;
-        debugger
-
+            entrysCatName = datesCatsAndEntries[i]['name'],
+            entrysCatColor = datesCatsAndEntries[i]['color'],
+            entrysCatIcon = datesCatsAndEntries[i]['icon'],
+            approxStart,
+            approxEnd;
+            
 
         // calculate a new start and exit time. don't update the time here, because i want to put the original times into the time slot object, so when people click on it, tehy can get the original data
         approxStart = approximateTime(actualStart);
@@ -292,7 +317,7 @@
         
         //then create the time slot objects
         //TODO
-        makeTimeSlotEl(approxStart, approxEnd, entryId);
+        makeTimelineEvent(approxStart, approxEnd, entryId, entrysCatName, entrysCatColor, entrysCatIcon);
         
       }    
     }
