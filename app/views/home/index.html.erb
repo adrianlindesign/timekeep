@@ -10,6 +10,10 @@
   .selected {
     color:lightgreen;
   }
+  .entry-slot {
+    width:100%;
+    height:100%;
+  }
 
 /*  #timeline {
     height:70vh;
@@ -239,15 +243,20 @@
       return newHr + ':' + newMins;
     };
 
-    var makeTimeSlotEl = function(starttime, endtime){
+    var makeTimeSlotEl = function(starttime, endtime, entryId){
       var hoursSlot = $('.hour'),
           hoursSlotLength = hoursSlot.length;
+
 
       for (var i = 0; i < hoursSlotLength; i++){
         var hour = $(hoursSlot[i]).find('h6').html(); // "00:00"
         
         if (hour === starttime) {
           //create element for this div
+          var entrySlot = '<div class="entry-slot"></div>';
+
+
+          debugger
             //attach data from entry into it so when clicked, it can be clicked and its input is prefilled and when saved, it updates the corresponding row in the database
 
           //then find the element corresponding to the slot before the endtime.
@@ -271,7 +280,10 @@
             actualStart = thisEntry['starttime'].split('T')[1].substring(0, 5),
             actualEnd = thisEntry['endtime'].split('T')[1].substring(0, 5),
             approxStart,
-            approxEnd;
+            approxEnd,
+            entryId = thisEntry['entry_id'],
+            entrysCat = datesCatsAndEntries[i]['name']; // todo;
+        debugger
 
 
         // calculate a new start and exit time. don't update the time here, because i want to put the original times into the time slot object, so when people click on it, tehy can get the original data
@@ -280,7 +292,7 @@
         
         //then create the time slot objects
         //TODO
-        makeTimeSlotEl(approxStart, approxEnd);
+        makeTimeSlotEl(approxStart, approxEnd, entryId);
         
       }    
     }
@@ -293,8 +305,9 @@
     var catsAndEntries = [];
     //Loop through categories
     for (var cat in dataHash) {
+      
       var thisCategory = {
-        'name': dataHash[cat]['name'],
+        'name': cat,
         'color': dataHash[cat]['color'],
         'icon': dataHash[cat]['icon'],
         'entries': []
