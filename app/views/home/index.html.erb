@@ -58,7 +58,6 @@
 
 
 
-
 <!-- TODO move script elsewhere-->
 <script>
   var timeSlotStart,
@@ -115,10 +114,27 @@
     return local.toJSON().slice(0,10);
   });
 
+  function updateEntryForm(isPut, entryId, newEntryForm) {
+   var categoryId = $('select[name="category_id"]').val(),
+        formAction = newEntryForm.attr('action'),
+        formAction = formAction.split('categories/')[0];
+        formAction += 'categories/' + categoryId + '/entries';
+    
+    if (isPut) { //if it is updating
+      var putInput = '<input type="hidden" name="_method" value="PUT">';
+      newEntryForm.append(putInput);
+      formAction += '/' + entryId;
+    }
+
+    newEntryForm.attr('action', formAction);
+    newEntryForm.submit();
+  }
 
   $(document).ready(function(){
     var newEntryForm = $('#new-entry-form'),
         newEntryModal = $('#new-entry');
+
+
 
     /* event listener: NEW ENTRY MODAL */
     $('.hour').on('click', function(){
@@ -137,15 +153,9 @@
     });
 
     /* event listener: submitting new entry form */
+    var submitBtn = $('#new-entry-submit');
     $('#new-entry-submit').on('click', function(){
-      var categoryId = $('select[name="category_id"]').val(),
-          formAction = newEntryForm.attr('action'),
-          formAction = formAction.split('categories/')[0];
-          formAction += 'categories/' + categoryId + '/entries';
-
-
-      newEntryForm.attr('action', formAction);
-      newEntryForm.submit();
+      updateEntryForm(false, 0, newEntryForm);
     });
 
 
@@ -286,13 +296,23 @@
         
         thisSlot.on('click', function (){
           var newEntryForm = $('#new-entry-form'),
+              selectCat = $('select[name="category_id"]'),
               newEntryModal = $('#new-entry'),
               thisSlotData = $(this).data();
 
-          newEntryForm.find('input[name="endtime"]')
-                      .val( thisSlotData['endtime']);
+          newEntryForm.find( 'input[name="endtime"]' )
+                      .val( thisSlotData['endtime'] );
 
-          // debugger
+          selectCat.val( thisSlotData['categoryId'] ); //TODO
+
+          //entry id
+
+          $('#new-entry-submit').unbind()
+                                .on('click', function(){
+            updateEntryForm(true, thisSlotData['entryId'], newEntryForm);
+          });
+
+          
           //TODO maybe make a function like with whats above
 
           newEntryModal.modal('show');

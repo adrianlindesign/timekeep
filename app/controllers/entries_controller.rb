@@ -18,6 +18,18 @@ class EntriesController < ApplicationController
     redirect_to '/'
   end
 
+  def update
+    e = Entry.find( params[:id] )
+
+    e.update({
+      starttime: params['starttime'],
+      endtime: params['endtime'],
+      category_id: params['category_id'],
+      entry_date: params['entry_date']
+    })
+
+    redirect_to request.referrer
+  end
 
 
 end
