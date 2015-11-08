@@ -71,15 +71,13 @@
   function getEntryDuration(startHour, startMinute, durationHHMM){
 
 
-    var starttimeSlot = startHour + ":" + startMinute;
+    var starttimeSlot = startHour + ":" + startMinute,
 
-
-    var duration = durationHHMM, // "1::30" = 1 hour 30 mins
+        duration = durationHHMM, // "1::30" = 1 hour 30 mins
         durationHour = duration.split('::')[0],
-        durationMinute = duration.split('::')[1];
+        durationMinute = duration.split('::')[1],
 
-
-    var endtimeHour,
+        endtimeHour,
         endtimeMinute,
         endtimeSlot;
 
@@ -271,22 +269,41 @@
       /* loop through all hour slots to find */
       var startFillingInSlots = false;
 
-      for (var i = 0; i < hoursSlotLength; i++){
-        var time = $(hoursSlot[i]).find('h6').html(), // "03:00"
+      for (var n = 0; n < hoursSlotLength; n++){
+        var time = $(hoursSlot[n]).find('h6').html(), // "03:00"
             hour = time.split(':')[0];
-        /* if the entry start time is equal to the hour in the timeline, then do the following */
-        if (hour === approxStart.split(':')[0]) {
-          startFillingInSlots = true;
-        }
-       
+        
         /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
         if (startFillingInSlots) {
           console.log('filling in slots');
+          var thisSlot = hoursSlot[n];
+
+
+          // debugger
+        }
+
+        /* if the entry start time is equal to the hour in the timeline, then do the following */
+        if (hour === approxStart.split(':')[0]) {
+          startFillingInSlots = true;
+          console.log('start found');
+
+          if ('00' === approxStart.split(':')[1]) { // :00 min
+            console.log('00 mins');
+          } else { // :30
+            console.log('30 mins');
+          }
         }
 
         /* when ending point is found, turn fof filling in slots */
         if (hour === approxEnd.split(':')[0]) {
           startFillingInSlots = false;
+          console.log('end found');
+
+          if ('00' === approxEnd.split(':')[1]) { // :00 min
+            console.log('00 mins');
+          } else { // :30
+            console.log('30 mins');
+          }
         }
 
       }
@@ -301,14 +318,14 @@
       var entries = datesCatsAndEntries[i]['entries'],
           entriesLength = datesCatsAndEntries[i]['entries'].length;
 
-      for (var t = 0; i < entriesLength; i++) {
+      for (var t = 0; t < entriesLength; t++) {
         var thisEntry = entries[t],
             actualStart = thisEntry['starttime'].split('T')[1].substring(0, 5),
             actualEnd = thisEntry['endtime'].split('T')[1].substring(0, 5),
             entryId = thisEntry['entry_id'],
-            entrysCatName = datesCatsAndEntries[i]['name'],
-            entrysCatColor = datesCatsAndEntries[i]['color'],
-            entrysCatIcon = datesCatsAndEntries[i]['icon'],
+            entrysCatName = datesCatsAndEntries[t]['name'],
+            entrysCatColor = datesCatsAndEntries[t]['color'],
+            entrysCatIcon = datesCatsAndEntries[t]['icon'],
             approxStart,
             approxEnd;
             
