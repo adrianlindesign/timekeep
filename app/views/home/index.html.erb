@@ -241,7 +241,7 @@
       return newHr + ':' + newMins;
     };
 
-    var makeTimelineEvent = function(approxStart, approxEnd, entryId, entrysCatName, entrysCatColor, entrysCatIcon){
+    var makeTimelineEvent = function(approxStart, approxEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon){
       var hoursSlot = $('.hour'),
           hoursSlotLength = hoursSlot.length;
 
@@ -262,8 +262,18 @@
       //   return halfHrSlot;
       // };
 
-      var addDataToSlot = function() {
+      var addDataToSlot = function(slot) {
+        console.log('adding data to slot' + slot);
+        var thisSlot = $(slot);
+        
+        thisSlot.data('entry-id', entryId)
+                .data('category-id', entrysCatId)
+                .data('category-name', entrysCatName)
+                .data('category-color', entrysCatColor)
+                .data('category-icon', entrysCatIcon);
+        debugger
 
+        
       };
 
       /* loop through all hour slots to find */
@@ -271,13 +281,29 @@
 
       for (var n = 0; n < hoursSlotLength; n++){
         var time = $(hoursSlot[n]).find('h6').html(), // "03:00"
-            hour = time.split(':')[0];
+            hour = time.split(':')[0],
+            thisSlot = hoursSlot[n];
         
+        /* when ending point is found, turn fof filling in slots */
+        if (hour === approxEnd.split(':')[0]) {
+          startFillingInSlots = false;
+          console.log('end found');
+
+          if ('00' === approxEnd.split(':')[1]) { // :00 min
+            console.log('00 mins');
+            addDataToSlot(thisSlot);
+          } else { // :30
+            console.log('30 mins');
+            addDataToSlot(thisSlot);
+          }
+        }
+
+
         /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
         if (startFillingInSlots) {
           console.log('filling in slots');
-          var thisSlot = hoursSlot[n];
-
+          
+          addDataToSlot(thisSlot);
 
           // debugger
         }
@@ -289,22 +315,14 @@
 
           if ('00' === approxStart.split(':')[1]) { // :00 min
             console.log('00 mins');
+            addDataToSlot(thisSlot);
           } else { // :30
             console.log('30 mins');
+            addDataToSlot(thisSlot);
           }
         }
 
-        /* when ending point is found, turn fof filling in slots */
-        if (hour === approxEnd.split(':')[0]) {
-          startFillingInSlots = false;
-          console.log('end found');
 
-          if ('00' === approxEnd.split(':')[1]) { // :00 min
-            console.log('00 mins');
-          } else { // :30
-            console.log('30 mins');
-          }
-        }
 
       }
     }
@@ -326,6 +344,7 @@
             entrysCatName = datesCatsAndEntries[t]['name'],
             entrysCatColor = datesCatsAndEntries[t]['color'],
             entrysCatIcon = datesCatsAndEntries[t]['icon'],
+            entrysCatId = datesCatsAndEntries[t]['id'],
             approxStart,
             approxEnd;
             
@@ -335,7 +354,7 @@
         approxEnd = approximateTime(actualEnd);
         
         /* then create the time slot objects */
-        makeTimelineEvent(approxStart, approxEnd, entryId, entrysCatName, entrysCatColor, entrysCatIcon);
+        makeTimelineEvent(approxStart, approxEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon);
         
       }    
     }
@@ -345,11 +364,13 @@
 
   /*gets categories and entries based on date */
   function getDatesCatsAndEntries(thisDate){
+
     var catsAndEntries = [];
     //Loop through categories
     for (var cat in dataHash) {
       
       var thisCategory = {
+        'id': dataHash[cat]['id'],
         'name': cat,
         'color': dataHash[cat]['color'],
         'icon': dataHash[cat]['icon'],
