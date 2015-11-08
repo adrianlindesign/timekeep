@@ -282,11 +282,25 @@
           $( thisSlot.find('.half-hour')[1] ).css('background-color', entrysCatColor);
         }
 
-        // thisSlot.css('background-color', entrysCatColor);
+        /* add event listener to prepopulate modal that will come up */
+        
+        thisSlot.on('click', function (){
+          var newEntryForm = $('#new-entry-form'),
+              newEntryModal = $('#new-entry'),
+              thisSlotData = $(this).data();
+
+          newEntryForm.find('input[name="endtime"]')
+                      .val( thisSlotData['endtime']);
+
+          // debugger
+          //TODO maybe make a function like with whats above
+
+          newEntryModal.modal('show');
+        });
         
       };
 
-      /* loop through all hour slots to find */
+      /* loop through all hour slots */
       var startFillingInSlots = false;
 
       for (var n = 0; n < hoursSlotLength; n++){
@@ -303,7 +317,6 @@
             addDataToSlot(thisSlot, false);
           } 
         }
-
 
         /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
         if (startFillingInSlots) {
