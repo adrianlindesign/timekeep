@@ -241,9 +241,11 @@
       return newHr + ':' + newMins;
     };
 
-    var makeTimelineEvent = function(approxStart, approxEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon){
+    var makeTimelineEvent = function(actualStart, actualEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon){
       var hoursSlot = $('.hour'),
-          hoursSlotLength = hoursSlot.length;
+          hoursSlotLength = hoursSlot.length,
+          approxStart = approximateTime(actualStart),
+          approxEnd = approximateTime(actualEnd);
 
       // var makeHalfHrSlot = function() {
       //   var halfHrSlot = ''; 
@@ -262,17 +264,25 @@
       //   return halfHrSlot;
       // };
 
-      var addDataToSlot = function(slot) {
-        console.log('adding data to slot' + slot);
+      var addDataToSlot = function(slot, isFullHr) {
         var thisSlot = $(slot);
         
         thisSlot.data('entry-id', entryId)
+                .data('starttime', actualStart)
+                .data('endtime', actualEnd)
                 .data('category-id', entrysCatId)
                 .data('category-name', entrysCatName)
                 .data('category-color', entrysCatColor)
                 .data('category-icon', entrysCatIcon);
-        debugger
 
+        
+        $( thisSlot.find('.half-hour')[0] ).css('background-color', entrysCatColor);
+
+        if (isFullHr) {
+          $( thisSlot.find('.half-hour')[1] ).css('background-color', entrysCatColor);
+        }
+
+        // thisSlot.css('background-color', entrysCatColor);
         
       };
 
@@ -283,29 +293,21 @@
         var time = $(hoursSlot[n]).find('h6').html(), // "03:00"
             hour = time.split(':')[0],
             thisSlot = hoursSlot[n];
+            
         
-        /* when ending point is found, turn fof filling in slots */
+        /* when ending point is found, turn off filling in slots */
         if (hour === approxEnd.split(':')[0]) {
           startFillingInSlots = false;
-          console.log('end found');
 
-          if ('00' === approxEnd.split(':')[1]) { // :00 min
-            console.log('00 mins');
-            addDataToSlot(thisSlot);
-          } else { // :30
-            console.log('30 mins');
-            addDataToSlot(thisSlot);
-          }
+          if ('30' === approxEnd.split(':')[1]) { // :00 min
+            addDataToSlot(thisSlot, false);
+          } 
         }
 
 
         /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
         if (startFillingInSlots) {
-          console.log('filling in slots');
-          
-          addDataToSlot(thisSlot);
-
-          // debugger
+          addDataToSlot(thisSlot, true);
         }
 
         /* if the entry start time is equal to the hour in the timeline, then do the following */
@@ -314,11 +316,9 @@
           console.log('start found');
 
           if ('00' === approxStart.split(':')[1]) { // :00 min
-            console.log('00 mins');
-            addDataToSlot(thisSlot);
+            addDataToSlot(thisSlot, true);
           } else { // :30
-            console.log('30 mins');
-            addDataToSlot(thisSlot);
+            addDataToSlot(thisSlot, false);
           }
         }
 
@@ -330,8 +330,6 @@
     /* loop through categories */
     for (var i = 0; i < datesCatsAndEntriesLength; i++) {
 
-
-      
       // loop through entries of the category from datesCatsAndEntries
       var entries = datesCatsAndEntries[i]['entries'],
           entriesLength = datesCatsAndEntries[i]['entries'].length;
@@ -341,20 +339,16 @@
             actualStart = thisEntry['starttime'].split('T')[1].substring(0, 5),
             actualEnd = thisEntry['endtime'].split('T')[1].substring(0, 5),
             entryId = thisEntry['entry_id'],
-            entrysCatName = datesCatsAndEntries[t]['name'],
-            entrysCatColor = datesCatsAndEntries[t]['color'],
-            entrysCatIcon = datesCatsAndEntries[t]['icon'],
-            entrysCatId = datesCatsAndEntries[t]['id'],
-            approxStart,
-            approxEnd;
+            entrysCatName = datesCatsAndEntries[i]['name'],
+            entrysCatColor = datesCatsAndEntries[i]['color'],
+            entrysCatIcon = datesCatsAndEntries[i]['icon'],
+            entrysCatId = datesCatsAndEntries[i]['id'];
             
 
-        // calculate a new start and exit time. don't update the time here, because i want to put the original times into the time slot object, so when people click on it, tehy can get the original data
-        approxStart = approximateTime(actualStart);
-        approxEnd = approximateTime(actualEnd);
+        
         
         /* then create the time slot objects */
-        makeTimelineEvent(approxStart, approxEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon);
+        makeTimelineEvent(actualStart, actualEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon);
         
       }    
     }
