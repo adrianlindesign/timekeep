@@ -243,57 +243,59 @@
       return newHr + ':' + newMins;
     };
 
-    var makeTimelineEvent = function(starttime, endtime, entryId, entrysCatName, entrysCatColor, entrysCatIcon){
+    var makeTimelineEvent = function(approxStart, approxEnd, entryId, entrysCatName, entrysCatColor, entrysCatIcon){
       var hoursSlot = $('.hour'),
           hoursSlotLength = hoursSlot.length;
 
-      var makeHalfHrSlot = function() {
-        var halfHrSlot = ''; 
+      // var makeHalfHrSlot = function() {
+      //   var halfHrSlot = ''; 
 
-        halfHrSlot += '<div class="half-hour-slot" ';
-        //store entry and cat data
-        halfHrSlot += 'data-id="' + entryId + '" ';
-        halfHrSlot += 'data-cat-name="' + entrysCatName + '" ';
-        halfHrSlot += 'data-cat-color="' + entrysCatColor + '" ';
-        halfHrSlot += 'data-cat-icon="' + entrysCatIcon + '" ';
+      //   halfHrSlot += '<div class="half-hour-slot" ';
+      //   //store entry and cat data
+      //   halfHrSlot += 'data-id="' + entryId + '" ';
+      //   halfHrSlot += 'data-cat-name="' + entrysCatName + '" ';
+      //   halfHrSlot += 'data-cat-color="' + entrysCatColor + '" ';
+      //   halfHrSlot += 'data-cat-icon="' + entrysCatIcon + '" ';
 
-        //do styles
-        halfHrSlot += 'style="background-color:' + entrysCatColor + ';"';
-        halfHrSlot += '></div>';
+      //   //do styles
+      //   halfHrSlot += 'style="background-color:' + entrysCatColor + ';"';
+      //   halfHrSlot += '></div>';
 
-        return halfHrSlot;
+      //   return halfHrSlot;
+      // };
+
+      var addDataToSlot = function() {
+
       };
 
-      /* loop through all hour slots */
+      /* loop through all hour slots to find */
+      var startFillingInSlots = false;
+
       for (var i = 0; i < hoursSlotLength; i++){
-        var hour = $(hoursSlot[i]).find('h6').html(); // "00:00"
-        
-        if (hour === starttime) {
-          //create element for this div
-          
-          var halfHrSlot = makeHalfHrSlot();
+        var time = $(hoursSlot[i]).find('h6').html(), // "03:00"
+            hour = time.split(':')[0];
+        /* if the entry start time is equal to the hour in the timeline, then do the following */
+        if (hour === approxStart.split(':')[0]) {
+          startFillingInSlots = true;
+        }
+       
+        /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
+        if (startFillingInSlots) {
+          console.log('filling in slots');
+        }
 
-          //attach to first half hour of hour
-          debugger
-          $($(hoursSlot[i]).children()[0]).append(halfHrSlot);
-          
-//TODO TODO TODO: instead of all this, maybe just attach these data to the appropriate time slots;
-          
-            //attach data from entry into it so when clicked, it can be clicked and its input is prefilled and when saved, it updates the corresponding row in the database
-
-            //create eventListener
-
-          //then find the element corresponding to the slot before the endtime.
-            //create elements for each of these slots in between as above
+        /* when ending point is found, turn fof filling in slots */
+        if (hour === approxEnd.split(':')[0]) {
+          startFillingInSlots = false;
         }
 
       }
     }
 
-    //loop through categories
+    /* loop through categories */
     for (var i = 0; i < datesCatsAndEntriesLength; i++) {
 
-      // approximate time slot; eg. 2:53-4:41 => 3:00-4:30
+
       
       // loop through entries of the category from datesCatsAndEntries
       var entries = datesCatsAndEntries[i]['entries'],
@@ -315,8 +317,7 @@
         approxStart = approximateTime(actualStart);
         approxEnd = approximateTime(actualEnd);
         
-        //then create the time slot objects
-        //TODO
+        /* then create the time slot objects */
         makeTimelineEvent(approxStart, approxEnd, entryId, entrysCatName, entrysCatColor, entrysCatIcon);
         
       }    
