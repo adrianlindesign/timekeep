@@ -176,13 +176,16 @@
   function setUpModal(hourSlot, defaultDuration, modal) {
     var startHour = hourSlot.id.split('-')[1],
         startMinute = "00", 
-        duration = defaultDuration;
+        duration = defaultDuration,
+        todaysDate = new Date();
 
     // Autopopulate [starttime, endtime, entry_date]
     var durations = getEntryDuration(startHour, startMinute, duration);
     $('input[name="starttime"]').val(durations['starttime']);
     $('input[name="endtime"]').val(durations['endtime']);
-    $('input[name="entry_date"]').val( new Date().toDateInputValue() );
+    $('input[name="entry_date"]').val( todaysDate.toDateInputValue() );
+    $('#new-entry-date').html( todaysDate.toString().slice(0,15));
+
 
     modal.modal('toggle');
   }
