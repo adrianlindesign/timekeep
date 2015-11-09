@@ -13,6 +13,7 @@
   .half-hour-slot {
     width:100%;
     height:100%;
+    z-index: 1;
   }
 
 /*  #timeline {
@@ -253,7 +254,7 @@
       return newHr + ':' + newMins;
     };
 
-    var makeTimelineEvent = function(actualStart, actualEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon){
+    var makeTimelineEvent = function(actualStart, actualEnd, entryId, entryDate, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon){
       var hoursSlot = $('.hour'),
           hoursSlotLength = hoursSlot.length,
           approxStart = approximateTime(actualStart),
@@ -281,9 +282,9 @@
       var addDataToSlot = function(slot) {
         var thisSlot = $(slot);
 
-        debugger
-        
+
         thisSlot.data('entry-id', entryId)
+                .data('entry-date', entryDate)
                 .data('starttime', actualStart)
                 .data('endtime', actualEnd)
                 .data('category-id', entrysCatId)
@@ -291,25 +292,27 @@
                 .data('category-color', entrysCatColor)
                 .data('category-icon', entrysCatIcon);
 
+        /* unbind modal event from the hour */
+        thisSlot.parent().unbind('click');
+
         /* add event listener to prepopulate modal that will come up */
         thisSlot.on('click', function (){
           var newEntryForm = $('#new-entry-form'),
-              selectCat = $('select[name="category_id"]'),
               newEntryModal = $('#new-entry'),
               thisSlotData = $(this).data();
-
-          newEntryForm.find( 'input[name="endtime"]' )
-                      .val( thisSlotData['endtime'] );
-
-          selectCat.val( thisSlotData['categoryId'] ); 
+              
+          $('input[name="starttime"]').val( thisSlotData['starttime'] );
+          $('input[name="endtime"]').val( thisSlotData['endtime'] );
+          $('input[name="entry_date"]').val( thisSlotData['entryDate'] );
+          $('select[name="category_id"]').val( thisSlotData['categoryId'] ); 
 
 
           $('#new-entry-submit').unbind()
                                 .on('click', function(){
             updateEntryForm(true, thisSlotData['entryId'], newEntryForm);
           });
-
-          newEntryModal.modal('show');
+          
+          newEntryModal.modal('toggle');
         });
         
       };
@@ -383,14 +386,15 @@
             actualStart = thisEntry['starttime'].split('T')[1].substring(0, 5),
             actualEnd = thisEntry['endtime'].split('T')[1].substring(0, 5),
             entryId = thisEntry['entry_id'],
+            entryDate = thisEntry['entry_date'],
             entrysCatName = datesCatsAndEntries[i]['name'],
             entrysCatColor = datesCatsAndEntries[i]['color'],
             entrysCatIcon = datesCatsAndEntries[i]['icon'],
             entrysCatId = datesCatsAndEntries[i]['id'];
                   
-        
+
         /* then create the time slot objects */
-        makeTimelineEvent(actualStart, actualEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon);
+        makeTimelineEvent(actualStart, actualEnd, entryId, entryDate, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon);
         
       }    
     }
