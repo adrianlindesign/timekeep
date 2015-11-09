@@ -20,9 +20,6 @@
 
     /* loop through categories */
     for (var cat in dataHash){
-      // if (dataHash.hasOwnProperty(cat)) {
-      //   console.log(cat + " -> " + dataHash[cat]);
-      // }
 
       var categoryEntries = dataHash[cat]['entries'],
           categoryEntriesLength = categoryEntries.length,
@@ -36,7 +33,7 @@
             endtime = categoryEntries[i]['endtime'].split('T')[1].split('.')[0],
             entry_date = categoryEntries[i]['entry_date'];
 
-        // with starttime and endtime find duration in Hrs
+        // find duration in Hrs
         var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600;
 
         

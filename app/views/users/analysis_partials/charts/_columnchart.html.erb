@@ -35,9 +35,6 @@
     
     /* loop through categories */
     for (var cat in dataHash){
-      // if (dataHash.hasOwnProperty(cat)) {
-      //   console.log(cat + " -> " + dataHash[cat]);
-      // }
 
       var categoryHrsOnDays = {
         'name': cat,   
@@ -48,7 +45,7 @@
         'Thursday': 0,
         'Friday': 0,
         'Saturday': 0
-        // TODO: I have no idea why the hash must be arranged as such. But without it like this, all the entry dates are shifted back one day. If I increase the index number, errors occur. This fixes it.
+
       },
       categoryEntries = dataHash[cat]['entries'],
       categoryEntriesLength = categoryEntries.length;
@@ -65,11 +62,6 @@
         var entryDurInHrs = getEntryDurInSec(starttime, endtime) / 3600,
             entryDay = getDay(entry_date);
             
-
-        // here if you want to restrict insertion TODO
-
-
-        //insert to categoryHrsOnDays according to the day it was
         
         if (sampledPeriod === "eternity") {
           categoryHrsOnDays[entryDay] += entryDurInHrs;
@@ -112,27 +104,6 @@
     return dayNameArray[day];
   }
 
-// var a = [ //
-// ["Category", {role: "annotation"}, "Social", "Music"], 
-// ["Sun", "", 0, 0], 
-// ["Mon", "", 0, 0], 
-// ["Tue", "", 0, 0], 
-// ["Wed", "", 0, 0], 
-// ["Thu", "", 0, 0], 
-// ["Fri", "", 0, 0], 
-// ["Sat", "", 0, 0]
-// ]
-
-// var b = [ //
-// ["Category", {role: "annotation"}, "Social", "Music"], 
-// ["Sun", "", 0, 0], 
-// ["Mon", "", 0, 0], 
-// ["Tue", "", 0, 0], 
-// ["Wed", "", 0, 0], 
-// ["Thu", "", 0, 0], 
-// ["Fri", "", 0, 0], 
-// ["Sat", "", 0, 0]
-// ]
 </script>
 
 
