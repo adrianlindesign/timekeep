@@ -259,9 +259,29 @@
           approxStart = approximateTime(actualStart),
           approxEnd = approximateTime(actualEnd);
 
-
-      var addDataToSlot = function(slot, isFullHr) {
+      var addStyleToSlot = function(slot, isFullHr) {
         var thisSlot = $(slot);
+         /* aesthetics: adding color to each half-hour slot */
+         thisSlot.css('background-color', entrysCatColor);
+
+        var thisTime = thisSlot.parent().find('h6'), // add glyphicon
+            catIconEl = '<span class="glyphicon glyphicon-' + thisSlot.data('category-icon') + '"></span>';
+        
+        // /* if there is color and no glyphicon add glyphicon */
+        if (thisTime.find('span.glyphicon').length === 0) {
+          if (thisTime.parent().css('background-color') !== "rgba(0, 0, 0, 0)") {
+            thisTime.html( catIconEl + thisTime.html() + catIconEl );
+            
+          }
+        }
+      };
+
+
+
+      var addDataToSlot = function(slot) {
+        var thisSlot = $(slot);
+
+        debugger
         
         thisSlot.data('entry-id', entryId)
                 .data('starttime', actualStart)
@@ -270,15 +290,6 @@
                 .data('category-name', entrysCatName)
                 .data('category-color', entrysCatColor)
                 .data('category-icon', entrysCatIcon);
-
-        /* aesthetics: adding color to each half-hour slot */
-        $( thisSlot.find('.half-hour')[0] ).css('background-color', entrysCatColor);
-        if (isFullHr) {
-          $( thisSlot.find('.half-hour')[1] ).css('background-color', entrysCatColor);
-        }
-      
-        var thisTime = thisSlot.find('h6'); // increase
-        thisTime.html( thisTime.html() + ' <span class="glyphicon glyphicon-' + thisSlot.data('category-icon') + '"></span>');
 
         /* add event listener to prepopulate modal that will come up */
         thisSlot.on('click', function (){
@@ -303,13 +314,18 @@
         
       };
 
+
+
+
       /* loop through all hour slots */
       var startFillingInSlots = false;
 
       for (var n = 0; n < hoursSlotLength; n++){
         var time = $(hoursSlot[n]).find('h6').html(), // "03:00"
             hour = time.split(':')[0],
-            thisSlot = hoursSlot[n];
+            thisSlot = $(hoursSlot[n]),
+            halfHr1 = thisSlot.find('.half-hour')[0],
+            halfHr2 = thisSlot.find('.half-hour')[1];
             
         
         /* when ending point is found, turn off filling in slots */
@@ -317,13 +333,18 @@
           startFillingInSlots = false;
 
           if ('30' === approxEnd.split(':')[1]) { // :00 min
-            addDataToSlot(thisSlot, false);
+            addDataToSlot(halfHr1);
+            addStyleToSlot(halfHr1, false);
           } 
         }
 
         /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
         if (startFillingInSlots) {
-          addDataToSlot(thisSlot, true);
+          addDataToSlot(halfHr1);
+          addDataToSlot(halfHr2); 
+
+          addStyleToSlot(halfHr1, true);
+          addStyleToSlot(halfHr2, true);
         }
 
         /* if the entry start time is equal to the hour in the timeline, then do the following */
@@ -332,13 +353,20 @@
           console.log('start found');
 
           if ('00' === approxStart.split(':')[1]) { // :00 min
-            addDataToSlot(thisSlot, true);
+            addDataToSlot(halfHr1);
+            addDataToSlot(halfHr2);
+
+            addStyleToSlot(halfHr1, true);
+            addStyleToSlot(halfHr2, true);
           } else { // :30
-            addDataToSlot(thisSlot, false);
+            addDataToSlot(halfHr2);
+            addStyleToSlot(halfHr2, false);
+            // var halfHrStart = $($(thisSlot).find('.half-hour')[1]);
+            // // addDataToSlot(halfHrStart);
+            // addStyleToSlot(halfHrStart, false);
+
           }
         }
-
-
 
       }
     }
@@ -359,9 +387,7 @@
             entrysCatColor = datesCatsAndEntries[i]['color'],
             entrysCatIcon = datesCatsAndEntries[i]['icon'],
             entrysCatId = datesCatsAndEntries[i]['id'];
-            
-
-        
+                  
         
         /* then create the time slot objects */
         makeTimelineEvent(actualStart, actualEnd, entryId, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon);
