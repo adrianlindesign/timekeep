@@ -15,12 +15,6 @@
     height:100%;
   }
 
-/*  #timeline {
-    height:70vh;
-    width:90vw;
-    border:1vw solid darkgrey;
-    overflow: scroll;
-  }*/
 </style>
 
 
@@ -63,11 +57,58 @@
 <!-- TODO move script elsewhere-->
 <script>
   var timeSlotStart,
-      timeSlotEnd; //used to set default time
+      timeSlotEnd; 
+
+
+  $(document).ready(function(){
+    var newEntryForm = $('#new-entry-form'),
+        newEntryModal = $('#new-entry');
 
 
 
+    /* event listener: NEW ENTRY MODAL */
+    $('.hour').on('click', function(){
+      var hourSlot = this;
+      setUpModal(hourSlot, "1::00", newEntryModal);
+    });
 
+    /* event listener: submitting new entry form */
+    var submitBtn = $('#new-entry-submit');
+    $('#new-entry-submit').on('click', function(){
+      updateEntryForm(false, 0, newEntryForm);
+    });
+
+
+    /* event listener: NEW CATEGORY MODAL */
+    $('#new-category-btn').on('click', function(){
+      newEntryModal.modal('toggle');
+      $('#new-category').modal('toggle');
+
+    });
+
+
+    /* start scrolled depending on current time */
+    setScrollStart();
+
+
+    /* show the activities on the timeline for today */
+    var sessionId = $('#session-id').val();
+    $.ajax('/users/' + sessionId + '/data_hash', {
+      success: function(data) {
+        var nowDate = new Date()
+        console.log('ajax succeeded');
+        dataHash = data;     
+           
+        setUpTimeline();
+      },
+      error: function(){
+        console.log('ajax failed');
+      }
+    });
+
+  });
+
+  
   /*this funciton takes inputs and then returns the start and endtime */
   function getEntryDuration(startHour, startMinute, durationHHMM){
 
@@ -132,63 +173,19 @@
     newEntryForm.submit();
   }
 
-  $(document).ready(function(){
-    var newEntryForm = $('#new-entry-form'),
-        newEntryModal = $('#new-entry');
+  function setUpModal(hourSlot, defaultDuration, modal) {
+    var startHour = hourSlot.id.split('-')[1],
+        startMinute = "00", 
+        duration = defaultDuration;
 
+    // Autopopulate [starttime, endtime, entry_date]
+    var durations = getEntryDuration(startHour, startMinute, duration);
+    $('input[name="starttime"]').val(durations['starttime']);
+    $('input[name="endtime"]').val(durations['endtime']);
+    $('input[name="entry_date"]').val( new Date().toDateInputValue() );
 
-
-    /* event listener: NEW ENTRY MODAL */
-    $('.hour').on('click', function(){
-
-      var startHour = this.id.split('-')[1],
-          startMinute = "00", 
-          duration = "1::00"; //entry defaults to an hour
-
-      // Autopopulate [starttime, endtime, entry_date]
-      var durations = getEntryDuration(startHour, startMinute, duration);
-      $('input[name="starttime"]').val(durations['starttime']);
-      $('input[name="endtime"]').val(durations['endtime']);
-      $('input[name="entry_date"]').val( new Date().toDateInputValue() );
-
-      newEntryModal.modal('toggle');
-    });
-
-    /* event listener: submitting new entry form */
-    var submitBtn = $('#new-entry-submit');
-    $('#new-entry-submit').on('click', function(){
-      updateEntryForm(false, 0, newEntryForm);
-    });
-
-
-    /* event listener: NEW CATEGORY MODAL */
-    $('#new-category-btn').on('click', function(){
-      newEntryModal.modal('toggle');
-      $('#new-category').modal('toggle');
-
-    });
-
-
-    /* start scrolled depending on current time */
-    setScrollStart();
-
-
-    /* show the activities on the timeline for today */
-    var sessionId = $('#session-id').val();
-    $.ajax('/users/' + sessionId + '/data_hash', {
-      success: function(data) {
-        var nowDate = new Date()
-        console.log('ajax succeeded');
-        dataHash = data;     
-           
-        setUpTimeline();
-      },
-      error: function(){
-        console.log('ajax failed');
-      }
-    });
-
-  });
+    modal.modal('toggle');
+  }
 
   function setScrollStart(){
     var timeNow = new Date().getHours();
@@ -201,11 +198,6 @@
       window.scrollTo(0, 800);
     }
   }
-
-  
-    
-    
-  
   
   function formatDate(date){  
     var dd = date.getDate(),
@@ -387,8 +379,6 @@
       }    
     }
   }
-
-
 
   /*gets categories and entries based on date */
   function getDatesCatsAndEntries(thisDate){
