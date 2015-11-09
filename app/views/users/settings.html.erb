@@ -1,5 +1,4 @@
 
-
   <style>
     #login-button-form input {
       width: 33vw;
@@ -19,6 +18,10 @@
     .delete-category-btn {
       float:left;
       margin: -12vw 0 0 4vw;
+    }
+    #users-categories ul {
+      font-size:5vw;
+      list-style-type:none;
     }
 
   </style>
@@ -41,67 +44,69 @@
   </form>
 
   <!-- Categories -->
-  <h3>My Categories</h3>
-  <%@categories.each do |cat|%>
-    <ul>
-      <li>
-        <span class="glyphicon glyphicon-<%=cat[:icon]%>" style="color:<%=cat[:color]%>"></span> 
-        <%=cat[:name]%>
-        <span class="edit-category glyphicon glyphicon-cog" value="<%=cat[:name]%>"></span>
+  <section id="users-categories">
+    
+    <h3>My Categories</h3>
+    <%@categories.each do |cat|%>
+      <ul>
+        <li>
+          <span class="glyphicon glyphicon-<%=cat[:icon]%>" style="color:<%=cat[:color]%>"></span> 
+          <%=cat[:name]%>
+          <span class="edit-category glyphicon glyphicon-cog" value="<%=cat[:name]%>"></span>
 
-        <!-- Modal -->
-        <div class="modal fade modal-edit-category" id="modal-<%=cat[:name]%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
+          <!-- Modal -->
+          <div class="modal fade modal-edit-category" id="modal-<%=cat[:name]%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
 
-              <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  
-                  <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
-                  <input type="text" name="name" value="<%=cat[:name]%>">
-                  
-                </div>
+                <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    
+                    <span class="glyphicon glyphicon-<%=cat[:icon]%>"></span> 
+                    <input type="text" name="name" value="<%=cat[:name]%>">
+                    
+                  </div>
 
-                <div class="modal-body">
-
-                
-                    <%= render 'users/settings_partials/icon_choices' %>
-                    <input type="hidden" name="icon" value="<%=cat[:icon]%>"> 
-                    <%= render 'users/settings_partials/color_swatches' %>
-                    <input type="hidden" name="color" value="<%=cat[:color]%>">
-
-                    <input type="hidden" name="_method" value="PUT">
-                    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-                  
+                  <div class="modal-body">
 
                   
-                </div>
-                <div class="modal-footer">
-                  
-                  <button type="submit" class="btn btn-primary submit-category-btn">Update</button>
-                </div>
-              </form>
-              <!-- delete form -->
-              <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
-                <input type="hidden" name="_method" value="DELETE">
-                <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
-                <button type="submit" class="btn btn-default delete-category-btn"><span class="glyphicon glyphicon-trash"></span></button>
-              </form>
+                      <%= render 'users/settings_partials/icon_choices' %>
+                      <input type="hidden" name="icon" value="<%=cat[:icon]%>"> 
+                      <%= render 'users/settings_partials/color_swatches' %>
+                      <input type="hidden" name="color" value="<%=cat[:color]%>">
 
+                      <input type="hidden" name="_method" value="PUT">
+                      <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+                    
+
+                    
+                  </div>
+                  <div class="modal-footer">
+                    
+                    <button type="submit" class="btn btn-primary submit-category-btn">Update</button>
+                  </div>
+                </form>
+                <!-- delete form -->
+                <form action="/users/<%=cat[:user_id]%>/categories/<%=cat[:id]%>" method="POST">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+                  <button type="submit" class="btn btn-default delete-category-btn"><span class="glyphicon glyphicon-trash"></span></button>
+                </form>
+
+              </div>
             </div>
           </div>
-        </div>
 
-      </li>
-    </ul>
+        </li>
+      </ul>
 
-   
-
+     
 
 
-  <%end%>
 
+    <%end%>
+  </section>
 <%else%>
   <h1>Not logged in</h1>
 
@@ -122,6 +127,7 @@
   <!-- sign up button -->
   <a href="/users/new">Sign up</a>
 <%end%>
+  
 
 
 
