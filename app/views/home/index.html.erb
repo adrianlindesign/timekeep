@@ -255,12 +255,10 @@
     };
 
     var makeTimelineEvent = function(actualStart, actualEnd, entryId, entryDate, entrysCatId, entrysCatName, entrysCatColor, entrysCatIcon){
-      var hoursSlot = $('.hour'),
-          hoursSlotLength = hoursSlot.length,
-          approxStart = approximateTime(actualStart),
-          approxEnd = approximateTime(actualEnd);
+      
 
-      var addStyleToSlot = function(slot, isFullHr) {
+
+      var addStyleToSlot = function(slot) {
         var thisSlot = $(slot);
          /* aesthetics: adding color to each half-hour slot */
          thisSlot.css('background-color', entrysCatColor);
@@ -312,7 +310,7 @@
             updateEntryForm(true, thisSlotData['entryId'], newEntryForm);
           });
           
-          newEntryModal.modal('toggle');
+          newEntryModal.modal('show');
         });
         
       };
@@ -321,54 +319,45 @@
 
 
       /* loop through all hour slots */
-      var startFillingInSlots = false;
+      var startFillingInSlots = false,
+          halfHrSlot = $('.half-hour'),
+          halfHrSlotLength = halfHrSlot.length,
+          approxStart = approximateTime(actualStart),
+          approxEnd = approximateTime(actualEnd);
 
-      for (var n = 0; n < hoursSlotLength; n++){
-        var time = $(hoursSlot[n]).find('h6').html(), // "03:00"
+      for (var n = 0; n < halfHrSlotLength; n++){
+        var time = $(halfHrSlot[n]).attr('data-time'), // "03:00"
             hour = time.split(':')[0],
-            thisSlot = $(hoursSlot[n]),
-            halfHr1 = thisSlot.find('.half-hour')[0],
-            halfHr2 = thisSlot.find('.half-hour')[1];
-            
-        
+            thisSlot = $(halfHrSlot[n]);
+
         /* when ending point is found, turn off filling in slots */
         if (hour === approxEnd.split(':')[0]) {
           startFillingInSlots = false;
 
-          if ('30' === approxEnd.split(':')[1]) { // :00 min
-            addDataToSlot(halfHr1);
-            addStyleToSlot(halfHr1, false);
+          if ('30' === approxEnd.split(':')[1]) { // :30 min
+            addDataToSlot(thisSlot);
+            addStyleToSlot(thisSlot);
+            break;
           } 
         }
 
         /* once start time found, keep filling in color and attaching data to elements until ending slot done*/
         if (startFillingInSlots) {
-          addDataToSlot(halfHr1);
-          addDataToSlot(halfHr2); 
-
-          addStyleToSlot(halfHr1, true);
-          addStyleToSlot(halfHr2, true);
+          addDataToSlot(thisSlot);
+          
+          addStyleToSlot(thisSlot);
+          
         }
 
         /* if the entry start time is equal to the hour in the timeline, then do the following */
         if (hour === approxStart.split(':')[0]) {
           startFillingInSlots = true;
-          console.log('start found');
 
           if ('00' === approxStart.split(':')[1]) { // :00 min
-            addDataToSlot(halfHr1);
-            addDataToSlot(halfHr2);
-
-            addStyleToSlot(halfHr1, true);
-            addStyleToSlot(halfHr2, true);
-          } else { // :30
-            addDataToSlot(halfHr2);
-            addStyleToSlot(halfHr2, false);
-            // var halfHrStart = $($(thisSlot).find('.half-hour')[1]);
-            // // addDataToSlot(halfHrStart);
-            // addStyleToSlot(halfHrStart, false);
-
-          }
+            addDataToSlot(thisSlot);
+            addStyleToSlot(thisSlot);
+            
+          } 
         }
 
       }
