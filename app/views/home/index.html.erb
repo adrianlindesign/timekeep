@@ -259,22 +259,6 @@
           approxStart = approximateTime(actualStart),
           approxEnd = approximateTime(actualEnd);
 
-      // var makeHalfHrSlot = function() {
-      //   var halfHrSlot = ''; 
-
-      //   halfHrSlot += '<div class="half-hour-slot" ';
-      //   //store entry and cat data
-      //   halfHrSlot += 'data-id="' + entryId + '" ';
-      //   halfHrSlot += 'data-cat-name="' + entrysCatName + '" ';
-      //   halfHrSlot += 'data-cat-color="' + entrysCatColor + '" ';
-      //   halfHrSlot += 'data-cat-icon="' + entrysCatIcon + '" ';
-
-      //   //do styles
-      //   halfHrSlot += 'style="background-color:' + entrysCatColor + ';"';
-      //   halfHrSlot += '></div>';
-
-      //   return halfHrSlot;
-      // };
 
       var addDataToSlot = function(slot, isFullHr) {
         var thisSlot = $(slot);
@@ -287,15 +271,16 @@
                 .data('category-color', entrysCatColor)
                 .data('category-icon', entrysCatIcon);
 
-        
+        /* aesthetics: adding color to each half-hour slot */
         $( thisSlot.find('.half-hour')[0] ).css('background-color', entrysCatColor);
-
         if (isFullHr) {
           $( thisSlot.find('.half-hour')[1] ).css('background-color', entrysCatColor);
         }
+      
+        var thisTime = thisSlot.find('h6'); // increase
+        thisTime.html( thisTime.html() + ' <span class="glyphicon glyphicon-' + thisSlot.data('category-icon') + '"></span>');
 
         /* add event listener to prepopulate modal that will come up */
-        
         thisSlot.on('click', function (){
           var newEntryForm = $('#new-entry-form'),
               selectCat = $('select[name="category_id"]'),
@@ -305,17 +290,13 @@
           newEntryForm.find( 'input[name="endtime"]' )
                       .val( thisSlotData['endtime'] );
 
-          selectCat.val( thisSlotData['categoryId'] ); //TODO
+          selectCat.val( thisSlotData['categoryId'] ); 
 
-          //entry id
 
           $('#new-entry-submit').unbind()
                                 .on('click', function(){
             updateEntryForm(true, thisSlotData['entryId'], newEntryForm);
           });
-
-          
-          //TODO maybe make a function like with whats above
 
           newEntryModal.modal('show');
         });
