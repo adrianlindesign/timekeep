@@ -6,9 +6,8 @@ Timekeep is an mobile web app that I created to help me track how much time I sp
 
 Once you create an account, you can use the timeline to create categories and enter your activities. You can see the patterns of time expense in the analysis tab on a per day view or an overall view per period. 
 
-Later I plan to include ways to slice data by hour to see what you spend doing most often on which hour of the day.
+* Later I plan to include ways to slice data by hour to see what you spend doing most often on which hour of the day.
 
-* ...
 
 
 Please feel free to use a different markup language if you do not plan to run
