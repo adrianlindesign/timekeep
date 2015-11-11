@@ -31,5 +31,12 @@ class EntriesController < ApplicationController
     redirect_to request.referrer
   end
 
+  def destroy
+    e = Entry.find( params[:id] )
+    e.destroy
+
+    redirect_to request.referrer
+  end
+
 
 end

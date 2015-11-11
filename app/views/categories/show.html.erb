@@ -1,0 +1,60 @@
+<style>
+  #categorys-entries div * {
+    display:inline-block;
+    font-size:4vw;
+    margin:4vw;
+  }
+  .heading {
+    color: skyblue;
+  }
+  #categorys-entries h1 {
+    margin: 4vw;
+  }
+</style>
+
+
+
+<section id="categorys-entries">
+  <h1><span style="color:<%=@category[:color]%>" class="glyphicon glyphicon-<%=@category[:icon]%>"></span><%=@category[:name]%></h1>
+  <div class="heading">
+    <h5>Entry Date</h5>
+    <h5>Start time</h5>
+    <h5>End time</h5>
+  </div>
+  <%@categorys_entries.each do |entry|%>
+    <div>
+      <p><%=entry[:entry_date]%></p>
+      <p><%=entry[:starttime].to_s.split(' ')[1].split(' ')[0]%></p>
+      <p><%=entry[:endtime].to_s.split(' ')[1].split(' ')[0]%></p>
+      <span class="glyphicon glyphicon-trash" data-entry-id="<%=entry[:id]%>" data-category-id="<%=entry[:category_id]%>"></span>
+    </div>
+  <%end%>
+
+  <form action="" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input name="authenticity_token" value="<%= form_authenticity_token() %>" type="hidden">
+  </form>
+</section>
+
+<script>
+  $(document).ready(function(){
+    $('.glyphicon-trash').on('click', function(){
+      if ( confirm('Delete this entry?') ) {
+        
+        var deleteForm = $('#categorys-entries form'),
+            formAction =  '/users/'
+                          + '<%=session[:user_id]%>'
+                          + '/categories/'
+                          + $(this).attr('data-category-id')
+                          + '/entries/'
+                          + $(this).attr('data-entry-id');
+
+        deleteForm.attr('action', formAction)
+                  .submit();
+      }
+    });
+  });
+</script>
+
+
+<form action="/users/<%=session[:user_id]%>/categories/:category_id/entries/:id(.:format)"></form>

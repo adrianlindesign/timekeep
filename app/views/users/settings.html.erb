@@ -24,6 +24,7 @@
       list-style-type:none;
     }
 
+
   </style>
 <h1>Settings</h1>
 
@@ -51,7 +52,7 @@
       <ul>
         <li>
           <span class="glyphicon glyphicon-<%=cat[:icon]%>" style="color:<%=cat[:color]%>"></span> 
-          <%=cat[:name]%>
+          <a href="/users/<%=session[:user_id]%>/categories/<%=cat[:id]%>"><%=cat[:name]%></a>
           <span class="edit-category glyphicon glyphicon-cog" value="<%=cat[:name]%>"></span>
 
           <!-- Modal -->

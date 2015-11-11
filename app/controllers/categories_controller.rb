@@ -31,11 +31,10 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    c = Category.find( params[:id] )
+    @category = Category.find( params[:id] )
+    @categorys_entries = Entry.where({category_id: params[:id]})
 
-    respond_to do |format|
-      format.json {render :json => c}
-    end
+    render :show
   end
 
   def destroy
